@@ -1,7 +1,9 @@
 // 实现new Proxy(target, handler)
 
 import { extend, isObject } from '@vue/shared'
+import { TrackOpTypes } from './operators'
 import { reactive, readonly } from './reactive'
+import { track } from './effect'
 
 // 拦截获取功能
 function createGetter(isReadonly = false, shallow = false) {
@@ -14,6 +16,10 @@ function createGetter(isReadonly = false, shallow = false) {
 
         if (!isReadonly) {
             // 收集依赖，数据变化后更新视图
+
+            // 执行effect时会取值，收集effect
+
+            track(target, TrackOpTypes.GET, key)
         }
 
         if (shallow) {
