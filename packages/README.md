@@ -1,0 +1,2 @@
+笔记
+yarn install: 把workspace下的所有包生成软链接放到node_modules里面。
