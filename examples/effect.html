@@ -16,13 +16,15 @@
         let state = reactive({
             name: 'aaa',
             age: 12,
-            other: 'aaa'
+            other: 'aaa',
+            arr: [1,2,3]
         })
         effect(() => {
             app.innerHTML = `${state.name}今年${state.age}`
         })
         setTimeout(() => {
             state.age = 15
+            state.arr.length = 100
         }, 2000)
     </script>
 </body>

@@ -1,9 +1,9 @@
 // 实现new Proxy(target, handler)
 
-import { extend, isObject } from '@vue/shared'
-import { TrackOpTypes } from './operators'
+import { extend, hasChanged, hasOwn, isArray, isIntegerKey, isObject } from '@vue/shared'
+import { TrackOpTypes, TriggerOpTypes } from './operators'
 import { reactive, readonly } from './reactive'
-import { track } from './effect'
+import { track, trigger } from './effect'
 
 // 拦截获取功能
 function createGetter(isReadonly = false, shallow = false) {
@@ -17,8 +17,8 @@ function createGetter(isReadonly = false, shallow = false) {
         if (!isReadonly) {
             // 收集依赖，数据变化后更新视图
 
-            // 执行effect时会取值，收集effect
-
+            // 执行effect时会取effect中依赖的key的值，收集effect
+            // TrackOpTypes.GET : 代表当对target对象中的key做GET操作的时候
             track(target, TrackOpTypes.GET, key)
         }
 
@@ -41,6 +41,20 @@ function createGetter(isReadonly = false, shallow = false) {
 function createSetter(isShallow = false) {
     return function set(target, key, value,receiver) {
         const result = Reflect.set(target, key, value, receiver)
+
+        const oldValue = target[key] // 获取老的值
+
+        let hasKey = isArray(target) && isIntegerKey(key) ? Number(key) < target.length : hasOwn(target, key)
+        
+        // 要区分是新增的还是修改的
+        // vue2里无法监控索引更改，无法监控数组的长度，而是需要hack特殊处理
+        if(!hasKey) {
+            // 新增
+            trigger(target, TriggerOpTypes.ADD, key, value)
+        } else if(hasChanged(oldValue, value)) {
+            // 修改
+            trigger(target, TriggerOpTypes.SET, key, value, oldValue)
+        }
 
         return result
     }
