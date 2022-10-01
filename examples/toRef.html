@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="../node_modules/@vue/reactivity/dist/reactivity.global.js"></script>
+    <script>
+        let { reactive, effect, ref, shallowRef, toRef } = VueReactivity
+
+        let proxy = reactive({ name: 'aaa' })
+
+        // let { name } = proxy // 如果这样取name，这个name就没有响应式了
+        // console.log(name)
+
+        let r = toRef(proxy, 'name')
+        // r.value = 'bbb'
+        console.log(r)
+
+        effect(() => {
+            app.innerHTML = r.value
+            console.log(r.value)
+        })
+
+        setTimeout(() => {
+            proxy.name = 'ccc'
+            console.log(r.value)
+            console.log(proxy.name)
+        }, 2000)
+    </script>
+</body>
+
+</html>

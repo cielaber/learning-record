@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="../node_modules/@vue/reactivity/dist/reactivity.global.js"></script>
+    <script>
+        let { reactive, effect, ref, shallowRef } = VueReactivity
+        // let name = ref('aaa') // ref 将普通类型转换成一个对象，这个对象中有value属性，指向原来的值
+        // console.log(name)
+        // effect(() => {
+        //     app.innerHTML = name.value // track
+        // })
+        // setTimeout(() => {
+        //     name.value = 'bbb' // trigger
+        // }, 2000)
+
+        let obj = ref({name: 'aaa'}) // ref 将普通类型转换成一个对象，这个对象中有value属性，指向原来的值
+        console.log(obj)
+        effect(() => {
+            app.innerHTML = obj.value.name // track
+            console.log(app.innerHTML)
+        })
+        setTimeout(() => {
+            // obj.value.name = 'bbb' // trigger
+            console.log(obj)
+
+        }, 2000)
+    </script>
+</body>
+
+</html>
