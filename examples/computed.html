@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="../node_modules/@vue/reactivity/dist/reactivity.global.js"></script>
+    <script>
+        let { reactive, effect, ref, shallowRef, computed } = VueReactivity
+
+        const age = ref(18)
+
+        const myAge = computed(()=> { // 不会默认执行
+            console.log('render')
+            return age.value + 10
+        })
+
+        // 当访问属性的时候执行
+        // console.log(myAge.value)
+
+        // console.log(myAge.value) // 第二次时缓存
+
+        age.value = 100 // 更新age，myage不会立刻重新计算
+        // setTimeout(() => {
+        //     console.log(myAge.value) // 取值时再次计算新值
+        // }, 2000)
+
+        effect(() => {
+            console.log(myAge.value) // effect中也要computed中的依赖
+        })
+    </script>
+</body>
+
+</html>

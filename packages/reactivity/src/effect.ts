@@ -106,5 +106,11 @@ export function trigger(target, type, key, value?, newValue?, oldValue?) {
     }
 
     // 最终执行所有的effect
-    effects.forEach((effect: any) => effect())
+    effects.forEach((effect: any) => {
+        if (effect.options.scheduler) {
+            effect.options.scheduler(effect)
+        } else {
+            effect()
+        }
+    })
 }
