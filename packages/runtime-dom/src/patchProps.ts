@@ -1,7 +1,7 @@
-import { patchAttr } from "./attr";
-import { patchClass } from "./class"
-import { patchEvent } from "./event";
-import { patchStyle } from "./style";
+import { patchAttr } from "./modules/attr";
+import { patchClass } from "./modules/class"
+import { patchEvent } from "./modules/event";
+import { patchStyle } from "./modules/style";
 
 // 这里处理针对属性的操作
 export const patchProp = (el, key, preValue, nextValue) => {
