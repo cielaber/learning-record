@@ -10,7 +10,7 @@ export const isNumber = (value) => typeof value === 'number'
 
 export const isString = (value) => typeof value === 'string'
 
-// 是否是一个整型
+// 是否是一个整型的key
 export const isIntegerKey = (key) => parseInt(key) + '' === key
 
 let hasOwnProperty = Object.prototype.hasOwnProperty

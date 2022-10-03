@@ -1,5 +1,10 @@
 import { isArray, isObject, isString, ShapeFlags } from "@vue/shared"
 
+// 判断一个对象是否是vnode
+export function isVnode(vnode) {
+    return vnode.__v_isVnode
+}
+
 // 创建虚拟节点
 export const createVNode = (type, props, children = null) => {
     // 根据type来区分是组件还是普通标签元素
@@ -37,4 +42,12 @@ function normalizeChildren(vnode, children) {
 
 
     
+}
+
+
+export const Text = Symbol('Text')
+export function normalizeVNode(child) {
+    if (isObject(child)) return child
+
+    return createVNode(Text, null, String(child))
 }

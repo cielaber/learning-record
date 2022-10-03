@@ -12,16 +12,40 @@
     <script src="../node_modules/@vue/runtime-dom/dist/runtime-dom.global.js"></script>
     <div id="app"></div>
     <script>
-        let { createApp, ref } = VueRuntimeDOM
+        let { createApp, h, reactive } = VueRuntimeDOM
 
         let App = {
-            render(proxy) {
-                console.log('render')
-                console.log(proxy.age, proxy.b, proxy.c)
-            },
+            // render(proxy) {
+            //     console.log('component render')
+            //     // console.log(proxy.age, proxy.b, proxy.c)
+            // },
             setup(props, context) {
                 console.log('ok')
                 console.log(props, context)
+
+                let state = reactive({ name: 'bb' })
+                let fn = function () {
+                    state.name = 'cc'
+                    state.name = 'bb'
+                    state.name = 'cc'
+                    state.name = 'bb'
+                    // console.log('gengxin', state)
+                }
+
+                return (proxy) => {
+                    console.log('setup render')
+                    // h('div', { a: 1 })
+                    // h('div', {}, 'hello world')
+                    // h('div', {}, h('span'))
+                    // h('div', h('span'))
+                    // h('div', [h('span'), h('span')])
+                    // h('div', null, h('span'), h('span'))
+                    // h('div', null, 'a', 'b')
+
+                    // return h('div', { style: { color: 'red' } }, h('span', 'aa'));
+                    return h('div', { onClick: fn }, state.name);
+                }
+
             }
         }
 
