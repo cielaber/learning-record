@@ -3,7 +3,8 @@
 const fs = require('fs');
 const execa = require('execa')
 
-const target = 'reactivity'
+// 当在开发环境中开发不同的包时，在这里改包名
+const target = 'runtime-dom'
 
 async function bulid(target) {
     console.log('bulid.target', target)
