@@ -19,7 +19,7 @@ export const nodeOps = {
     querySelector: selector => document.querySelector(selector),
 
     // 设置标签文本
-    setElementText: (el, text) => el.textContext = text,
+    setElementText: (el, text) => el.textContent = text,
 
     // 创建文本
     createText: text => document.createTextNode(text),
