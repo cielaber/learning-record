@@ -40,11 +40,12 @@ function createGetter(isReadonly = false, shallow = false) {
 // 拦截设置功能
 function createSetter(isShallow = false) {
     return function set(target, key, value,receiver) {
-        const result = Reflect.set(target, key, value, receiver)
 
         const oldValue = target[key] // 获取老的值
 
         let hasKey = isArray(target) && isIntegerKey(key) ? Number(key) < target.length : hasOwn(target, key)
+
+        const result = Reflect.set(target, key, value, receiver)
         
         // 要区分是新增的还是修改的
         // vue2里无法监控索引更改，无法监控数组的长度，而是需要hack特殊处理
