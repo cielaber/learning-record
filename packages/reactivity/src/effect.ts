@@ -10,11 +10,11 @@ import { TriggerOpTypes } from "./operators";
  * @param options 
  * @returns 
  */
-export function effect(fn, options:any = {}) {
+export function effect(fn, options: any = {}) {
     // 让effect变为响应式才能做到数据变化重新执行
     const effect = createReactiveEffect(fn, options)
 
-    if(!options.lazy) {
+    if (!options.lazy) {
         effect(); // 响应式effect默认会先执行一次，而懒执行的effect第一次不执行
     }
 
@@ -67,39 +67,37 @@ export function track(target, type, key) { // 可以拿到当前的effect
     if (!dep.has(activeEffect)) {
         dep.add(activeEffect)
     }
-
-    console.log(targetMap)
 }
 
 export function trigger(target, type, key?, newValue?, oldValue?) {
     // 如果这个属性没有收集过effect，则不需要做任何操作
     const depsMap = targetMap.get(target)
-    if(!depsMap) return;
+    if (!depsMap) return;
 
     // 将所有的要执行的effct全部存到一个新的集合中，最终一起执行
     const effects = new Set() // 对effect去重
     const add = (effectsToAdd) => {
-        if(effectsToAdd) {
+        if (effectsToAdd) {
             effectsToAdd.forEach(effect => effects.add(effect))
         }
     }
 
     // 1. 看修改的是不是修改的数组长度，改长度影响大
-    if(isArray(target) && key === 'length') {
+    if (isArray(target) && key === 'length') {
         depsMap.forEach((dep, key) => {
-            if(key === 'length' || key > newValue) { // 如果更改的数组长度小于收集的索引(删除)，那么这个索引也要触发effect重新执行
+            if (key === 'length' || key > newValue) { // 如果更改的数组长度小于收集的索引(删除)，那么这个索引也要触发effect重新执行
                 add(dep)
             }
         })
     } else {
         // 可能是对象
-        if(key !== undefined) { // 修改
+        if (key !== undefined) { // 修改
             add(depsMap.get(key));
         }
         // 如果是修改数组中的某一个索引
-        switch(type) {
+        switch (type) {
             case TriggerOpTypes.ADD: // 如果添加了一个索引(数组新增)就触发长度的更新
-                if(isArray(target) && isIntegerKey(key)) {
+                if (isArray(target) && isIntegerKey(key)) {
                     add(depsMap.get('length'))
                 }
         }
