@@ -64,14 +64,14 @@ export function track(target, type, key) { // 可以拿到当前的effect
     if (!dep) {
         depsMap.set(key, (dep = new Set))
     }
-    if (!depsMap.has(activeEffect)) {
+    if (!dep.has(activeEffect)) {
         dep.add(activeEffect)
     }
 
     console.log(targetMap)
 }
 
-export function trigger(target, type, key, value?, newValue?, oldValue?) {
+export function trigger(target, type, key?, newValue?, oldValue?) {
     // 如果这个属性没有收集过effect，则不需要做任何操作
     const depsMap = targetMap.get(target)
     if(!depsMap) return;
