@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../node_modules/@vue/runtime-dom/dist/runtime-dom.global.js"></script>
+    <div id="app"></div>
+    <script>
+        let { createApp, h, ref, reactive } = VueRuntimeDOM
+
+        let App = {
+            // render(proxy) {
+            //     console.log('component render')
+            //     // console.log(proxy.age, proxy.b, proxy.c)
+            // },
+            setup(props, context) {
+                let flag = ref(true)
+
+                setTimeout(()=> {
+                    flag.value = false
+                }, 6000)
+
+
+                let state = reactive({ name: 'bb' })
+                let fn = function () {
+                    state.name = 'cc'
+                }
+
+                return (proxy) => {
+                    // return flag.value ? h('div', {style: {color: 'red'}}, state.name) : h('div', {style: {color: 'blue'}}, 'dd')
+                    // return flag.value ? 
+                    // h('div', {style: {color: 'red'}}, [h('span', 'hello'), h('span', 'world')]) : 
+                    // h('div', {style: {color: 'blue'}}, h('span', 'hello'))
+                    return flag.value ? 
+                    h('div', {style: {color: 'red'}}, [
+                        h('li', {key: 'a'}, 'a'),
+                        h('li', {key: 'b'}, 'b'),
+                        h('li', {key: 'c'}, 'c'),
+                        h('li', {key: 'd'}, 'd'),
+                        h('li', {key: 'e'}, 'e'),
+                        h('li', {key: 'q'}, 'q'),
+                        h('li', {key: 'f'}, 'f'),
+                        h('li', {key: 'g'}, 'g'),
+                    ]) : 
+                    h('div', {style: {color: 'blue'}}, [
+                        h('li', {key: 'a'}, 'a'),
+                        h('li', {key: 'b'}, 'b'),
+                        h('li', {key: 'e'}, 'e'),
+                        h('li', {key: 'c'}, 'c'),
+                        h('li', {key: 'd'}, 'd'),
+                        h('li', {key: 'h'}, 'h'),
+                        h('li', {key: 'f'}, 'f'),
+                        h('li', {key: 'g'}, 'g'),
+                        // h('li', {key: 'a'}, 'a'),
+                        // h('li', {key: 'b'}, 'b'),
+                        // h('li', {key: 'c'}, 'c'),
+                    ])
+                }
+            }
+        }
+
+        createApp(App, { name: 'aa', age: 12 }).mount('#app')
+
+        // vue的渲染过程 
+        // 将组件变成vnode 再将vnode变为真实dom后，将dom插入到html
+        
+        // render方法可以渲染一个虚拟节点，将它挂在到具体的dom上
+
+        // 组件创建的过程
+        // 1.创建一个初始化的实例instance
+        // 2.根据用户传入的组件数据，放到instance上
+        // 3.根据instance创建effect，调用render方法，render方法中就包含了模版中的响应式数据，这时响应式数据会将effect收集，之后数据更新，组件将更新
+        // 4.render方法将返回一个subTree(虚拟节点)，拿到render方法返回的结果，走渲染流程(patch)
+        // 5.patch中根据虚拟节点的类型，创建或更新元素，并将元素插入到html中（组件的渲染顺序是先父后子，采用深度优先)
+    </script>
+</body>
+
+</html>

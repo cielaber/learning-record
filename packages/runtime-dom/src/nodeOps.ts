@@ -26,6 +26,6 @@ export const nodeOps = {
 
     setText: (node, text) => node.nodeValue = text,
 
-
+    nextSibling: (node) => node.nextSibling,
 
 }
