@@ -2,6 +2,7 @@
 import { effect } from "@vue/reactivity"
 import { isObject, ShapeFlags } from "@vue/shared"
 import { createAppAPI } from "./apiCreateApp"
+import { invokeArrayFns } from "./apiLifeCycle"
 import { createComponentInstance, setupComponent } from "./component"
 import { queueJob } from "./scheduler"
 import { createVNode, normalizeVNode, Text } from "./vnode"
@@ -29,6 +30,11 @@ export function createRenderer(rendererOptions) {
         // 需要创建一个effect 在effect中调用render方法 这样render方法中拿到的数据会收集这个effect，数据更新时effect会重新执行
         instance.update = effect(function componentEffect() { // 每个组件都有一个effect vue3是组件级更新，数据变化会重新执行对应组件的effect
             if (!instance.isMounted) {// 初次渲染
+                let { bm, m } = instance;
+                if (bm) {
+                    invokeArrayFns(bm)
+                }
+
                 let proxyToUse = instance.proxy
 
                 let subTree = instance.subTree = instance.render.call(proxyToUse, proxyToUse)
@@ -37,12 +43,25 @@ export function createRenderer(rendererOptions) {
                 patch(null, subTree, container)
 
                 instance.isMounted = true
+
+                if (m) { // mounted 要求必须在子组件完全处理完成后才会调用，这里没有考虑子组件的异步
+                    invokeArrayFns(m)
+                }
             } else { //更新
+                let { bu, u } = instance
+                if (bu) {
+                    invokeArrayFns(bu)
+                }
+
                 const preTree = instance.subTree;
                 let proxyToUse = instance.proxy
                 const nextTree = instance.render.call(proxyToUse, proxyToUse)
 
                 patch(preTree, nextTree, container)
+
+                if (u) {
+                    invokeArrayFns(u)
+                }
             }
         }, {
             scheduler: queueJob // 保证多次修改只执行一次更新
