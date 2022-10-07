@@ -89,3 +89,4 @@
   ```ts
   const component: DefineComponent & { install(app: App): void }
   ```
+12. 运行命令`lerna create my-ui`创建组件库主项目，并导入单个组件。
