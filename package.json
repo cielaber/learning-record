@@ -6,5 +6,9 @@
   ],
   "devDependencies": {
     "lerna": "^5.5.4"
+  },
+  "dependencies": {
+    "typescript": "^4.8.4",
+    "vue": "^3.2.36"
   }
 }
