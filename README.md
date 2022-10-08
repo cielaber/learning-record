@@ -90,3 +90,23 @@
   const component: DefineComponent & { install(app: App): void }
   ```
 12. 运行命令`lerna create my-ui`创建组件库主项目，并导入单个组件。
+
+## 创建文档
+
+1. 根目录创建website目录用于组件库文档。
+
+2. 使用webpack开发，安装依赖`yarn add webpack webpack-cli webpack-dev-server vue-loader@next @vue/compiler-sfc -D -W`
+- webpack-cli：解析webpack命令行
+- webpack-dev-server：开发环境开启一个server
+- vue-loader@next：webpack解析最新版本的vue
+- @vue/compiler-sfc：webpack解析vue模板
+
+3. `yarn add babel-loader @babel/core @babel/preset-env @babel/preset-typescript url-loader file-loader html-webpack-plugin css-loader sass-loader style-loader sass -D -W`
+- babel-loader、@babel/core、@babel/preset-env：自动将最新的js语法转为es5
+- @babel/preset-typescript：使用bebel解析ts
+- file-loader：文件处理loader
+- url-loader：可以将小文件转为base64
+- html-webpack-plugin：调用html
+- css-loader：处理css
+- style-loader：把CSS插入到DOM中
+- sass、sass-loader：处理sass
