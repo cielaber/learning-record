@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",      // 打包的目标语法
+    "module": "ESNext",      // 模块转化后的格式     
+    "esModuleInterop": true,  // 支持模块转化，比如commonjs的模块支持以import方式引入 
+    "skipLibCheck": true, // 跳过类库检测
+    "forceConsistentCasingInFileNames": true,   // ts类型强制区分大小写
+    "moduleResolution": "node", // 模块解析方式
+    "jsx": "preserve", // ts不解析jsx，vue自带jsx的解析规则
+    "declaration": true, // 打包时生成声明文件
+    "sourceMap": true, // 打包时生成映射文件                                    
+  }
+}
