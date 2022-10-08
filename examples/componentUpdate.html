@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <div id="app"></div>
+    <script>
+        const { createApp, h, createVNode, render, reactive } = Vue
+
+        const My = {
+            props: {
+                name: String
+            },
+            render() {
+                return h('p', this.name)
+            }
+        }
+
+        const App = {
+            setup() {
+                const state = reactive({ name: 'aa' })
+                setTimeout(() => {
+                    state.name = 'bb'
+                }, 1000)
+
+                return () => {
+                    return h('div', {}, h(My, { name: state.name }))
+                }
+            }
+        }
+
+        const vnode = createVNode(App)
+        debugger
+        render(vnode, document.getElementById('app'))
+
+        // 父组件传一个属性给子组件，此处有一个依赖收集，数据更新后，子组件属性需要更新一次
+        // 如果子组件使用了属性，按照正常的依赖收集，子组件本身会因为依赖收集而更新一次，会造成父组件一个属性变化导致子组件有两个更新。
+        // 为避免如此，父组件在更新子组件的时候会把子组件内部的更新依赖移除，然后执行子组件的更新逻辑
+
+        // 组件更新流程
+        // 父组件先更新状态，先产生一个新的虚拟节点，开始走diff流程
+        // 如果遇到的是组件，属性是动态的，会比较两个组件，如果属性不一样则需要更新组件，组件需要更新自己身上的属性，并且重新生成子树
+
+    </script>
+
+</body>
+
+</html>

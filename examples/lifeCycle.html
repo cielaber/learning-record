@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../node_modules/@vue/runtime-dom/dist/runtime-dom.global.js"></script>
+    <div id="app"></div>
+    <script>
+        let { createApp, h, reactive, getCurrentInstance, onMounted, onBeforeMount, onBeforeUpdate, onUpdated } = VueRuntimeDOM
+
+        let App = {
+            setup(props, contxet) {
+                let state = reactive({ flag: true })
+                setTimeout(()=> {
+                    state.flag = false
+                }, 1000)
+                let instance = getCurrentInstance()
+
+                console.log(instance)
+
+                onBeforeMount(() => {
+                    console.log('onBeforeMount')
+                })
+                onMounted(() => {
+                    console.log('onMounted')
+                })
+                onBeforeUpdate(() => {
+                    console.log('onBeforeUpdate')
+                })
+                onUpdated(() => {
+                    console.log('onUpdated')
+                })
+
+                return () => {
+                    return h('div', state.flag)
+                }
+            }
+        }
+        let app = createApp(App, { name: 'aa', age: 12 })
+        app.mount("#app")
+    </script>
+</body>
+
+</html>

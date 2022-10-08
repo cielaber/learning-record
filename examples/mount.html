@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="../node_modules/@vue/runtime-dom/dist/runtime-dom.global.js"></script>
+    <div id="app"></div>
+    <script>
+        const {createApp, h} = VueRuntimeDOM
+        const App = {
+            render(){
+                return h('div', 'hello world')
+            }
+        }
+
+        debugger
+        let app = createApp(App, {})
+
+        debugger
+        const proxy = app.mount('#app')
+        console.log(proxy)
+
+        // 组件挂载流程
+        // 1.创建一个初始化的实例instance
+        // 2.根据用户传入的组件数据，放到instance上
+        // 3.根据instance创建effect，调用render方法，render方法中就包含了模版中的响应式数据，这时响应式数据会将effect收集，之后数据更新，组件将更新
+    </script>
+</body>
+</html>
