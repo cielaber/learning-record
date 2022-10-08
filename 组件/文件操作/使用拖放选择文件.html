@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用拖放选择文件</title>
+    <style type="text/css">
+        #dropbox{
+            width: 80%;
+            height: 500px;
+            background-color: rgb(132, 161, 245);
+        }
+    </style>
+</head>
+<body>
+    <input type="file" onchange="handleFiles">
+    <div id="dropbox"></div>
+
+    <script type="text/javascript">
+        let dropbox = document.getElementById('dropbox');
+        dropbox.addEventListener("dragenter",dragenter,false);
+        dropbox.addEventListener("dragover",dragover,false);
+        dropbox.addEventListener("drop",drop,false);
+
+        function dragenter(e){
+            e.stopPropagation();
+            e.preventDefault();
+        }
+        function dragover(e){
+            e.stopPropagation();
+            e.preventDefault();
+        }
+        function drop(e){
+            e.stopPropagation();
+            e.preventDefault();
+
+            var dt = e.dataTransfer;
+            var files = dt.files;
+
+            handleFiles(files);
+        }
+
+        function handleFiles(files){
+            console.log(files);
+            /*处理逻辑*/
+        }
+    </script>
+
+</body>
+</html>

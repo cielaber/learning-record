@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跳动的文字</title>
+    <link rel="stylesheet" href="../reset.css">
+    <style>
+        body{
+            background-color: #000;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .box{
+            /* 倒影效果,只在webkit内核有效,参数分别是倒影方向，间距，倒影遮罩层（方向：以原始元素为基础） */
+            -webkit-box-reflect: below 8px linear-gradient(transparent,rgba(0,0,0,0.2));
+        }
+        .box span{
+            display: inline-block;
+            color:#fff;
+            font-size: 20px;
+            animation: animate 1.5s ease-in-out infinite;/*设置动画 infinite为循环*/
+            animation-delay:calc(0.1s*var(--i));/*通过css变量--i来控制逐个跳动*/
+        }
+        @keyframes animate{
+            0%{
+                transform:translateY(0px)
+            }
+            20%{
+                transform:translateY(-24px)
+            }
+            40%,100%{
+                transform:translateY(0px)
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <span style="--i:1">这</span>
+        <span style="--i:2">是</span>
+        <span style="--i:3">一</span>
+        <span style="--i:4">段</span>
+        <span style="--i:5">跳</span>
+        <span style="--i:6">动</span>
+        <span style="--i:7">的</span>
+        <span style="--i:8">文</span>
+        <span style="--i:9">字</span>
+        <span style="--i:10">.</span>
+        <span style="--i:11">.</span>
+        <span style="--i:12">.</span>
+    </div>
+
+</body>
+</html>

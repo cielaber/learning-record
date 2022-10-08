@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无绑定事件触发文件上传</title>
+    <style type="text/css">
+        .visually-hidden {
+            position: absolute !important;
+            height: 1px;
+            width: 1px;
+            overflow: hidden;
+            clip: rect(1px, 1px, 1px, 1px);
+        }
+
+        /* Separate rule for compatibility, :focus-within is required on modern Firefox and Chrome */
+        /*
+            :focus CSS伪类 :focus表示获得焦点的元素（如表单输入）。当用户点击或触摸元素或通过键盘的 “tab” 键选择它时会被触发。
+            MDN：https://developer.mozilla.org/zh-CN/docs/Web/CSS/:focus
+            
+            :focus-within 是一个CSS 伪类 ，表示一个元素获得焦点，或，该元素的后代元素获得焦点。换句话说，元素自身或者它的某个后代匹配 :focus 伪类。
+            MDN：https://developer.mozilla.org/zh-CN/docs/Web/CSS/:focus-within
+
+            outline CSS 的 outline 属性是在一条声明中设置多个轮廓属性的简写属性 ， 例如 outline-style, outline-width 和 outline-color。与border类似。
+            MDN：https://developer.mozilla.org/zh-CN/docs/Web/CSS/outline
+        */
+        input.visually-hidden:focus+label {
+            outline: thin dotted;
+            color: red;
+        }
+
+        input.visually-hidden:focus-within+label {
+            outline: thin dotted;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="file" id="fileElem" multiple accept="image/*" class="visually-hidden">
+    <label for="fileElem">Select some files</label>
+</body>
+
+</html>

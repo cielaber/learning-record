@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>custom</title>
+    <style>
+        #fileSelect{
+            background-color: aqua;
+            width: 130px;
+            height: 50px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <input type="file" id="fileElem" multiple accept="image/*" style="display: none;" onchange="handleFiles(this.files)">
+    <button id="fileSelect">Select some files</button>
+
+    <script type="text/javascript">
+        const fileSelect = document.getElementById('fileSelect'),
+        fileElem = document.getElementById('fileElem');
+
+        //隐藏input文件框，并将button的点击事件转移到隐藏的input上
+        fileSelect.addEventListener('click',(e)=>{
+            if(fileElem){
+                fileElem.click();
+            }
+        },false)
+
+        function handleFiles(files){
+            console.log(files);
+        }
+    </script>
+</body>
+</html>

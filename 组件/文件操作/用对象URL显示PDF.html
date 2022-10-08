@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用对象URL显示PDF</title>
+    <style type="text/css">
+        #viewer{
+            float: right;
+            width: 1000px;
+            height: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="file" onchange="handleFiles(this.files)">
+    <!-- 使用iframe作为容器 -->
+    <iframe id="viewer"></iframe>
+
+    <script type="text/javascript">
+        function handleFiles(files) {
+            console.log(files);
+            const obj_url = window.URL.createObjectURL(files[0]);
+            const iframe = document.getElementById("viewer");
+            iframe.setAttribute('src', obj_url);
+            window.URL.revokeObjectURL(obj_url);
+        }
+    </script>
+</body>
+
+</html>

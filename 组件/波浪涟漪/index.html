@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>波浪涟漪</title>
+    <link rel="stylesheet" href="../reset.css">
+    <style>
+        body {
+            background-color: #000;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* .container .box {
+            width: 500px;
+            height: 500px;
+            position: relative;
+        } */
+
+        /*使用定位让每个span在box中居中*/
+        /*设置span的初始宽高，不然开始会出现一段时间的边框*/
+        /*设置重复动画*/
+        /*通过i变量控制每个盒子变化的时间间隔*/
+        /* .container .box span {
+            border: 2px solid #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            margin: auto;
+            width: 0;
+            height: 0;
+            animation: animate 5s linear infinite;
+            animation-delay: calc(0.5s*var(--i))
+        } */
+
+        .container .box {
+            width: 500px;
+            height: 500px;
+            margin:0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .container .box span {
+            position: absolute;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            animation: animate 5s linear infinite;
+            animation-delay: calc(0.5s*var(--i))
+        }
+
+        .container .box:nth-child(2) {
+            width: 500px;
+            height: 500px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            transform: rotate(-45deg)
+        }
+
+        .container .box:nth-child(2) span {
+
+            position: absolute;
+            top: 0;
+            left: 0;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            animation: animate 5s linear infinite;
+            animation-delay: calc(0.5s*var(--i))
+        }
+
+        @keyframes animate {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+
+            100% {
+                width: 500px;
+                height: 500px;
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box">
+            <span style="--i:1"></span>
+            <span style="--i:2"></span>
+            <span style="--i:3"></span>
+            <span style="--i:4"></span>
+            <span style="--i:5"></span>
+            <span style="--i:6"></span>
+            <span style="--i:7"></span>
+            <span style="--i:8"></span>
+            <span style="--i:9"></span>
+            <span style="--i:10"></span>
+        </div>
+
+        <div class="box">
+            <span style="--i:1"></span>
+            <span style="--i:2"></span>
+            <span style="--i:3"></span>
+            <span style="--i:4"></span>
+            <span style="--i:5"></span>
+            <span style="--i:6"></span>
+            <span style="--i:7"></span>
+            <span style="--i:8"></span>
+            <span style="--i:9"></span>
+            <span style="--i:10"></span>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

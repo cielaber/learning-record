@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用对象url来显示图片</title>
+</head>
+<body>
+    <input type="file" id="fileElem" multiple accept="image/*" style="display:none;" onchange="handleFiles(this.files)">
+    <a href="#" id="fileSelect">Select some files</a>
+    <div id="fileList">
+        <p>No files selected！</p>
+    </div>
+
+
+    <script type="text/javascript">
+        window.URL = window.URL || window.webkitURL;
+
+        var fileSelect = document.getElementById("fileSelect"),
+        fileElem = document.getElementById("fileElem"),
+        fileList = document.getElementById("fileList");
+
+        /*
+            为了美观隐藏input，再将a标签的点击事件转移到input
+        */
+        fileSelect.addEventListener("click",function(e){
+            if(fileElem){
+                fileElem.click()
+            }
+            e.preventDefault();//阻止“#”跳转
+        },false)
+
+
+
+        function handleFiles(files){
+            if(!files.length){
+                fileList.innerHTML = "<p>No files selected！</p>"
+            }else{
+                fileList.innerHTML = '';
+                var list = document.createElement('ul');//创建一个ul来展示
+                fileList.appendChild(list);
+                for(let i = 0;i<files.length;i++){
+                    var li = document.createElement("li");
+                    list.appendChild(li);
+                    var img = document.createElement('img');
+
+                    /*
+                        设置图片的源为一个新的指代文件的对象URL，使用window.URL.createObjectURL() (en-US)来创建blob URL。
+                    */
+                    img.src = window.URL.createObjectURL(files[i]);
+
+                    img.height = 60;
+
+                    /*
+                        设置图片的load事件处理器来释放对象URL，当图片加载完成之后对象URL就不再需要了。
+                        这个可以通过调用window.URL.revokeObjectURL() (en-US)方法并且传递 img.src中的对象URL字符串来实现。
+                    */
+                    img.onload = function(){
+                        window.URL.revokeObjectURL(this.src);
+                    }
+
+                    li.appendChild(img);
+
+                    var info = document.createElement('span');//创建span展示文件相应信息
+                    info.innerHTML = files[i].name +":"+files[i].size+"bytes";
+                    li.appendChild(info);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

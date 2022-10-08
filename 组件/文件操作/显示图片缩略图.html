@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>显示图片缩略图</title>
+    <style type="text/css">
+        .box{
+            width: 100px;
+            height: 100px;
+        }
+        .box .img{
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <input type="file" multiple onchange="handleFiles(this.files)">
+    <div class="box"></div>
+    <script type="text/javascript">
+        function handleFiles(files){
+            for(let i= 0;i<files.length;i++){
+                var file = files[i];
+                console.log(file);
+                var imageType = /^image\//;
+
+                if(!imageType.test(file.type)){//匹配图片类型文件
+                    continue;
+                }
+
+                var img = document.createElement('img');
+                var box = document.getElementsByClassName('box')[0];//放置缩略图的父容器
+
+                img.classList.add('img');
+                img.file = file;
+                box.appendChild(img);
+
+                /*
+                    FileReader对象 允许Web应用程序异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，使用 File 或 Blob 对象指定要读取的文件或数据。
+                    MDN：https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader
+                */
+                var reader = new FileReader();
+
+                /*
+                    FileReader.onload
+                    处理load (en-US)事件。该事件在读取操作完成时触发。
+                */                
+                reader.onload = (function(aImg){
+                    return function(e){
+                        aImg.src = e.target.result;
+                    }
+                })(img)
+
+                /*
+                    FileReader.readAsDataURL()
+                    开始读取指定的Blob中的内容。一旦完成，result属性中将包含一个data: URL格式的Base64字符串以表示所读取文件的内容。
+                */
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>
