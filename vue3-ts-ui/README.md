@@ -128,3 +128,8 @@
 - gulp-cssmin：压缩css
 - gulp-dart-sass：gulp处理scss
 - gulp-rename：用于重命名文件名
+
+## 打包组件库
+1. builds/webpack.config.js文件用于将组件库全量打包成umd格式。
+2. 使用rollup打包，`yarn add rollup rollup-plugin-typescript2 @rollup/plugin-node-resolve rollup-plugin-vue -D -W`，builds/rollup.config.bundle.js文件用于将组件库全量打包成esm格式。
+3. builds/rollup.config.js文件用于逐一打包单个组件。

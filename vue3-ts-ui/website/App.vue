@@ -1,7 +1,7 @@
 <template>
     <div>App</div>
     <my-button></my-button>
-    <my-icon></my-icon>
+    <my-icon name="api"></my-icon>
 </template>
 
 <script lang="ts">

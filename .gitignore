@@ -6,3 +6,6 @@ node_modules
 **/node_modules
 **/.DS_Store
 **/*.log
+
+vue3-ts-ui/packages/*/lib
+vue3-ts-ui/lib
