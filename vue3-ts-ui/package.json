@@ -35,6 +35,7 @@
   },
   "scripts": {
     "website-dev": "webpack serve --config ./website/webpack.config.js",
-    "build:theme": "gulp build --gulpfile packages/theme-chalk/gulpfile.js"
+    "build:theme": "gulp build --gulpfile packages/theme-chalk/gulpfile.js",
+    "build": "webpack --config builds/webpack.config.js"
   }
 }
