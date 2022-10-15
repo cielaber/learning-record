@@ -20,6 +20,18 @@ module.exports = {
                 exclude: /node_modules/, // 不解析node_modules中第三方模块
                 use: 'babel-loader', //以上格式文件使用Babel解析
             },
+            // 使用@babel/preset-typescript无法编译，因此换成ts-loader
+            {
+                test: /\.(ts)x?$/, // 解析ts、tsx
+                exclude: /node_modules/, // 不解析node_modules中第三方模块
+                loader: 'ts-loader', // 以使用ts-loader解析ts、tsx
+                options: {
+                    // 指定特定的ts编译配置
+                    configFile: path.resolve(__dirname, '../tsconfig.json'),
+                    // vue 单文件组件中假如使用了lang="ts"，ts-loader需要配置appendTsSuffixTo: [/\.vue$/]，用来给.vue文件添加个.ts后缀用于编译，否则会报错：Can't resolve './App.vue'。
+                    appendTsSuffixTo: [/\.vue$/],
+                }
+            },
             {
                 test: /\.vue$/, // 使用vue-loader解析vue
                 loader: 'vue-loader'

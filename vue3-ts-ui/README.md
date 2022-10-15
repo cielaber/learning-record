@@ -110,3 +110,5 @@
 - css-loader：处理css
 - style-loader：把CSS插入到DOM中
 - sass、sass-loader：处理sass
+
+4. 使用ts-loader替换@babel/preset-typescript，解决无法编译ts的问题。
