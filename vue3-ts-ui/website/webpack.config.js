@@ -41,7 +41,7 @@ module.exports = {
                 loader: 'url-loader'
             },
             {
-                test: /\.(sass|scss|css)/, // 解析css
+                test: /\.(sass|scss|css)$/, // 解析css
                 // loader有三种写法：{},[],""，使用数组时使用use
                 use: [ // 执行顺序按数组倒序 
                     'style-loader',

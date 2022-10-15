@@ -112,3 +112,19 @@
 - sass、sass-loader：处理sass
 
 4. 使用ts-loader替换@babel/preset-typescript，解决无法编译ts的问题。
+
+## 创建样式库
+`lerna create theme-chalk`
+
+## 样式库使用字体图标
+1. iconfont中对项目设置FontClass/Symbol前缀为`my-icon-`，设置Font Family为`my-ui-icons`。
+2. 使选择font class类型，下载至本地。
+3. 将iconfont.css文件的内容复制到icon.scss中并修改，并将需要的字体文件复制到fonts目录下。
+
+## 打包样式库
+
+1. `yarn add gulp gulp-autoprefixer gulp-cssmin gulp-dart-sass gulp-rename -D -W`
+- gulp-autoprefixer：自动处理浏览器前缀，它可以解析CSS文件并且添加浏览器前缀到CSS内容里。
+- gulp-cssmin：压缩css
+- gulp-dart-sass：gulp处理scss
+- gulp-rename：用于重命名文件名
