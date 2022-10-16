@@ -113,6 +113,9 @@
 
 4. 使用ts-loader替换@babel/preset-typescript，解决无法编译ts的问题。
 
+> 补充说明：4中@babel/preset-typescript无法编译ts是由于babel.config.js没有在根目录下导致webpack没有找到babel配置的原因。另外，还需要使用@babel/plugin-transform-typescript来处理vue文件中的ts(详见babel.config.js)。因此，在webpack中单独使用ts-loader或者在babel中使用@babel/preset-typescript和@babel/plugin-transform-typescript都能达到处理ts的效果。
+> ts-loader是webpack处理ts的，内部调用的是tsc，而@babel/preset-typescript和@babel/plugin-transform-typescript是babel来处理ts的。tsc拥有类型检查，但是babel不做类型检查，也不会生成d.ts文件。tsc没有做polyfill的处理，需要全量引入core-js，而babel的@babel/preset-env会根据targets的配置按需引入core-js。
+
 ## 创建样式库
 `lerna create theme-chalk`
 
