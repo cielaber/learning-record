@@ -1,0 +1,17 @@
+@import './common/var.scss';
+@import './mixins/mixin.scss';
+
+@include b(col) {
+    box-sizing: border-box;
+    
+    @for $i from 1 through 24 {
+        &.my-col-span-#{$i} {
+            max-width: calc(1/24 * $i * 100) * 1%;
+            flex: calc(1/24 * $i * 100) * 1%;
+        }
+
+        &.my-col-offset-#{$i} {
+            margin-left: calc(1/24 * $i * 100) * 1%;
+        }
+    }
+}

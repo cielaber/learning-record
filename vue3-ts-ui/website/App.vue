@@ -20,26 +20,34 @@
             <i class="my-icon-arrowright"></i>
         </my-button>
     </my-button-group>
+    <hr>
+    <my-row>
+        <my-col :span="6" style="background-color: red;">111</my-col>
+        <my-col :span="6" :offset="6" style="background-color: blue;">222</my-col>
+        <my-col :span="6" style="background-color: orange;">333</my-col>
+    </my-row>
+    <hr>
+    <div style="border: 3px purple solid; width: 80%; margin: 0 auto;">
+        <my-row :gutter="20">
+            <my-col :span="8" style="background-color: red;">111</my-col>
+            <my-col :span="8" style="background-color: blue;">222</my-col>
+            <my-col :span="8" style="background-color: orange;">333</my-col>
+        </my-row>
+    </div>
+    <hr>
+    <div style="border: 3px purple solid; width: 80%; margin: 0 auto;">
+        <my-row justify="space-around">
+            <my-col :span="2" style="background-color: red;">111</my-col>
+            <my-col :span="2" style="background-color: blue;">222</my-col>
+            <my-col :span="2" style="background-color: orange;">333</my-col>
+        </my-row>
+    </div>
+
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-
-const useButton = () => {
-    const buttonLoading = ref(true)
-    const buttonClick = () => {
-        console.log('handle-click')
-    }
-
-    setTimeout(() => {
-        buttonLoading.value = false
-    }, 3000)
-
-    return {
-        buttonLoading,
-        buttonClick,
-    }
-}
+import { useButton } from './hooks/useButton'
 
 export default defineComponent({
     name: 'app',
