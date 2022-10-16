@@ -1,10 +1,12 @@
 import { App } from 'vue'
 import Button from "@my-ui/button"
 import Iocn from "@my-ui/icon"
+import ButtonGroup from '@my-ui/button-group'
 
 const components = [
     Button,
-    Iocn
+    Iocn,
+    ButtonGroup
 ]
 
 const install = (app: App):void => {
