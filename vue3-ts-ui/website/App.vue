@@ -42,19 +42,40 @@
             <my-col :span="2" style="background-color: orange;">333</my-col>
         </my-row>
     </div>
-
+    <hr>
+    <my-checkbox v-model="checkVal" @change="checkboxChange">checkbox</my-checkbox>
+    <my-checkbox-group v-model="checkGroupVal" @change="checkboxChange">
+        <my-checkbox v-for="c in checks" :key="c" :label="c"></my-checkbox>
+    </my-checkbox-group>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import { useButton } from './hooks/useButton'
+
+function useCheckbox(){
+    const checkVal = ref(true)
+    const checkGroupVal = ref(['上海', '深圳'])
+    const checks = ref(['上海', '北京', '天津', '深圳'])
+    const checkboxChange = (val) => {
+        console.log('change checkbox', val)
+    }
+
+    return {
+        checkVal,
+        checkboxChange,
+        checkGroupVal,
+        checks
+    }
+}
 
 export default defineComponent({
     name: 'app',
 
     setup() {
         return {
-            ...useButton()
+            ...useButton(),
+            ...useCheckbox()
         }
     }
 })
