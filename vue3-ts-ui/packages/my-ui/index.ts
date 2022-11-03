@@ -6,16 +6,18 @@ import Row from "@my-ui/row"
 import Col from "@my-ui/col"
 import Checkbox from '@my-ui/checkbox'
 import CheckboxGroup from '@my-ui/checkbox-group'
+import Transfer from "@my-ui/transfer";
 
 const components = [
-    Button,
-    Iocn,
-    ButtonGroup,
-    Row,
-    Col,
-    Checkbox,
-    CheckboxGroup
-]
+  Button,
+  Iocn,
+  ButtonGroup,
+  Row,
+  Col,
+  Checkbox,
+  CheckboxGroup,
+  Transfer,
+];
 
 const install = (app: App):void => {
     components.forEach(component => {

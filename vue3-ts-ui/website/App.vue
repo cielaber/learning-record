@@ -47,25 +47,36 @@
     <my-checkbox-group v-model="checkGroupVal" @change="checkboxChange">
         <my-checkbox v-for="c in checks" :key="c" :label="c"></my-checkbox>
     </my-checkbox-group>
+    <hr>
+    <my-transfer v-model="rightValue" :data="transferData" :props="transferProp"></my-transfer>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
 import { useButton } from './hooks/useButton'
+import { useCheckbox } from './hooks/useCheckbox'
 
-function useCheckbox(){
-    const checkVal = ref(true)
-    const checkGroupVal = ref(['上海', '深圳'])
-    const checks = ref(['上海', '北京', '天津', '深圳'])
-    const checkboxChange = (val) => {
-        console.log('change checkbox', val)
+function useTransfer() {
+    const generateData = () => {
+        const data = []
+        for (let i = 1; i <= 15; i++) {
+            data.push({
+                key: i,
+                label: `备选项 ${i}`,
+                disabled: i % 4 === 0
+            })
+        }
+        return ref(data)
     }
 
     return {
-        checkVal,
-        checkboxChange,
-        checkGroupVal,
-        checks
+        transferData: generateData(),
+        rightValue: ref([1, 4]),
+        transferProp: {
+            key: 'key',
+            label: 'label',
+            disabled: 'disabled'
+        }
     }
 }
 
@@ -75,7 +86,8 @@ export default defineComponent({
     setup() {
         return {
             ...useButton(),
-            ...useCheckbox()
+            ...useCheckbox(),
+            ...useTransfer()
         }
     }
 })
