@@ -2,7 +2,7 @@ export const enum NodeTypes {
   ROOT, // fragment 解决多个根元素问题
   ELEMENT,
   TEXT,
-  SIMPLE_EXPRESSION = 4, // 简单表达式
+  SIMPLE_EXPRESSION = 4, // 简单表达式：{{}}中间的内容
   INTERPOLATION = 5, // {{}}
   ATTRIBUTE = 6,
   DIRECTIVE = 7,
@@ -100,6 +100,7 @@ function parseInterpolation(context) {
       type: NodeTypes.SIMPLE_EXPRESSION,
       isStatic: false,
       loc: getSelection(context, innerStart, innerEnd),
+      content,
     },
     loc: getSelection(context, start),
   };
