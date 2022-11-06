@@ -203,22 +203,24 @@ function createRootCodegen(root, context) {
   const { helper } = context;
   const children = root.children;
 
+  helper(OPEN_BLOCK);
+  helper(CREATE_BLOCK);
   if (children.length === 1) {
     const child = children[0];
     const codegen = child.codegenNode;
 
     codegen.isBlock = true; // 只有一个儿子，他就是blocktree的根节点
-    helper(OPEN_BLOCK);
-    helper(CREATE_BLOCK);
-    root.codegen = codegen;
+
+    root.codegenNode = codegen;
   } else if (children.length > 1) {
-    root.codegen = createVnodeCall(
+    root.codegenNode = createVnodeCall(
       context,
       helper(FRAGMENT),
       undefined,
       children,
       PatchFlags.STABLE_FRAGMENT
     );
+    root.codegenNode.isBlock = true;
   }
 }
 
@@ -228,4 +230,6 @@ export function transform(root, nodeTransforms) {
 
   // 根节点
   createRootCodegen(root, context);
+
+  root.helpers = [...context.helpers];
 }
