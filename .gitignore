@@ -9,3 +9,5 @@ node_modules
 
 vue3-ts-ui/packages/*/lib
 vue3-ts-ui/lib
+
+ts-study/dist

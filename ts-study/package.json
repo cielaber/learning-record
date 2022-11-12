@@ -1,0 +1,18 @@
+{
+  "name": "ts-study",
+  "version": "1.0.0",
+  "description": "npm install typescript -g",
+  "main": "rollup.config.js",
+  "scripts": {
+    "dev": "rollup -cw"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@rollup/plugin-node-resolve": "^14.1.0",
+    "rollup": "^2.79.1",
+    "rollup-plugin-serve": "^2.0.1",
+    "rollup-plugin-typescript2": "^0.34.1",
+    "typescript": "^4.8.4"
+  }
+}
