@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <div>hello</div>
+    <!-- js和css可以并行加载，但是还是会中断html解析，等待js执行完毕后继续解析剩余dom。 -->
+    <script src="./index.js"></script>
+    <div>world</div>
+
+    <!-- 所以：
+    js放在页面底部，放置阻塞dom解析
+    css放在页面顶部防止页面重绘 -->
+</body>
+</html>

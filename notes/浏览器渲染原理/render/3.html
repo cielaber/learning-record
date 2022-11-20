@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <div>hello</div>
+    <!-- js会阻塞dom解析，需要暂停dom解析去执行js，js需要操作样式，所以需要等待样式加载完成。 -->
+    <script>
+        let s;
+
+        for (let index = 0; index < 100000000; index++) {
+            s += index;
+        }
+    </script>
+    <div>world</div>
+</body>
+</html>

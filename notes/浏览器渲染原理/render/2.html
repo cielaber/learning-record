@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div></div>
+    <!-- 样式放底部可能会导致重绘效果 -->
+    <!-- 当html渲染时，会先扫描js和css，渲染从上到下（课程上这里说的是边解析边渲染，但是实践是解析到div之后并没有立即渲染，而是等待css解析完成之后重新解析了一遍html之后再渲染，所以无论如何，这里还是导致了重绘。）-->
+    <link rel="stylesheet" href="./index.css">
+</body>
+</html>
