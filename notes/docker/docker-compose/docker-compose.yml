@@ -1,0 +1,30 @@
+version: "2"
+services:
+  db:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_DATABASE: "nodeapp"
+      MYSQL_USER: "eternitywith"
+      MYSQL_PASSWORD: "123456"
+    volumes:
+      - dbdate:/var/lib/mysql
+  node:
+    build:
+      context: "./images/node"
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+  web:
+    image: nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - node
+    volumes:
+      - "./images/nginx/conf.d:/etc/nginx/conf.d"
+      - "./images/node/web/public:/public"
+volumes:
+  dbdate:
+    driver: local
+      
