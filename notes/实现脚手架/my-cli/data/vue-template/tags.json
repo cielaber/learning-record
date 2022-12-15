@@ -1,0 +1,32 @@
+[
+  {
+    "name": "2.0",
+    "zipball_url": "https://api.github.com/repos/zhu-cli/vue-template/zipball/refs/tags/2.0",
+    "tarball_url": "https://api.github.com/repos/zhu-cli/vue-template/tarball/refs/tags/2.0",
+    "commit": {
+      "sha": "8b599862f0b3c42032204a9b9577232e58a78bc7",
+      "url": "https://api.github.com/repos/zhu-cli/vue-template/commits/8b599862f0b3c42032204a9b9577232e58a78bc7"
+    },
+    "node_id": "MDM6UmVmMjA0ODg5MzAyOnJlZnMvdGFncy8yLjA="
+  },
+  {
+    "name": "2",
+    "zipball_url": "https://api.github.com/repos/zhu-cli/vue-template/zipball/refs/tags/2",
+    "tarball_url": "https://api.github.com/repos/zhu-cli/vue-template/tarball/refs/tags/2",
+    "commit": {
+      "sha": "8b599862f0b3c42032204a9b9577232e58a78bc7",
+      "url": "https://api.github.com/repos/zhu-cli/vue-template/commits/8b599862f0b3c42032204a9b9577232e58a78bc7"
+    },
+    "node_id": "MDM6UmVmMjA0ODg5MzAyOnJlZnMvdGFncy8y"
+  },
+  {
+    "name": "1.0",
+    "zipball_url": "https://api.github.com/repos/zhu-cli/vue-template/zipball/refs/tags/1.0",
+    "tarball_url": "https://api.github.com/repos/zhu-cli/vue-template/tarball/refs/tags/1.0",
+    "commit": {
+      "sha": "0a74dbac5dfceaec24aef20b3649bd6aed537d46",
+      "url": "https://api.github.com/repos/zhu-cli/vue-template/commits/0a74dbac5dfceaec24aef20b3649bd6aed537d46"
+    },
+    "node_id": "MDM6UmVmMjA0ODg5MzAyOnJlZnMvdGFncy8xLjA="
+  }
+]
