@@ -1,0 +1,34 @@
+#! /usr/bin/env node
+let yargs = require('yargs')
+
+let Server = require('../src/app')
+
+let argv = yargs.option('d', {
+    alias: 'root',
+    type: 'string',
+    demand: 'false',
+    default: process.cwd(),
+    description: '请配置静态文件根目录'
+}).option('o', {
+    alias: 'host',
+    type: 'string',
+    demand: 'false',
+    default: 'localhost',
+    description: '请配置监听的主机'
+}).option('p', {
+    alias: 'port',
+    type: 'number',
+    demand: 'false',
+    default: 8080,
+    description: '请配置端口号'
+})
+.usage('my-server [options]')
+.example(
+    'my-server -d / -p 9090 -o localhost',
+    '在本机的9090端口监听客户端的请求'
+)
+.help('h')
+.argv;
+
+let server = new Server(argv);
+server.start()
