@@ -71,7 +71,7 @@ class Server {
     }
 
     sendError(req, res) {
-        res.staticCode = 500;
+        res.statusCode = 500;
         res.end(`there is something wrong!`)
     }
 
