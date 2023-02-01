@@ -8,6 +8,7 @@ let fs = require('fs')
 let util = require('util')
 let mime = require('mime')
 let handlebars = require('handlebars')
+let zlib = require('zlib')
 
 /**
  * debug可用于模块化输出
@@ -76,8 +77,51 @@ class Server {
     }
 
     sendFile(req, res, filePath, statObj) {
-        res.setHeader('Content-Type', mime.getType(filePath))
-        fs.createReadStream(filePath).pipe(res)
+        if (this.handleCache(req, res, filePath, statObj)) return; // 如果走缓存，直接返回
+        res.setHeader('Content-Type', mime.getType(filePath) + ';charset=utf-8')
+        let encoding = this.getEncoding(req, res)
+        if (encoding) {
+            fs.createReadStream(filePath).pipe(encoding).pipe(res)
+        } else {
+            fs.createReadStream(filePath).pipe(res)
+        }
+    }
+
+    // 根据不同的压缩类型返回不同的压缩流
+    getEncoding(req, res) {
+        let acceptEncoding = req.headers['accept-encoding']
+        if (/\bgzip\b/.test(acceptEncoding)) {
+            res.setHeader('Content-Encoding', 'gzip')
+            return zlib.createGzip()
+        } else if (/\bdeflate\b/.test(acceptEncoding)) {
+            res.setHeader('Content-Encoding', 'deflate')
+            return zlib.createDeflate()
+        } else {
+            return null;
+        }
+    }
+
+    handleCache(req, res, filePath, statObj) {
+        let ifModifiedSince = req.headers['if-modified-since']
+        let isNoneMatch = req.headers['if-none-match']
+
+        res.setHeader('Cache-Control', 'private,max-age=30')
+        res.setHeader('Expires', new Date(Date.now() + 1000 * 30).toGMTString())
+        
+        let etag = statObj.size
+        let lastModified = statObj.ctime.toGMTString()
+
+        res.setHeader('ETag', etag)
+        res.setHeader('Last-Modified', lastModified)
+
+        if (isNoneMatch && isNoneMatch != etag) return false;
+        if (ifModifiedSince && ifModifiedSince != lastModified) return false;
+        if (isNoneMatch || ifModifiedSince) {
+            res.writeHead(304);
+            res.end()
+            return true;
+        }
+        return false;
     }
 }
 
