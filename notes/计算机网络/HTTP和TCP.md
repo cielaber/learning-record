@@ -266,3 +266,84 @@ ETag是实体标签的缩写，根据实体内容生成的一段hash字符串，
 - no-store：所有内容都不会缓存，强制缓存和对比缓存都不会触发
 
 如：Cache-Control: private, max-age=60, no-cache
+
+#### 多语言切换
+
+可以通过Accept-Language检测浏览器的语言。
+
+- 请求头格式Accept-Language: zh-CN,zh;q=0.9
+
+- 响应头格式Content-Language: zh-CN
+
+#### 图片防盗链
+
+从一个网站跳转，或者网页引用到某个资源文件时，HTTP请求中带有Referer表示来源网页的URL。
+
+通过检查请求头中的Referer来判断来源网页的域名，如果来源域名不在白名单内，则返回错误提示。如果浏览器直接访问图片地址是没有referer的。
+
+#### 代理服务器
+
+代理(Proxy)，也称网络代理，是一种特殊的网络服务，允许一个网络终端(一般称为客户端)通过这个服务与另一个网络终端(一般为服务器)进行费直接的连接。一些网关、路由器等网络设备具备网络代理功能。一般认为代理服务有利于保障网络终端的隐私或安全，防止攻击。
+
+```bash
+npm install http-proxy --save
+```
+
+- web代理普通的http请求
+- listen port
+- close 关闭内置的服务
+
+```js
+let proxy = require('http-proxy')
+let http = require('http')
+let proxyServer = proxy.createProxyServer();
+
+// 正向代理 帮助局域网内访问外网
+// 反向代理 用来代理局域网内的服务器
+
+let server = http.createServer((req, res) => {
+  proxyServer.web(req, res, {
+    target: 'http://localhost:9000'
+  })
+}).listen(8000)
+```
+
+#### 虚拟主机
+
+通过Host实现一个网站共用一个端口，多个网站共用一个服务器。
+
+```js
+// 类似nginx
+let http = require('http')
+let proxyServer = require('http-proxy')
+
+let ps = proxyServer.createProxyServer()
+
+let config = {
+  'baidu.com': 'http://localhost:8000',
+  'ali.com': 'http://localhost:9000'
+}
+
+let server = http.createServer((req, res) => {
+  let host = req.header['host']
+  let target = config[host]
+  if (target) {
+    ps.web(req, res, {
+      target,
+    })
+  } else {
+    res.end(host)
+  }
+})
+
+// 由于是同一个服务器，所以该服务需要占用80端口，目标地址代理到该端口，然后该服务进行代理
+server.listen(80)
+```
+
+#### User-Agent
+
+User-Agent用户代理，简称UA，它是一个特殊字符串头，使得服务器能够识别客户使用的操作系统版本、CPU类型、浏览器及版本、浏览器渲染引擎、浏览器语言、浏览器插件等。
+
+请求头User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36
+
+服务器解析通过`user-agent-parser`库。
