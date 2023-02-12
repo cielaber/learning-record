@@ -1,134 +1,30 @@
-# HTTP和TCP
+# HTTP
 
-### HTTP
+### TCP的问题
 
-#### 编码
+- 队头阻塞
+- 慢启动
+- 客户端连接服务器最后不会立即断开，需要等待一段时间再关闭，在高并发、短连接的情况下会出现大量端口被占用的情况。
+- ...
 
-HTTP可以在传输过程中通过编码提升传输效率，但是会消耗更多的CPU时间。
+### HTTP发展历程
 
-##### 编码压缩
+- 1990年`HTTP/0.9`为了便于服务器和客户端处理，采用了纯文本格式，只允许使用GET请求，在响应请求之后就会立即关闭连接。
+- 1996年`HTTP/1.0`增强了0.9版本，引入了HTTP Header概念，传输的数据不再限于文本，可以解析图片音乐等，增加了响应状态码和POST、HEAD等请求方法。
+- 1999年`HTTP/1.1`被广泛使用，成为正式标准，允许持久连接，允许响应数据分块，增加了缓存管理和控制，增加了PUT、DELETE等方法。
+- 2015年`HTTP/2`，使用HPACK算法压缩头部，减少数据传输量，允许服务器主动向客户端推送数据，二进制协议可以发起多个请求，使用时需要对请求加密通信。
+- 2018年`HTTP/3`基于UDP的QUIC协议。
 
-发送文件时可以先用ZIP压缩功能后再发送文件。
+### HTTP1.1
 
-如：gizp、compress、deflate、identify
+特点：
 
-##### 分割发送的分块传输编码
+- 内容协商
+- 允许长连接(connection: keep-alive)，复用TCP通道传输数据(必须在一次请求应答之后才能复用)。
 
-请求的实体在尚未传输完成前浏览器不能显示，所以在传输大容量数据时，通过吧数据分割成多块，能让
+HTTP对头阻塞：https://cloud.tencent.com/developer/article/1509279
 
-##### 多部分对象集合
-
-- 一份报文主体中可以包含多类型实体。
-- 使用boundary字符串来划分多部分对象指名的各类实体。在各个实体起始行之前插入--标记，多部分对象集合最后插入--标记。
-
-###### multipart/form-data
-
-上传表单时使用multipart/form-data
-
-![image-20230117165911479](./image-计算机网络/image-20230117165911479.png)
-
-###### multipart/byteranges
-
-状态码(Partical Content)响应报文中包含多个范围时使用
-
-![image-20230118102740304](./image-计算机网络/image-20230118102740304.png)
-
-##### 获取部分内容的范围请求
-
-为了实现中断恢复下载的需求，需要能下载指定的下载的实体范围。
-
-- 请求头中的Range来指定资源的byte范围。
-- 响应会返回状态码206响应报文
-- 对于多重范围的范围请求，响应会在首部字段 `Content-Type`中标明 `multipart/byteranges`
-
-byte范围的指定形式：
-
-![image-20230118115758820](./image-计算机网络/image-20230118115758820.png)
-
-#### 内容协商
-
-- 首部字段
-  - Accept
-  - Accept-Charset
-  - Accept-Encoding
-  - Accept-Language
-  - Content-Language
-- 协商类型
-  - 服务器驱动
-  - 客户端驱动协商
-  - 透明协商
-
-#### 状态码
-
-状态码负责表示客户端请求的返回结果、标记服务器端是否正常、通知出现的错误
-
-##### 状态码类别
-
-| 类别 | 原因短语                       |
-| ---- | ------------------------------ |
-| 1XX  | Infomational(信息性状态码)     |
-| 2XX  | Success(成功状态码)            |
-| 3XX  | Redirection(重定向)            |
-| 4XX  | Client Error(客户端错误状态码) |
-| 5XX  | Server Error(服务器错误状态码) |
-
-##### 2XX 成功
-
-- 200：OK 客户端发过来的数据被正常处理
-- 204：Not Content 正常响应，没有实体
-- 206：Partial Content 范围请求，返回部分数据，响应报文中由Content-Range指定实体内容
-
-##### 3XX 重定向
-
-- 301：Moved Permanently 永久重定向
-- 302：Found 临时重定向，规范要求方法名不变，但是实际上方法名都会被改变
-- 303：See Other 和302类似，但必须用GET方法
-- 304：Not Modified 状态未改变，配合(If-Match、If-Modified-Since、If-None_Match、If-Range、If-UnModified-Since)
-- 307：Temporary Redirect 临时重定向，不改变请求方法
-
-##### 4XX 客户端错误
-
-- 400：Bad Request 请求报文语法错误
-- 401：unauthorized 需要认证
-- 403：Forbidden 服务器拒绝访问的资源
-- 404：Not Found 服务器上无法找到资源
-
-##### 5XX 服务器端错误
-
-- 500：Internal Server Error 服务器故障
-- 503：Service Unavailable 服务器处于超负载或者正在停机维护
-
-### Web服务器
-
-#### 虚拟主机
-
-一台HTTP服务器上搭建多个Web站点，客户端发送请求时必须在Host首部完整指定主机名或域名的URL。
-
-#### 通信转发程序：代理、网关
-
-##### 代理
-
-代理就是客户端和服务器的中间人
-
-###### 为啥使用代理？
-
-- 利用缓存技术减少网络流量
-- 组织内部针对网站进行访问控制
-- 获取访问日志
-
-###### 代理的分类
-
-- 缓存代理：会预先吧资源副本保存在服务器上
-- 透明代理：不对报文进行任何加工
-
-##### 网关
-
-接收从客户端发来的数据时，会转发给其他服务器处理，再由自己返回。
-
-- 使通信线路上的服务器提供非HTTP协议服务
-- 提高通信安全性
-
-#### 首部
+### 首部
 
 #### 通用首部字段
 
@@ -196,6 +92,59 @@ byte范围的指定形式：
 | Content-Type     | 实体主体的媒体类型   |
 | Expires          | 实体过期时间         |
 | Last-Modified    | 资源的最后修改时间   |
+
+#### 内容协商
+
+- 首部字段
+  - Accept
+  - Accept-Charset
+  - Accept-Encoding
+  - Accept-Language
+  - Content-Language
+- 协商类型
+  - 服务器驱动
+  - 客户端驱动协商
+  - 透明协商
+
+#### 状态码
+
+状态码负责表示客户端请求的返回结果、标记服务器端是否正常、通知出现的错误
+
+##### 状态码类别
+
+| 类别 | 原因短语                       |
+| ---- | ------------------------------ |
+| 1XX  | Infomational(信息性状态码)     |
+| 2XX  | Success(成功状态码)            |
+| 3XX  | Redirection(重定向)            |
+| 4XX  | Client Error(客户端错误状态码) |
+| 5XX  | Server Error(服务器错误状态码) |
+
+##### 2XX 成功
+
+- 200：OK 客户端发过来的数据被正常处理
+- 204：Not Content 正常响应，没有实体
+- 206：Partial Content 范围请求，返回部分数据，响应报文中由Content-Range指定实体内容
+
+##### 3XX 重定向
+
+- 301：Moved Permanently 永久重定向
+- 302：Found 临时重定向，规范要求方法名不变，但是实际上方法名都会被改变
+- 303：See Other 和302类似，但必须用GET方法
+- 304：Not Modified 状态未改变，配合(If-Match、If-Modified-Since、If-None_Match、If-Range、If-UnModified-Since)
+- 307：Temporary Redirect 临时重定向，不改变请求方法
+
+##### 4XX 客户端错误
+
+- 400：Bad Request 请求报文语法错误
+- 401：unauthorized 需要认证
+- 403：Forbidden 服务器拒绝访问的资源
+- 404：Not Found 服务器上无法找到资源
+
+##### 5XX 服务器端错误
+
+- 500：Internal Server Error 服务器故障
+- 503：Service Unavailable 服务器处于超负载或者正在停机维护
 
 #### 缓存
 
@@ -266,6 +215,49 @@ ETag是实体标签的缩写，根据实体内容生成的一段hash字符串，
 - no-store：所有内容都不会缓存，强制缓存和对比缓存都不会触发
 
 如：Cache-Control: private, max-age=60, no-cache
+
+#### 编码
+
+HTTP可以在传输过程中通过编码提升传输效率，但是会消耗更多的CPU时间。
+
+##### 编码压缩
+
+发送文件时可以先用ZIP压缩功能后再发送文件。
+
+如：gizp、compress、deflate、identify
+
+##### 分割发送的分块传输编码
+
+请求的实体在尚未传输完成前浏览器不能显示，所以在传输大容量数据时，通过吧数据分割成多块，能让
+
+##### 多部分对象集合
+
+- 一份报文主体中可以包含多类型实体。
+- 使用boundary字符串来划分多部分对象指名的各类实体。在各个实体起始行之前插入--标记，多部分对象集合最后插入--标记。
+
+###### multipart/form-data
+
+上传表单时使用multipart/form-data
+
+![image-20230117165911479](./image-计算机网络/image-20230117165911479.png)
+
+###### multipart/byteranges
+
+状态码(Partical Content)响应报文中包含多个范围时使用
+
+![image-20230118102740304](./image-计算机网络/image-20230118102740304.png)
+
+##### 获取部分内容的范围请求
+
+为了实现中断恢复下载的需求，需要能下载指定的下载的实体范围。
+
+- 请求头中的Range来指定资源的byte范围。
+- 响应会返回状态码206响应报文
+- 对于多重范围的范围请求，响应会在首部字段 `Content-Type`中标明 `multipart/byteranges`
+
+byte范围的指定形式：
+
+![image-20230118115758820](./image-计算机网络/image-20230118115758820.png)
 
 #### 多语言切换
 
@@ -347,3 +339,33 @@ User-Agent用户代理，简称UA，它是一个特殊字符串头，使得服�
 请求头User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36
 
 服务器解析通过`user-agent-parser`库。
+
+### Web服务器
+
+#### 虚拟主机
+
+一台HTTP服务器上搭建多个Web站点，客户端发送请求时必须在Host首部完整指定主机名或域名的URL。
+
+#### 通信转发程序：代理、网关
+
+##### 代理
+
+代理就是客户端和服务器的中间人
+
+###### 为啥使用代理？
+
+- 利用缓存技术减少网络流量
+- 组织内部针对网站进行访问控制
+- 获取访问日志
+
+###### 代理的分类
+
+- 缓存代理：会预先吧资源副本保存在服务器上
+- 透明代理：不对报文进行任何加工
+
+##### 网关
+
+接收从客户端发来的数据时，会转发给其他服务器处理，再由自己返回。
+
+- 使通信线路上的服务器提供非HTTP协议服务
+- 提高通信安全性
