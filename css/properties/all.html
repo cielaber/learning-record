@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            background-color: #f0f0f0;
+            font-size: small;
+            color: blue;
+            margin: 20px;
+        }
+        blockquote {
+            background-color: skyblue;
+            color: red;
+        }
+        .initial blockquote {
+            all: initial;
+            /* 
+              属性值为inital的情况下，blockquote变成了display: inline，且background-color、font-size、color均恢复成了初始值：
+              background-color: transparent;
+              font-size: medium;
+              color: black;
+            */
+        }
+        .inherit blockquote {
+            all: inherit;
+            /* 
+              属性值为inherit的情况下，font-size、color属于继承属性，继承了其父元素的属性值：
+              font-size: small;
+              color: blue;
+            */
+        }
+        .unset blockquote {
+            all: unset;
+            /* 
+              属性值为unset的情况下，由于display为非继承元素，因此display为初始值inline，且font-size、color继承了其父元素的属性值：
+              font-size: small;
+              color: blue;
+            */
+        }
+        .revert blockquote {
+            all: revert;
+            /* 
+              属性值为revert的情况下，display采用浏览器为blockquote定义的display值，为block。而font-size、color继承了其父元素的属性值：
+              font-size: small;
+              color: blue;
+            */
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <blockquote>这是一个块级引用元素，引用了一句诗：日出有影，日落有盼。心有可期，忙而不茫。</blockquote>
+        然后这是一句紧接着的苍白的文字作为对照。
+    </div>
+    <div class="initial">
+        <blockquote>这是一个块级引用元素，引用了一句诗：日出有影，日落有盼。心有可期，忙而不茫。</blockquote>
+        然后这是一句紧接着的苍白的文字作为对照。
+    </div>
+    <div class="inherit">
+        <blockquote>这是一个块级引用元素，引用了一句诗：日出有影，日落有盼。心有可期，忙而不茫。</blockquote>
+        然后这是一句紧接着的苍白的文字作为对照。
+    </div>
+    <div class="unset">
+        <blockquote>这是一个块级引用元素，引用了一句诗：日出有影，日落有盼。心有可期，忙而不茫。</blockquote>
+        然后这是一句紧接着的苍白的文字作为对照。
+    </div>
+    <div class="revert">
+        <blockquote>这是一个块级引用元素，引用了一句诗：日出有影，日落有盼。心有可期，忙而不茫。</blockquote>
+        然后这是一句紧接着的苍白的文字作为对照。
+    </div>
+</body>
+</html>
