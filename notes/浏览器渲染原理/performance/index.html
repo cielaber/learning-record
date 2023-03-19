@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div style="background-color: aquamarine;width: 100px;height: 100px;"></div>
+    
+    <!-- 标记有意义的标签 -->
+    <div elementtiming="meaningful">有意义</div>
+    <script>
+    //   window.addEventListener("DOMContentLoaded", () => {
+    //     let s = 0;
+    //     for (let i = 0; i < 10000000; i++) {
+    //       s += i;
+    //     }
+    //     console.log(s);
+    //   });
+
+      setTimeout(() => {
+        const {
+          fetchStart, // 开始访问
+          requestStart, // 请求的开始
+          responseStart, // 响应开始
+          responseEnd, // 响应结束
+          domInteractive, // dom可交互的时间点
+          domContentLoadedEventEnd, // dom加载完毕
+          loadEventStart, // 所有资源加载完毕
+        } = performance.timing;
+
+        let TTFB = responseEnd - requestStart; // 首字节返回的事件，代表服务器处理能力
+        let TTI = domInteractive - fetchStart; // 开始访问到dom可交互的时间
+        let DCL = domContentLoadedEventEnd - fetchStart; // DOM整个加载完毕
+        let L = loadEventStart - fetchStart; // 所有资源加载完毕
+
+        console.log(TTFB, TTI, DCL, L);
+
+       let paint = performance.getEntriesByType('paint')
+       console.log(paint)
+
+      }, 3000); // 需要等到所有事件执行完毕之后才能计算
+
+      // FMP
+      // 创建一个可观测的Performance
+      new PerformanceObserver((entryList, observe) => {
+        console.log(entryList.getEntries())
+        observe.disconnect(); // 监控完后断开
+      }).observe({ entryTypes: ['element'] }) // 监控所有的元素类型
+
+      // LCP
+      new PerformanceObserver((entryList, observe) => {
+        console.log(entryList.getEntries());
+        observe.disconnect()
+      }).observe({ entryTypes: ['largest-contentful-paint'] })
+
+      // FID
+      new PerformanceObserver((entryList, observe) => {
+        console.log(entryList.getEntries());
+        let firstInput = entryList.getEntries()[0]
+        console.log(firstInput);
+        if (!firstInput) return
+        let fid = firstInput.processingStart - firstInput.startTime;
+        console.log(fid);
+        observe.disconnect();
+      }).observe({ type: ['first-input'], buffered: true })
+    </script>
+  </body>
+</html>

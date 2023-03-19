@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <img src="https://pic3.zhimg.com/v2-be163d1c4e01a6cfa8ac49bcfc3b31d6_b.webp" data-src="http://www.eternitywith.xyz/image/1.jpg" style="width: 320px; height: auto; display: block" />
+    <img src="https://pic3.zhimg.com/v2-be163d1c4e01a6cfa8ac49bcfc3b31d6_b.webp" data-src="http://www.eternitywith.xyz/image/2.jpg" style="width: 320px; height: auto; display: block" />
+    <img src="https://pic3.zhimg.com/v2-be163d1c4e01a6cfa8ac49bcfc3b31d6_b.webp" data-src="http://www.eternitywith.xyz/image/3.jpg" style="width: 320px; height: auto; display: block" />
+    <img src="https://pic3.zhimg.com/v2-be163d1c4e01a6cfa8ac49bcfc3b31d6_b.webp" data-src="http://www.eternitywith.xyz/image/4.jpg" style="width: 320px; height: auto; display: block" />
+    <img src="https://pic3.zhimg.com/v2-be163d1c4e01a6cfa8ac49bcfc3b31d6_b.webp" data-src="http://www.eternitywith.xyz/image/5.jpg" style="width: 320px; height: auto; display: block" />
+    <img src="https://pic3.zhimg.com/v2-be163d1c4e01a6cfa8ac49bcfc3b31d6_b.webp" data-src="http://www.eternitywith.xyz/image/6.jpg" style="width: 320px; height: auto; display: block" />
+    <img src="https://pic3.zhimg.com/v2-be163d1c4e01a6cfa8ac49bcfc3b31d6_b.webp" data-src="http://www.eternitywith.xyz/image/7.jpg" style="width: 320px; height: auto; display: block" />
+    <img src="https://pic3.zhimg.com/v2-be163d1c4e01a6cfa8ac49bcfc3b31d6_b.webp" data-src="http://www.eternitywith.xyz/image/8.jpg" style="width: 320px; height: auto; display: block" />
+    <img src="https://pic3.zhimg.com/v2-be163d1c4e01a6cfa8ac49bcfc3b31d6_b.webp" data-src="http://www.eternitywith.xyz/image/9.jpg" style="width: 320px; height: auto; display: block" />
+    <img src="https://pic3.zhimg.com/v2-be163d1c4e01a6cfa8ac49bcfc3b31d6_b.webp" data-src="http://www.eternitywith.xyz/image/10.jpg" style="width: 320px; height: auto; display: block" />
+    <img src="https://pic3.zhimg.com/v2-be163d1c4e01a6cfa8ac49bcfc3b31d6_b.webp" data-src="http://www.eternitywith.xyz/image/11.jpg" style="width: 320px; height: auto; display: block" />
+
+    <script>
+        const observer = new IntersectionObserver((changes) => {
+            changes.forEach((element, index) => {
+                // 如果元素出现到可视区，则把真实src赋给src
+                if (element.intersectionRatio > 0) {
+                    observer.unobserve(element.target);
+                    console.log(element.target.dataset);
+                    element.target.src = element.target.dataset.src;
+                }
+            });
+        });
+        function initObserver() {
+            const listItems = document.querySelectorAll("img");
+            listItems.forEach((item) => {
+                observer.observe(item);
+            });
+        }
+        initObserver();
+    </script>
+</body>
+
+</html>

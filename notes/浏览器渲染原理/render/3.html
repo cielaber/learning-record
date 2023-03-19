@@ -9,7 +9,7 @@
 </head>
 <body>
     <div>hello</div>
-    <!-- js会阻塞dom解析，需要暂停dom解析去执行js，js需要操作样式，所以需要等待样式加载完成。 -->
+    <!-- js会阻塞dom解析，需要暂停dom解析去执行js。并且js可能需要操作样式，所以需要等待上面的样式加载完成再去执行js。 -->
     <script>
         let s;
 

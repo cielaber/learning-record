@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #box {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: 100px;
+            left: 100px;
+            background-color: chartreuse;
+            
+        }
+    </style>
+</head>
+<body>
+    <div id="box"></div>
+    <script>
+        const element = document.getElementById('box')
+
+        let start;
+        function step(timestamp) {
+            if (start === undefined) start = timestamp;
+            const t = timestamp - start;
+            element.style.transform = `translateX(${Math.min(0.1 * t, 800)}px)`
+            if (t < 2000) { // 在2秒后停止
+                window.requestAnimationFrame(step)
+            }
+        }
+        window.requestAnimationFrame(step)
+
+        // requestAnimationFrame用于在每帧开始时执行的回调，该回调函数会被传入DOMHighResTimeStamp参数，该参数与performance.now()的返回值相同，它表示requestAnimationFrame() 开始去执行回调函数的时刻。
+    </script>
+</body>
+</html>
