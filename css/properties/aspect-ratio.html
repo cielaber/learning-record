@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+        }
+        div {
+            width: 100px;
+            height: 100px;
+            background-color: bisque;
+            margin: 20px;
+        }
+        div:nth-of-type(1) img {
+            width: 100%;
+        }
+        div:nth-of-type(2) img {
+            width: 50%;
+            aspect-ratio: 0.5;
+        }
+        div:nth-of-type(3) img {
+            width: 100%;
+            aspect-ratio: 1;
+        }
+        div:nth-of-type(4) img {
+            width: 100%;
+            aspect-ratio: 2;
+        }
+        div:nth-of-type(5) img {
+            width: 100%;
+            aspect-ratio: 0.5;
+        }
+        div div {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 2;
+            background-color: blue;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div><img src="http://www.eternitywith.xyz/image/1.jpg" ></div>
+    <div><img src="http://www.eternitywith.xyz/image/1.jpg" ></div>
+    <div><img src="http://www.eternitywith.xyz/image/1.jpg" ></div>
+    <div><img src="http://www.eternitywith.xyz/image/1.jpg" ></div>
+    <div><img src="http://www.eternitywith.xyz/image/1.jpg" ></div>
+    <div><div></div></div>
+</body>
+</html>

@@ -112,3 +112,61 @@ all属性为一个简写属性，功能是将`unicode-bidi`与`direction`属性�
 ```
 
 ![image-20230318233654995](./image-css属性/image-20230318233654995.png)
+
+### aspect-ratio
+
+```
+aspect-ratio = auto || <ratio>
+<ratio> = <number [0,∞]> [ / <number [0,∞]> ]? 
+```
+
+为容器规定了一个**期待的纵横比**，这个纵横比可以用来计算自动尺寸以及为其他布局函数服务。
+
+```html
+<style>
+    body {
+        display: flex;
+    }
+    div {
+        width: 100px;
+        height: 100px;
+        background-color: bisque;
+        margin: 20px;
+    }
+    div:nth-of-type(1) img {
+        width: 100%;
+    }
+    div:nth-of-type(2) img {
+        width: 50%;
+        aspect-ratio: 0.5;
+    }
+    div:nth-of-type(3) img {
+        width: 100%;
+        aspect-ratio: 1;
+    }
+    div:nth-of-type(4) img {
+        width: 100%;
+        aspect-ratio: 2;
+    }
+    div:nth-of-type(5) img {
+        width: 100%;
+        aspect-ratio: 0.5;
+    }
+    div div {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 2;
+        background-color: blue;
+        margin: 0;
+    }
+</style>
+
+<div><img src="http://www.eternitywith.xyz/image/1.jpg" ></div>
+<div><img src="http://www.eternitywith.xyz/image/1.jpg" ></div>
+<div><img src="http://www.eternitywith.xyz/image/1.jpg" ></div>
+<div><img src="http://www.eternitywith.xyz/image/1.jpg" ></div>
+<div><img src="http://www.eternitywith.xyz/image/1.jpg" ></div>
+<div><div></div></div>
+```
+
+![image-20230319214306802](./image-css属性/image-20230319214306802.png)
