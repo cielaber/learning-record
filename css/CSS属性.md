@@ -170,3 +170,94 @@ aspect-ratio = auto || <ratio>
 ```
 
 ![image-20230319214306802](./image-css属性/image-20230319214306802.png)
+
+### backdrop-filter
+
+```css
+backdrop-filter = none | <filter-value-list>  
+
+<filter-value-list> = [ <filter-function> | <url> ]+  
+
+<filter-function> = <blur()> | <brightness()> | <contrast()> | <drop-shadow()>  | <grayscale()> | <hue-rotate()> | <invert()> | <opacity()> | <sepia()> | <saturate()>     
+
+/* 获取指向 SVG 滤镜的 URI。 */
+<url> = url( <string> <url-modifier>* ) | src( <string> <url-modifier>* )  
+
+/* 将高斯模糊应用于输出图片。*/
+<blur()> = blur( <length>? )  
+
+/* 将线性乘数应用于输入图像，使其看起来更亮或更暗。 */
+<brightness()> = brightness( [ <number> | <percentage> ]? )  
+
+/* 调整输入图像的对比度。 */
+<contrast()> = contrast( [ <number> | <percentage> ]? )  
+
+/* 将投影应用于图像，这个函数有点类似于 box-shadow 属性。box-shadow 属性在元素的整个框后面创建一个矩形阴影，而 drop-shadow() 过滤器则是创建一个符合图像本身形状 (alpha 通道) 的阴影。 */
+<drop-shadow()> = drop-shadow( [ <color>? && <length>{2,3} ] )  
+
+/* 对图片进行灰度转换。 */
+<grayscale()> = grayscale( [ <number> | <percentage> ]? )  
+
+/* 在图像上对非黑白色应用色相旋转。 */
+<hue-rotate()> = hue-rotate( [ <angle> | <zero> ]? )  
+
+/* 在图像上应用颜色反转。 */
+<invert()> = invert( [ <number> | <percentage> ]? )  
+
+/* 为元素指定不透明度。 */
+<opacity()> = opacity( [ <number> | <percentage> ]? )  
+
+/* 将图像转换为深褐色。 */
+<sepia()> = sepia( [ <number> | <percentage> ]? )  
+
+/* 转换图像饱和度。 */
+<saturate()> = saturate( [ <number> | <percentage> ]? ) 
+```
+
+属性可以为一个元素后面区域添加图形效果，它适用于元素*背后*的所有元素，为了看到效果，必须使元素或其背景至少部分透明。
+
+```html
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+    }
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .wrap {
+        width: 500px;
+        height: 280px;
+        background: url('http://www.eternitywith.xyz/image/2.jpg');
+        background-size: contain;
+        margin: 20px;
+    }
+    .content1 {
+        width: 200px;
+        height: 100px;
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+    }
+    .content2 {
+        width: 200px;
+        height: 100px;
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.3);
+        backdrop-filter: hue-rotate(120deg);
+    }
+</style>
+
+<body>
+    <div class="wrap">
+        <div class="content1">只有月亮经过。</div>
+    </div>
+    <div class="wrap">
+        <div class="content2">只有月亮经过。</div>
+    </div>
+</body>
+```
+
+![image-20230320230019851](./image-css属性/image-20230320230019851.png)

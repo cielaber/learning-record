@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+        }
+        div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .wrap {
+            width: 500px;
+            height: 280px;
+            background: url('http://www.eternitywith.xyz/image/2.jpg');
+            background-size: contain;
+            margin: 20px;
+        }
+        .content1 {
+            width: 200px;
+            height: 100px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        .content2 {
+            width: 200px;
+            height: 100px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.3);
+            backdrop-filter: hue-rotate(120deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="content1">只有月亮经过。</div>
+    </div>
+    <div class="wrap">
+        <div class="content2">只有月亮经过。</div>
+    </div>
+</body>
+</html>
