@@ -261,3 +261,117 @@ backdrop-filter = none | <filter-value-list>
 ```
 
 ![image-20230320230019851](./image-css属性/image-20230320230019851.png)
+
+### backface-visibility
+
+`backface-visibility = visibile | hidden`
+
+属性指定当元素背面朝向观察者时是否可见，此属性对2D变换没有影响，2D没有透视，但是当变换导致元素在3D空间中旋转时，背面变得可见。
+
+```html
+<style>
+  .showbf div {
+    backface-visibility: visible;
+  }
+  .hidebf div {
+    backface-visibility: hidden;
+  }
+  .container {
+    width: 150px;
+    height: 150px;
+    margin: 75px 0 0 75px;
+    border: none;
+  }
+  .cube {
+    width: 100%;
+    height: 100%;
+    /* perspective指定了观察者与 z=0 平面的距离，使具有三维位置变换的元素产生透视效果 */
+    perspective: 550px;
+    /* perspective-origin 指定了观察者的位置，用作 perspective 属性的消失点。 */
+    perspective-origin: 150% 150%;
+    /* transform-style 设置元素的子元素是位于 3D 空间中(preserve-3d)还是平面中(flat) */
+    transform-style: preserve-3d;
+  }
+  .face {
+    display: block;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border: none;
+    line-height: 100px;
+    font-size: 60px;
+    color: white;
+    text-align: center;
+  }
+  .front {
+    background: rgba(0, 0, 0, 0.3);
+    transform: translateZ(50px);
+  }
+  .back {
+    background: rgba(0, 255, 0, 1);
+    color: black;
+    transform: rotateY(180deg) translateZ(50px);
+  }
+  .right {
+    background: rgba(196, 0, 0, 0.7);
+    transform: rotateY(90deg) translateZ(50px);
+  }
+  .left {
+    background: rgba(0, 0, 196, 0.7);
+    transform: rotateY(-90deg) translateZ(50px);
+  }
+  .top {
+    background: rgba(196, 196, 0, 0.7);
+    transform: rotateX(90deg) translateZ(50px);
+  }
+  .bottom {
+    background: rgba(196, 0, 196, 0.7);
+    transform: rotateX(-90deg) translateZ(50px);
+  }
+  th, p, td {
+    background-color: #eeeeee;
+    margin: 0px;
+    padding: 6px;
+    text-align: left;
+  }
+</style>
+<body>
+  <table>
+    <tr>
+      <th><code>backface-visibility: visible;</code></th>
+      <th><code>backface-visibility: hidden;</code></th>
+    </tr>
+    <tr>
+      <td>
+        <div class="container">
+          <div class="cube showbf">
+            <div class="face front">1</div>
+            <div class="face back">2</div>
+            <div class="face right">3</div>
+            <div class="face left">4</div>
+            <div class="face top">5</div>
+            <div class="face bottom">6</div>
+          </div>
+        </div>
+        <p>由于所有的面都是部分透明的，所以背面（2、4、5）可以透过前面（1、3、6）看到。</p>
+      </td>
+      <td>
+        <div class="container">
+          <div class="cube hidebf">
+            <div class="face front">1</div>
+            <div class="face back">2</div>
+            <div class="face right">3</div>
+            <div class="face left">4</div>
+            <div class="face top">5</div>
+            <div class="face bottom">6</div>
+          </div>
+        </div>
+        <p>后面的三个面（2、4、5）被隐藏了。</p>
+      </td>
+    </tr>
+  </table>
+</body>
+```
+
+![image-20230321222201005](./image-css属性/image-20230321222201005.png)
+
