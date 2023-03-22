@@ -375,3 +375,53 @@ backdrop-filter = none | <filter-value-list>
 
 ![image-20230321222201005](./image-css属性/image-20230321222201005.png)
 
+### block-size
+
+`block-size = <'width'>`
+
+属性会根据元素的书写模式来定义元素的水平宽度或者垂直高度。
+
+它会根据`writing-mode`的值来映射width属性或者height属性。如果书写模式是垂直方向，则`block-size`的值就会和元素的宽有关，否则就会和元素的高有关。
+
+一个与`block-size`相关的属性是`inline-size`，`block-size`用于定义某元素在某方向上的长度，而`inline-size`则用于定义元素在另一个方向上的长度。
+
+```html
+<style>
+    body {
+        display: flex;
+    }
+    p {
+        margin: 20px;
+        background-color: aqua;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+    }
+    .text1 {
+        block-size: 100px;
+        writing-mode: horizontal-tb;
+    }
+    .text2 {
+        block-size: 100px;
+        writing-mode: vertical-lr;
+    }
+    .text3 {
+        block-size: auto;
+        writing-mode: horizontal-tb;
+    }
+    .text4 {
+        block-size: auto;
+        writing-mode: vertical-lr;
+    }
+</style>
+<body>
+    <p class="text1">春天里的事物都太浅薄，我不要春天，我不要玫瑰。</p>
+    <p class="text2">春天里的事物都太浅薄，我不要春天，我不要玫瑰。</p>
+    <p class="text3">春天里的事物都太浅薄，我不要春天，我不要玫瑰。</p>
+    <p class="text4">春天里的事物都太浅薄，我不要春天，我不要玫瑰。</p>
+</body>
+```
+
+![image-20230322231846494](./image-css属性/image-20230322231846494.png)
+

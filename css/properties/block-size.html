@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+        }
+        p {
+            margin: 20px;
+            background-color: aqua;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+        }
+        .text1 {
+            block-size: 100px;
+            writing-mode: horizontal-tb;
+        }
+        .text2 {
+            block-size: 100px;
+            writing-mode: vertical-lr;
+        }
+        .text3 {
+            block-size: auto;
+            writing-mode: horizontal-tb;
+        }
+        .text4 {
+            block-size: auto;
+            writing-mode: vertical-lr;
+        }
+    </style>
+</head>
+<body>
+    <p class="text1">春天里的事物都太浅薄，我不要春天，我不要玫瑰。</p>
+    <p class="text2">春天里的事物都太浅薄，我不要春天，我不要玫瑰。</p>
+    <p class="text3">春天里的事物都太浅薄，我不要春天，我不要玫瑰。</p>
+    <p class="text4">春天里的事物都太浅薄，我不要春天，我不要玫瑰。</p>
+</body>
+</html>
