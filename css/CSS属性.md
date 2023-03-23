@@ -425,3 +425,58 @@ backdrop-filter = none | <filter-value-list>
 
 ![image-20230322231846494](./image-css属性/image-20230322231846494.png)
 
+### caption-side
+
+```css
+caption-side: top;
+caption-side: bottom;
+
+/* 非标准值，具体按浏览器支持度为准 */
+caption-side: left;
+caption-side: right;
+caption-side: top-outside;
+caption-side: bottom-outside;
+```
+
+属性会将表格的标题`<caption>`放到规定的位置，但是具体显示的位置与表格的`writing-mode`属性有关。
+
+```html
+<style>
+  body {
+    display: flex;
+  }
+  table {
+    margin: 20px;
+  }
+  td {
+    padding: 5px;
+  }
+  tr {
+    background: #eee;
+  }
+  caption {
+    background: #fc3;
+  }
+  table:nth-of-type(2) caption {
+    caption-side: bottom;
+  }
+</style>
+<body>
+  <table>
+    <caption>最后一卷胶片</caption>
+    <tr>
+      <td>这卷胶片再珍贵</td>
+      <td>也值得为你浪费</td>
+    </tr>
+  </table>
+  <table>
+    <caption>最后一卷胶片</caption>
+    <tr>
+      <td>这卷胶片再珍贵</td>
+      <td>也值得为你浪费</td>
+    </tr>
+  </table>
+</body>
+```
+
+![image-20230322231846494](./image-css属性/uTools_1679564566432.png)
