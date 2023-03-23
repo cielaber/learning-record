@@ -480,3 +480,23 @@ caption-side: bottom-outside;
 ```
 
 ![image-20230322231846494](./image-css属性/uTools_1679564566432.png)
+
+### caret-color
+
+`caret-color = auto | <color>`
+
+属性用来定义插入光标的颜色，这里说的插入光标，指的是在网页的可编辑器区域内，用来指示用户的输入具体会插入到哪里的那个一闪一闪的形似竖杠`|`的东西。
+>这里说的“插入光标(insertion caret)”只是光标(caret)的一种。比如有些浏览器中有一种光标叫做“导航光标(navigation caret)”，它可以在不可编辑区域内来回移动。此外，当鼠标指针移动到一段`cursor`属性是`auto`的文本上方时，或移动到`cursor`属性是`text`、`vertical-text`的内容上方时，虽然看起来有点像插入光标，但它不是插入光标(caret)，而是鼠标指针光标(cursor)。
+
+```html
+<style>
+  input {
+    caret-color: red;
+  }
+</style>
+<body>
+  <input type="text">
+</body>
+```
+
+![image-20230322231846494](./image-css属性/uTools_1679567058505.png)
