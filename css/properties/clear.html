@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        display: flex;
+      }
+      .container {
+        border: 1px solid #c5c5c5;
+        padding: 0.75em;
+        text-align: left;
+        line-height: normal;
+        margin: 10px;
+      }
+      .floated-left {
+        border: solid 10px #ffc129;
+        background-color: rgba(255, 244, 219, 0.6);
+        padding: 1em;
+        float: left;
+      }
+      .floated-right {
+        border: solid 10px #ffc129;
+        background-color: rgba(255, 244, 219, 0.6);
+        padding: 1em;
+        float: right;
+        height: 150px;
+      }
+      .words1 {
+        clear: none;
+      }
+      .words2 {
+        clear: left;
+      }
+      .words3 {
+        clear: right;
+      }
+      .words4 {
+        clear: both;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="floated-left">Left</div>
+      <div class="floated-right">Right</div>
+      <div class="words1">
+        “春天里的事物太浅薄，我不要春天，不要玫瑰。不要你眼里的泪光。我只要你。我只要你一个完整的朝夕” ——余秀华《你说抱着我如抱着一朵白云》
+      </div>
+    </div>
+    <div class="container">
+      <div class="floated-left">Left</div>
+      <div class="floated-right">Right</div>
+      <div class="words2">
+        “春天里的事物太浅薄，我不要春天，不要玫瑰。不要你眼里的泪光。我只要你。我只要你一个完整的朝夕” ——余秀华《你说抱着我如抱着一朵白云》
+      </div>
+    </div>
+    <div class="container">
+      <div class="floated-left">Left</div>
+      <div class="floated-right">Right</div>
+      <div class="words3">
+        “春天里的事物太浅薄，我不要春天，不要玫瑰。不要你眼里的泪光。我只要你。我只要你一个完整的朝夕” ——余秀华《你说抱着我如抱着一朵白云》
+      </div>
+    </div>
+    <div class="container">
+      <div class="floated-left">Left</div>
+      <div class="floated-right">Right</div>
+      <div class="words4">
+        “春天里的事物太浅薄，我不要春天，不要玫瑰。不要你眼里的泪光。我只要你。我只要你一个完整的朝夕” ——余秀华《你说抱着我如抱着一朵白云》
+      </div>
+    </div>
+  </body>
+</html>

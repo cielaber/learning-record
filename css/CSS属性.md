@@ -500,3 +500,83 @@ caption-side: bottom-outside;
 ```
 
 ![image-20230322231846494](./image-css属性/uTools_1679567058505.png)
+
+### clear
+
+`clear = inline-start | inline-end | block-start | block-end | left | right | top | bottom | none`
+
+属性指定一个元素是否必须移动（清除浮动后）到在它之前的浮动元素下面，适用于浮动和非浮动元素。
+
+当应用于非浮动块时，它将非浮动块的边框边界移动到所有相关浮动元素外边界的下方。这个非浮动块的顶部外边距会折叠。
+
+另一方面，两个浮动元素的垂直外边距不会折叠。当应用于浮动元素时，它将底部元素的外边界边缘移动到所有相关浮动元素外边界边缘的下方。这会影响后面浮动元素的布局，因为后面的浮动元素的位置无法高于它之前的元素。
+
+```html
+<style>
+  body {
+    display: flex;
+  }
+  .container {
+    border: 1px solid #c5c5c5;
+    padding: 0.75em;
+    text-align: left;
+    line-height: normal;
+    margin: 10px;
+  }
+  .floated-left {
+    border: solid 10px #ffc129;
+    background-color: rgba(255, 244, 219, 0.6);
+    padding: 1em;
+    float: left;
+  }
+  .floated-right {
+    border: solid 10px #ffc129;
+    background-color: rgba(255, 244, 219, 0.6);
+    padding: 1em;
+    float: right;
+    height: 150px;
+  }
+  .words1 {
+    clear: none;
+  }
+  .words2 {
+    clear: left;
+  }
+  .words3 {
+    clear: right;
+  }
+  .words4 {
+    clear: both;
+  }
+</style>
+<div class="container">
+  <div class="floated-left">Left</div>
+  <div class="floated-right">Right</div>
+  <div class="words1">
+    “春天里的事物太浅薄，我不要春天，不要玫瑰。不要你眼里的泪光。我只要你。我只要你一个完整的朝夕” ——余秀华《你说抱着我如抱着一朵白云》
+  </div>
+</div>
+<div class="container">
+  <div class="floated-left">Left</div>
+  <div class="floated-right">Right</div>
+  <div class="words2">
+    “春天里的事物太浅薄，我不要春天，不要玫瑰。不要你眼里的泪光。我只要你。我只要你一个完整的朝夕” ——余秀华《你说抱着我如抱着一朵白云》
+  </div>
+</div>
+<div class="container">
+  <div class="floated-left">Left</div>
+  <div class="floated-right">Right</div>
+  <div class="words3">
+    “春天里的事物太浅薄，我不要春天，不要玫瑰。不要你眼里的泪光。我只要你。我只要你一个完整的朝夕” ——余秀华《你说抱着我如抱着一朵白云》
+  </div>
+</div>
+<div class="container">
+  <div class="floated-left">Left</div>
+  <div class="floated-right">Right</div>
+  <div class="words4">
+    “春天里的事物太浅薄，我不要春天，不要玫瑰。不要你眼里的泪光。我只要你。我只要你一个完整的朝夕” ——余秀华《你说抱着我如抱着一朵白云》
+  </div>
+</div>
+```
+
+![image-20230326230454935](./image-css属性/image-20230326230454935.png)
