@@ -838,3 +838,69 @@ clip-path = <clip-source> | [<basic-shape> || <geometry-box>] | none
 ![image-20230327220421866](./image-css属性/image-20230327220421866.png)
 
 ![image-20230327220445142](./image-css属性/image-20230327220445142.png)
+
+### color-scheme
+
+`color-scheme = normal | light | dark | light dark`
+
+操作系统配色方案的常见选择是“亮”和“暗”，或者是“白天模式”和“夜间模式”。当用户选择其中一种配色方案时，操作系统会对用户界面进行调整。这包括表单控件、滚动条和CSS系统颜色的使用值。
+
+```html
+<style>
+    body {
+        display: flex;
+    }
+    .container p {
+        text-align: center;
+    }
+    .light {
+        color-scheme: light;
+    }
+    .dark {
+        color-scheme: dark;
+    }
+    .outer {
+        width: 300px;
+        height: 100px;
+        overflow: auto;
+        background-color: bisque;
+    }
+    .inner {
+        height: 500px;
+    }
+    li {
+        display: flex;
+        margin: 10px;
+    }
+</style>
+<body>
+    <div class="container light">
+        <p>color-scheme: light</p>
+        <ul>
+            <li>输入框：<input type="text"></li>
+            <li>复选框：<input type="checkbox"></li>
+            <li>单选框：<input type="radio"></li>
+            <li>范围框：<input type="range"></li>
+            <li>进度条：<progress id="file" max="100" value="70"> 70% </progress></li>
+            <li>文本框：<textarea name="" id="" cols="30" rows="10"></textarea></li>
+            <li>滚动条：<div class="outer"><div class="inner"></div></div></li>
+        </ul>
+    </div>
+    <div class="container dark">
+        <p>color-scheme: dark</p>
+        <ul>
+            <li>输入框：<input type="text"></li>
+            <li>复选框：<input type="checkbox"></li>
+            <li>单选框：<input type="radio"></li>
+            <li>范围框：<input type="range"></li>
+            <li>进度条：<progress id="file" max="100" value="70"> 70% </progress></li>
+            <li>文本框：<textarea name="" id="" cols="30" rows="10"></textarea></li>
+            <li>滚动条：<div class="outer"><div class="inner"></div></div></li>
+        </ul>
+    </div>
+</body>
+```
+
+
+
+![image-20230328224838864](./image-css属性/image-20230328224838864.png)

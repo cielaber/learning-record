@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+        }
+        .container p {
+            text-align: center;
+        }
+        .light {
+            color-scheme: light;
+        }
+        .dark {
+            color-scheme: dark;
+        }
+        .outer {
+            width: 300px;
+            height: 100px;
+            overflow: auto;
+            background-color: bisque;
+        }
+        .inner {
+            height: 500px;
+        }
+        li {
+            display: flex;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container light">
+        <p>color-scheme: light</p>
+        <ul>
+            <li>输入框：<input type="text"></li>
+            <li>复选框：<input type="checkbox"></li>
+            <li>单选框：<input type="radio"></li>
+            <li>范围框：<input type="range"></li>
+            <li>进度条：<progress id="file" max="100" value="70"> 70% </progress></li>
+            <li>文本框：<textarea name="" id="" cols="30" rows="10"></textarea></li>
+            <li>滚动条：<div class="outer"><div class="inner"></div></div></li>
+        </ul>
+    </div>
+    <div class="container dark">
+        <p>color-scheme: dark</p>
+        <ul>
+            <li>输入框：<input type="text"></li>
+            <li>复选框：<input type="checkbox"></li>
+            <li>单选框：<input type="radio"></li>
+            <li>范围框：<input type="range"></li>
+            <li>进度条：<progress id="file" max="100" value="70"> 70% </progress></li>
+            <li>文本框：<textarea name="" id="" cols="30" rows="10"></textarea></li>
+            <li>滚动条：<div class="outer"><div class="inner"></div></div></li>
+        </ul>
+    </div>
+</body>
+</html>
