@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .content {
+            width: 300px;
+            background-color: blanchedalmond;
+        }
+    </style>
+</head>
+<body style="display: flex; gap: 50px;">
+    <p class="content" style="columns: 2;">
+        If you shed tears when you miss the sun, you also miss the stars. </br> 如果你因失去了太阳而流泪，那么你也将失去群星了。
+    </p>
+    <p class="content" style="columns: 50px 4;"> <!-- 这里50px并不是真实列宽 -->
+        If you shed tears when you miss the sun, you also miss the stars. </br> 如果你因失去了太阳而流泪，那么你也将失去群星了。</br> You smiled and talked to me of nothing and I felt that for this I had been waiting long. </br> 你微微地笑着，不同我说什么话。而我觉得，为了这个，我已等待得久了。
+    </p>
+    <p class="content" style="columns: 100px 4;"> <!-- 这里期望列宽为100px，但如果列宽为100px，300px等分3列才能分得下，但还得留出列间距，因此只能分为两列。 -->
+        If you shed tears when you miss the sun, you also miss the stars. </br> 如果你因失去了太阳而流泪，那么你也将失去群星了。</br> You smiled and talked to me of nothing and I felt that for this I had been waiting long. </br> 你微微地笑着，不同我说什么话。而我觉得，为了这个，我已等待得久了。
+    </p>
+</body>
+</html>

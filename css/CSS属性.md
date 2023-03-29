@@ -904,3 +904,35 @@ clip-path = <clip-source> | [<basic-shape> || <geometry-box>] | none
 
 
 ![image-20230328224838864](./image-css属性/image-20230328224838864.png)
+
+### columns
+
+`columns = <'column-width'> || <'column-count'>`
+
+属性用来设置元素的列宽和列数。
+
+这是一个简写属性，可单独使用`column-width`和`column-count`来实现其功能。
+
+> column-width：指定最佳列宽。实际列宽可能与指定值不同：当需要填充可用空间时，列宽可能会更宽，而当可用空间太小时，列宽会更窄。该值必须严格为正，否则声明无效。百分比值也是无效的。
+
+```html
+<style>
+    .content {
+        width: 300px;
+        background-color: blanchedalmond;
+    }
+</style>
+<body style="display: flex; gap: 50px;">
+    <p class="content" style="columns: 2;">
+        If you shed tears when you miss the sun, you also miss the stars. </br> 如果你因失去了太阳而流泪，那么你也将失去群星了。
+    </p>
+    <p class="content" style="columns: 50px 4;"> <!-- 这里50px并不是真实列宽 -->
+        If you shed tears when you miss the sun, you also miss the stars. </br> 如果你因失去了太阳而流泪，那么你也将失去群星了。</br> You smiled and talked to me of nothing and I felt that for this I had been waiting long. </br> 你微微地笑着，不同我说什么话。而我觉得，为了这个，我已等待得久了。
+    </p>
+    <p class="content" style="columns: 100px 4;"> <!-- 这里期望列宽为100px，但如果列宽为100px，300px等分3列才能分得下，但还得留出列间距，因此只能分为两列。 -->
+        If you shed tears when you miss the sun, you also miss the stars. </br> 如果你因失去了太阳而流泪，那么你也将失去群星了。</br> You smiled and talked to me of nothing and I felt that for this I had been waiting long. </br> 你微微地笑着，不同我说什么话。而我觉得，为了这个，我已等待得久了。
+    </p>
+</body>
+```
+
+![image-20230329225411821](./image-css属性/image-20230329225411821.png)
