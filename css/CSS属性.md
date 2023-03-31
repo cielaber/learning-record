@@ -936,3 +936,182 @@ clip-path = <clip-source> | [<basic-shape> || <geometry-box>] | none
 ```
 
 ![image-20230329225411821](./image-css属性/image-20230329225411821.png)
+
+### direction
+
+`direction = ltr | rtl`
+
+属性用于设置文本、表格列和水平溢出的方向。对于从右到左书写的语言（如阿拉伯语），应该将属性设置为`rtl`，对于从左到右书写的语言，则应该将属性设置为`ltr`。
+
+请注意，文本方向通常在文档中定义（如使用HTML的`dir`属性），而不是通过直接使用`direction`属性来定义。
+
+> `dir`是一个指示元素中文本方向的枚举属性，取值如下：
+>
+> - ltr：从左到右，用于从左到右书写的语言。
+> - rtl：从右到左，用于从右到左书写的语言。
+> - auto：由用户代理决定方向，它在解析元素中字符时会运用一个基本算法，直到发现一个具有强方向性的字符，然后将这一方向应用于整个元素。
+
+> **全局属性**
+>
+> 是指所有HTML元素共有的属性，它们可以用于所有元素，即使属性可能对某些元素不起作用。
+
+该属性设置可以设置块级元素文本的基本方向，也可以设置由通过`unicode-bidi`属性创建的嵌入元素的方向。与此同时，它还可以设置文本、块级元素的默认对齐方式，以及表行中的单元格的流动方向。
+
+与HTML的`dir`属性不同，`direction`属性不会从列表继承到表单元格，因为CSS继承遵从文档流，而表单元格位于行内部，但不在列内部。
+
+`direction`和`unicode-bidi`属性是唯二不受`all`简写属性影响的属性。
+
+要使`direction`属性在行级元素上生效，`unicode-bidi`属性的值必须是`embed`或者`override`。
+
+```html
+<style>
+  body {
+    display: flex;
+  }
+  .container {
+    border: 1px solid #c5c5c5;
+    width: 300px;
+    max-height: 200px;
+    margin: 20px;
+  }
+  .container > div > div {
+    background-color: rgba(0, 0, 255, 0.2);
+    border: 3px solid #00f;
+    margin: 10px;
+    flex: 1;
+  }
+</style>
+<body>
+  <div class="container" style="direction: ltr">
+    <p>direction: ltr</p>
+    <div style="display: flex">
+      <div>12</div>
+      <div>23</div>
+      <div>34</div>
+      <div>45</div>
+    </div>
+  </div>
+  <div class="container" style="direction: rtl">
+    <p>direction: rtl</p>
+    <div style="display: flex">
+      <div>12</div>
+      <div>23</div>
+      <div>34</div>
+      <div>45</div>
+    </div>
+  </div>
+</body>
+```
+
+![image-20230330224047601](./image-css属性/image-20230330224047601.png)
+
+### unicode-bidi
+
+`unicode-bidi = normal | embed | isolate | bidi-override | isolate-override | plaintext`
+
+`unicode-bidi`属性和`direction`属性，决定如何处理文档中的双书写方向文本（bidirectional text）。比如，如果一块内容同时包含有从左到右和从右到左书写的文本，那么用户代理（the user-agent）会使用复杂的Unicode算法来决定如何显示文本。`unicode-bidi`属性会覆盖此算法，允许开发人员控制文本嵌入。
+
+`unicode-bidi`和`direction`属性是仅有的两个不受`all`简写影响的属性。
+
+> 此属性是文档类型定义（Document Type Definition，DTD）的设计者专用的。Web设计者与其他类似的人员不应覆盖此属性。
+
+- normal：对双向算法，此元素不提供额外的嵌入级别。对于内联元素，隐式的重新排序在元素的边界上起作用。
+- embed：对于内联元素，该值会为双向算法打开一个额外的嵌入级别。嵌入级别的方向是由`direction`属性给出的。
+- bidi-override：对于内联元素，该值会创建一个覆盖；对于块容器元素，该值将为不在另一个块容器元素内的内联级别的后代创建一个覆盖。这意味着在元素内部，根据`direction`属性，重新排序是严格按照顺序排列的；双向算法的隐式部分被忽略。
+- isolate：这个关键字表示计算元素容器的方向时，不考虑这个元素的内容。因此，这个元素就从它的兄弟姐妹中分离出来了。当应用它的双向分辨算法的时候，它的容器元素将其视为一个或多个 `U+FFFC Object Replacement Character`，即像 image 一样。
+- isolate-override：这个关键字将`override`关键字的隔离行为应用于周围的内容，并将`bidi-override`关键字的覆盖行为应用于内部内容。
+- plaintext：这个关键字在计算元素方向的时候，不考虑父元素的双向状态，也不考虑`direction`属性的值。它是使用Unicode双向算法的P2和P3规则计算的。这个值允许按照Unicode双向算法显示已格式化的数据。
+
+```html
+<style>
+  body {
+    display: flex;
+  }
+  .container {
+    border: 1px solid #c5c5c5;
+    width: 500px;
+    max-height: 200px;
+    margin: 20px;
+  }
+  .container > div > div {
+    background-color: rgba(0, 0, 255, 0.2);
+    border: 3px solid #00f;
+    margin: 10px;
+    flex: 1;
+  }
+  .bidi-override * {
+    unicode-bidi: bidi-override;
+  }
+  .embed {
+    unicode-bidi: embed;
+  }
+</style>
+<body>
+  <div class="container" style="direction: ltr">
+    <p>direction: ltr</p>
+    <div style="display: flex">
+      <div>12</div>
+      <div>23</div>
+      <div>34</div>
+      <div>45</div>
+      <span>内联元素：123</span>
+    </div>
+  </div>
+  <div class="container" style="direction: rtl">
+    <p>direction: rtl</p>
+    <div style="display: flex">
+      <div>12</div>
+      <div>23</div>
+      <div>34</div>
+      <div>45</div>
+      <span>内联元素：123</span>
+    </div>
+  </div>
+  <div class="container bidi-override" style="direction: ltr">
+    <p>direction: ltr</p>
+    <p>unicode-bidi: bidi-override</p>
+    <div style="display: flex">
+      <div>12</div>
+      <div>23</div>
+      <div>34</div>
+      <div>45</div>
+      <span>内联元素：123</span>
+    </div>
+  </div>
+  <div class="container bidi-override" style="direction: rtl">
+    <p>direction: rtl</p>
+    <p>unicode-bidi: bidi-override</p>
+    <div style="display: flex">
+      <div>12</div>
+      <div>23</div>
+      <div>34</div>
+      <div>45</div>
+      <span>内联元素：123</span>
+    </div>
+  </div>
+  <div class="container embed" style="direction: ltr">
+    <p>direction: ltr</p>
+    <p>unicode-bidi: embed</p>
+    <div style="display: flex">
+      <div>12</div>
+      <div>23</div>
+      <div>34</div>
+      <div>45</div>
+      <span>内联元素：123</span>
+    </div>
+  </div>
+  <div class="container embed" style="direction: rtl">
+    <p>direction: rtl</p>
+    <p>unicode-bidi: embed</p>
+    <div style="display: flex">
+      <div>12</div>
+      <div>23</div>
+      <div>34</div>
+      <div>45</div>
+      <span>内联元素：123</span>
+    </div>
+  </div>
+</body>
+```
+
+![image-20230330232815291](./image-css属性/image-20230330232815291.png)

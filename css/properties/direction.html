@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        display: flex;
+      }
+      .container {
+        border: 1px solid #c5c5c5;
+        width: 300px;
+        max-height: 200px;
+        margin: 20px;
+      }
+      .container > div > div {
+        background-color: rgba(0, 0, 255, 0.2);
+        border: 3px solid #00f;
+        margin: 10px;
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" style="direction: ltr">
+      <p>direction: ltr</p>
+      <div style="display: flex">
+        <div>12</div>
+        <div>23</div>
+        <div>34</div>
+        <div>45</div>
+      </div>
+    </div>
+    <div class="container" style="direction: rtl">
+      <p>direction: rtl</p>
+      <div style="display: flex">
+        <div>12</div>
+        <div>23</div>
+        <div>34</div>
+        <div>45</div>
+      </div>
+    </div>
+  </body>
+</html>
