@@ -1115,3 +1115,71 @@ clip-path = <clip-source> | [<basic-shape> || <geometry-box>] | none
 ```
 
 ![image-20230330232815291](./image-css属性/image-20230330232815291.png)
+
+### empty-cells
+
+`empty-cells = show | hide`
+
+属性定义了用户端（user agent）应该怎么来渲染表格`<table>`中没有可见内容的单元格的边框和背景。
+
+只有当`border-collapse`属性值是`separate`时，才会生效。
+
+```html
+<style>
+  body {
+    display: flex;
+    gap: 20px;
+  }
+  .table_1 {
+    empty-cells: show;
+  }
+  .table_2 {
+    empty-cells: hide;
+  }
+  .table_3 {
+    border-collapse: collapse;
+    empty-cells: hide;
+  }
+  td,
+  th {
+    border: 1px solid gray;
+    padding: 0.5rem;
+  }
+</style>
+<body>
+  <table class="table_1">
+    <tr>
+      <td>Moe</td>
+      <td>Larry</td>
+    </tr>
+    <tr>
+      <td>Curly</td>
+      <td></td>
+    </tr>
+  </table>
+  <br />
+  <table class="table_2">
+    <tr>
+      <td>Moe</td>
+      <td>Larry</td>
+    </tr>
+    <tr>
+      <td>Curly</td>
+      <td></td>
+    </tr>
+  </table>
+  <br />
+  <table class="table_3">
+    <tr>
+      <td>Moe</td>
+      <td>Larry</td>
+    </tr>
+    <tr>
+      <td>Curly</td>
+      <td></td>
+    </tr>
+  </table>
+</body>
+```
+
+![image-20230331222339350](./image-css属性/image-20230331222339350.png)
