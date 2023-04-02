@@ -1183,3 +1183,112 @@ clip-path = <clip-source> | [<basic-shape> || <geometry-box>] | none
 ```
 
 ![image-20230331222339350](./image-css属性/image-20230331222339350.png)
+
+### hanging-punctuation
+
+`hanging-punctuation = none | [ first || [ force-end | allow-end ] || last ]`
+
+属性指定了标点符号应该挂在文本句子的开头还是结尾。悬挂标点符号可能被放在线框外。
+
+- none：无悬挂字符。
+- first：元素的第一个格式化行开头的括号或引号挂起。
+- last：元素的最后一个格式化行结尾的括号或引号挂起。
+- force-end：行结尾处的句号或者逗号挂起。
+- allow-end：如果行尾的停止符或逗号在对齐之前不合适，则挂起。
+
+> 支持的浏览器不多，目前只在Safari浏览器支持，且force-end、allow-end似乎没有生效。
+
+```html
+<style>
+  body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  p {
+    margin: 5px;
+  }
+  div p:nth-of-type(1) {
+    text-align: center;
+  }
+  div p:nth-of-type(2) {
+    width: 15em;
+    border: 1px solid #cccccc;
+    font-size: 2rem;
+    font-style: italic;
+  }
+  p.right {
+    text-align: right;
+  }
+  p.first {
+    hanging-punctuation: first;
+  }
+  p.last {
+    hanging-punctuation: last;
+  }
+  p.force-end {
+    hanging-punctuation: force-end;
+  }
+  p.allow-end {
+    hanging-punctuation: allow-end;
+  }
+  p.hanging {
+    hanging-punctuation: first last;
+  }
+</style>
+<body>
+  <div>
+    <p>hanging-punctuation: none</p>
+    <p>
+      «Since the moment we met, you have been my star that never sets day and night.»
+    </p>
+  </div>
+  <div>
+    <p>hanging-punctuation: none; text-align: right</p>
+    <p class="right">
+      «Since the moment we met, you have been my star that never sets day and night.»
+    </p>
+  </div>
+  <div>
+    <p>hanging-punctuation: first</p>
+    <p class="first">
+      «Since the moment we met, you have been my star that never sets day and night.»
+    </p>
+  </div>
+  <div>
+    <p>hanging-punctuation: last; text-align: right</p>
+    <p class="last right">
+      «Since the moment we met, you have been my star that never sets day and night.»
+    </p>
+  </div>
+  <div>
+    <p>hanging-punctuation: force-end; text-align: right</p>
+    <p class="force-end right">
+      «Since the moment we met, you have been my star that never sets day and night.
+    </p>
+  </div>
+  <div>
+    <p>hanging-punctuation: allow-end; text-align: right</p>
+    <p class="allow-end right">
+      «Since the moment we met, you have been my star that never sets day and night.
+    </p>
+  </div>
+  <div>
+    <p>hanging-punctuation: first last</p>
+    <p class="hanging">
+      «Since the moment we met, you have been my star that never sets day and night.»
+    </p>
+  </div>
+  <div>
+    <p>hanging-punctuation: first last text-align: right</p>
+    <p class="hanging right">
+      «Since the moment we met, you have been my star that never sets day and night.»
+    </p>
+  </div>
+</body>
+```
+
+![image-20230401231857097](./image-css属性/image-20230401231857097.png)
+
+
+

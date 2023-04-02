@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      p {
+        margin: 5px;
+      }
+      div p:nth-of-type(1) {
+        text-align: center;
+      }
+      div p:nth-of-type(2) {
+        width: 15em;
+        border: 1px solid #cccccc;
+        font-size: 2rem;
+        font-style: italic;
+      }
+      p.right {
+        text-align: right;
+      }
+      p.first {
+        hanging-punctuation: first;
+      }
+      p.last {
+        hanging-punctuation: last;
+      }
+      p.force-end {
+        hanging-punctuation: force-end;
+      }
+      p.allow-end {
+        hanging-punctuation: allow-end;
+      }
+      p.hanging {
+        hanging-punctuation: first last;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <p>hanging-punctuation: none</p>
+      <p>
+        «Since the moment we met, you have been my star that never sets day and night.»
+      </p>
+    </div>
+    <div>
+      <p>hanging-punctuation: none; text-align: right</p>
+      <p class="right">
+        «Since the moment we met, you have been my star that never sets day and night.»
+      </p>
+    </div>
+    <div>
+      <p>hanging-punctuation: first</p>
+      <p class="first">
+        «Since the moment we met, you have been my star that never sets day and night.»
+      </p>
+    </div>
+    <div>
+      <p>hanging-punctuation: last; text-align: right</p>
+      <p class="last right">
+        «Since the moment we met, you have been my star that never sets day and night.»
+      </p>
+    </div>
+    <div>
+      <p>hanging-punctuation: force-end; text-align: right</p>
+      <p class="force-end right">
+        «Since the moment we met, you have been my star that never sets day and night.
+      </p>
+    </div>
+    <div>
+      <p>hanging-punctuation: allow-end; text-align: right</p>
+      <p class="allow-end right">
+        «Since the moment we met, you have been my star that never sets day and night.
+      </p>
+    </div>
+    <div>
+      <p>hanging-punctuation: first last</p>
+      <p class="hanging">
+        «Since the moment we met, you have been my star that never sets day and night.»
+      </p>
+    </div>
+    <div>
+      <p>hanging-punctuation: first last text-align: right</p>
+      <p class="hanging right">
+        «Since the moment we met, you have been my star that never sets day and night.»
+      </p>
+    </div>
+  </body>
+</html>
