@@ -1424,3 +1424,63 @@ clip-path = <clip-source> | [<basic-shape> || <geometry-box>] | none
 ```
 
 ![image-20230402170821914](./image-css属性/image-20230402170821914.png)
+
+### initial-letter
+
+`initial-letter = normal | <number [1,∞]> <integer [1,∞]>  | <number [1,∞]> && [ drop | raise ]?`
+
+属性设置首字母下沉、凸起和凹陷的样式。
+
+- normal：没有首字母下沉，文本表现正常。
+- `<number>`：定义首字母的大小，这决定首字母所占的行数，不允许使用负值。
+- `<integer>`：定义当给出了首字母的大小时，首字母应该下沉的行数。值必须大于零，如果省略，则复制`<number>`的值，向下取最近的正整数。
+
+该属性适用于`::first-letter`和块容器的第一个内联子元素。
+
+> `::first-letter`会选中某个块级元素第一行的第一个字母，并且文字所处的行之前没有其他内容。
+
+```html
+<style>
+  .normal::first-letter {
+    -webkit-initial-letter: normal;
+    initial-letter: normal;
+  }
+  .onefive::first-letter {
+    -webkit-initial-letter: 1.5;
+    initial-letter: 1.5;
+  }
+  .three::first-letter {
+    -webkit-initial-letter: 3;
+    initial-letter: 3;
+  }
+  .threeone::first-letter {
+    -webkit-initial-letter: 3 1;
+    initial-letter: 3 1;
+  }
+  .threetwo::first-letter {
+    -webkit-initial-letter: 3 2;
+    initial-letter: 3 2;
+  }
+  .threethree::first-letter {
+    -webkit-initial-letter: 3 3;
+    initial-letter: 3 3;
+  }
+  .threefour::first-letter {
+    -webkit-initial-letter: 3 4;
+    initial-letter: 3 4;
+  }
+</style>
+<body>
+  <p class="normal">Initial letter is normal</p>
+  <p class="onefive">Initial letter occupies 1.5 lines</p>
+  <p class="three">Initial letter occupies 3 lines</p>
+  <p class="threeone">Initial letter occupies 3 lines and sinks 1 lines</p>
+  <p class="threetwo">Initial letter occupies 3 lines and sinks 2 lines</p>
+  <p class="threethree">Initial letter occupies 3 lines and sinks 3 lines</p>
+  <p class="threefour">Initial letter occupies 3 lines and sinks 4 lines</p>
+</body>
+```
+
+
+
+![image-20230403225530000](./image-css属性/image-20230403225530000.png)

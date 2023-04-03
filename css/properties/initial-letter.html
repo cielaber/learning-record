@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .normal::first-letter {
+        -webkit-initial-letter: normal;
+        initial-letter: normal;
+      }
+      .onefive::first-letter {
+        -webkit-initial-letter: 1.5;
+        initial-letter: 1.5;
+      }
+      .three::first-letter {
+        -webkit-initial-letter: 3;
+        initial-letter: 3;
+      }
+      .threeone::first-letter {
+        -webkit-initial-letter: 3 1;
+        initial-letter: 3 1;
+      }
+      .threetwo::first-letter {
+        -webkit-initial-letter: 3 2;
+        initial-letter: 3 2;
+      }
+      .threethree::first-letter {
+        -webkit-initial-letter: 3 3;
+        initial-letter: 3 3;
+      }
+      .threefour::first-letter {
+        -webkit-initial-letter: 3 4;
+        initial-letter: 3 4;
+      }
+    </style>
+  </head>
+  <body>
+    <p class="normal">Initial letter is normal</p>
+    <p class="onefive">Initial letter occupies 1.5 lines</p>
+    <p class="three">Initial letter occupies 3 lines</p>
+    <p class="threeone">Initial letter occupies 3 lines and sinks 1 lines</p>
+    <p class="threetwo">Initial letter occupies 3 lines and sinks 2 lines</p>
+    <p class="threethree">Initial letter occupies 3 lines and sinks 3 lines</p>
+    <p class="threefour">Initial letter occupies 3 lines and sinks 4 lines</p>
+  </body>
+</html>
