@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      dd {
+        width: 90px;
+        border: 1px solid black;
+        hyphens: auto;
+        hyphenate-limit-chars: 18 11 1;
+      }
+      dd#string {
+        -webkit-hyphenate-character: "=";
+        hyphenate-character: "=";
+        hyphenate-limit-chars: 18 12 1;
+      }
+    </style>
+  </head>
+  <body>
+    <dl>
+      <dt><code>hyphenate-limit-chars: 18 11 1</code></dt>
+      <dd lang="en">Superc&shy;alifragilisticexpialidocious</dd>
+      <dt><code>hyphenate-limit-chars: 18 12 1</code></dt>
+      <dd id="string" lang="en">Superc&shy;alifragilisticexpialidocious</dd>
+    </dl>
+  </body>
+</html>

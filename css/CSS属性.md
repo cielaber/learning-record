@@ -1290,5 +1290,137 @@ clip-path = <clip-source> | [<basic-shape> || <geometry-box>] | none
 
 ![image-20230401231857097](./image-css属性/image-20230401231857097.png)
 
+### hyphenate-character
 
+`hyphenate-character = auto | <string>`
 
+属性设置在断字符中断之前的行末尾使用的连字字符。
+
+根据指定的连字符值显示自动连字符和软连字符。
+
+- auto：用户代理根据内容语言的排版约定选择适当的字符串。这是默认的属性值，只有在覆盖不同的继承值时才需要显式设置。
+
+```html
+<style>
+  dd {
+    width: 90px;
+    border: 1px solid black;
+    hyphens: auto;
+  }
+  dd#string {
+    -webkit-hyphenate-character: "=";
+    hyphenate-character: "=";
+  }
+</style>
+
+<body>
+  <dl>
+    <dt><code>hyphenate-character: "="</code></dt>
+    <dd id="string" lang="en">Superc&shy;alifragilisticexpialidocious</dd>
+    <dt><code>hyphenate-character is not set</code></dt>
+    <dd lang="en">Superc&shy;alifragilisticexpialidocious</dd>
+  </dl>
+</body>
+```
+
+![image-20230402160400730](./image-css属性/image-20230402160400730.png)
+
+### hyphenate-limit-chars
+
+`hyphenate-limit-chars = [ auto | <integer> ]{1,3}`
+
+属性指定允许连字符的最小单词长度，以及连字符前后的最小字符数。
+
+此属性提供了对文本中连字符的细粒度控制。这个控制能够避免尴尬的连字符，并为不同的语言设置适当的连字符，这反过来又允许更好的排版。
+
+- x y z：第一个值是单词需要连字符之前的最小单词长度。第二个值是连字符前的最小字符数。第三个值是连字符后的最小字符数。
+- x y：第一个值是单词需要连字符之前的最小单词长度。第二个值是连字符前和连字符后的最小字符数。
+- x：该值是单词需要连字符之前的最小单词长度。连字符前后的最小字符数将被设置为自动。
+- auto：如果设置为`auto`用户代理将为当前布局选择适当的值。除非用户代理可以计算出更好的值，否则将使用以下默认值：
+  - 需要连字符的最小单词长度：5
+  - 连字符前的最小字符数：2
+  - 连字符后的最小字符数：2
+
+```html
+<style>
+  dd {
+    width: 90px;
+    border: 1px solid black;
+    hyphens: auto;
+    hyphenate-limit-chars: 18 11 1;
+  }
+  dd#string {
+    -webkit-hyphenate-character: "=";
+    hyphenate-character: "=";
+    hyphenate-limit-chars: 18 12 1;
+  }
+</style>
+<body>
+  <dl>
+    <!-- 当设置连字符前最小字符数为11时，第二行可以刚好显示11个字符 -->
+    <dt><code>hyphenate-limit-chars: 18 11 1</code></dt>
+    <dd lang="en">Superc&shy;alifragilisticexpialidocious</dd>
+    <!-- 当设置连字符前最小字符数为12时，第二行就显示超过了11个字符 -->
+    <dt><code>hyphenate-limit-chars: 18 12 1</code></dt>
+    <dd id="string" lang="en">Superc&shy;alifragilisticexpialidocious</dd>
+  </dl>
+</body>
+```
+
+![image-20230402164040492](./image-css属性/image-20230402164040492.png)
+
+### hyphens
+
+`hyphens = none | manual | auto`
+
+属性告知浏览器在换行时如何使用连字符连接单词。可以完全阻止使用连字符，也可以控制浏览器什么时候使用，或者让浏览器决定什么时候使用。
+
+连字规则具有语言特性，在HTML中，由语言lang属性决定，浏览器只会在当前属性存在且有合适的连字字典可用的情况下使用连字进行连接。在XML中，必须使用`xml:lang`属性。
+
+> 在规范中，没有明确定义连字符的现实规则，所以具体连字符在不同浏览器中可能有所区别。
+
+- none：即便单词内有建议换行点也不会在那里换行。只会在空白符处换行。
+- manual：只有当单词内存在建议换行点时，才会在该位置断开单词并使用连字符换行。
+- auto：浏览器可以按照它选择的任何规则，在适当的连字符处自动打断单词。可以参照如下的建议换行点所述，应优先尽可能自动选择断行点。
+
+> **建议换行点**
+>
+> 有两个Unicode字符可以用于在文本中手动指定可能的换行点：
+>
+> - U+2010（HYPHEN）：“硬”连字符，表示一个可见的换行点。即使在指定的位置没有真正换行，连字符仍然会显示出来。
+> - U+00AD（SHY）：一个不可见的“软”连字符。此连字符不会在屏幕上显示出来，而是表示在必要时浏览器可能会在该位置断开单词并出现连字符。在HTML中，可以使用`&shy;来插入软连字符。
+
+```html
+<style>
+  dd {
+    width: 55px;
+    border: 1px solid black;
+  }
+  dd.none {
+    hyphens: none;
+  }
+  dd.manual {
+    hyphens: manual;
+  }
+  dd.auto {
+    hyphens: auto;
+  }
+</style>
+<body>
+  <dl>
+    <dt><code>none</code>: no hyphen; overflow if needed</dt>
+    <dd lang="en" class="none">An extreme&shy;ly long English word</dd>
+    <dt>
+      <code>manual</code>: hyphen only at &amp;hyphen; or &amp;shy; (if
+      needed)
+    </dt>
+    <dd lang="en" class="manual">An extreme&shy;ly long English word</dd>
+    <dt>
+      <code>auto</code>: hyphens where the algorithm decides (if needed)
+    </dt>
+    <dd lang="en" class="auto">An extreme&shy;ly long English word</dd>
+  </dl>
+</body>
+```
+
+![image-20230402170821914](./image-css属性/image-20230402170821914.png)
