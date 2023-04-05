@@ -1484,3 +1484,53 @@ clip-path = <clip-source> | [<basic-shape> || <geometry-box>] | none
 
 
 ![image-20230403225530000](./image-css属性/image-20230403225530000.png)
+
+### inline-size
+
+`inline-size = <'width'>`
+
+属性根据元素的书写模式定义了元素块的水平或者竖直尺寸。根据`writing-mode`的值，此属性对应于`width`或`height`属性。
+
+若书写模式为竖直朝向，则`inline-size`的值对应于元素的高度，否则对应于元素的宽度。与此相关的属性为`block-size`，此属性定义了元素另一方向的尺度。
+
+```html
+<style>
+  body {
+    display: flex;
+  }
+  p {
+    background-color: aqua;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .text1 {
+    inline-size: 200px;
+    writing-mode: horizontal-tb;
+  }
+  .text2 {
+    inline-size: 200px;
+    writing-mode: vertical-lr;
+  }
+  .text3 {
+    inline-size: auto;
+    writing-mode: horizontal-tb;
+  }
+  .text4 {
+    inline-size: auto;
+    writing-mode: vertical-lr;
+  }
+</style>
+<body>
+  <!-- 水平方向，宽度200px -->
+  <p class="text1">玫瑰到了花期</p>
+  <!-- 竖直方向，高度200px -->
+  <p class="text2">玫瑰到了花期</p>
+  <!-- 水平方向，宽度自适应 -->
+  <p class="text3">玫瑰到了花期</p>
+  <!-- 竖直方向，高度自适应 -->
+  <p class="text4">玫瑰到了花期</p>
+</body>
+```
+
+![image-20230404214310200](./image-css属性/image-20230404214310200.png)

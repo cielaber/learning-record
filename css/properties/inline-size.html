@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        display: flex;
+      }
+      p {
+        background-color: aqua;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .text1 {
+        inline-size: 200px;
+        writing-mode: horizontal-tb;
+      }
+      .text2 {
+        inline-size: 200px;
+        writing-mode: vertical-lr;
+      }
+      .text3 {
+        inline-size: auto;
+        writing-mode: horizontal-tb;
+      }
+      .text4 {
+        inline-size: auto;
+        writing-mode: vertical-lr;
+      }
+    </style>
+  </head>
+  <body>
+    <p class="text1">玫瑰到了花期</p>
+    <p class="text2">玫瑰到了花期</p>
+    <p class="text3">玫瑰到了花期</p>
+    <p class="text4">玫瑰到了花期</p>
+  </body>
+</html>
