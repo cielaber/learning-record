@@ -1534,3 +1534,55 @@ clip-path = <clip-source> | [<basic-shape> || <geometry-box>] | none
 ```
 
 ![image-20230404214310200](./image-css属性/image-20230404214310200.png)
+
+### letter-spacing
+
+`letter-spacing = normal | <length>`
+
+属性用于设置文本字符的间距表现。在渲染文本时添加到字符之间的自然间距中。`letter-spacing`的正值会导致字符分布得更远，而`letter-sapcing`的负值会使字符更接近。
+
+- normal：此间距是按照当前字体的正常间距确定的。和0不同的是，`normal`会让用户代理调整文字之间空间来对对齐文字。
+- `<length>`：指定文字间的间距以代替默认间距。可以是负值，但有可能会出现执行限制。用户代理不会在此基础上进一步增加或缩减来对齐文字。
+
+一个很大的正或负的`letter-spacing`值会将应用这个样式的单词变为不可读的。给文本`letter-spacing`属性应用了一个很大的正值，字母之间的距离会很远，以至于文本中的单词将显示为一系列的单独的、无任何关联的字母。给`letter-sapcing`属性应用了一个很大的负值，字母将会相互重叠到一个点，在这个点上单词可能无法识别了。
+
+最佳的易辨认的字母间距必须根据具体情况来确定，因为不同的字体系列具有不同的字符宽度。没有任何一个值可以确保所有字体系列自动保持它们的可读性。
+
+```	html
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+  p {
+    background-color: rgb(229, 229, 199);
+    padding: 5px;
+    align-self: flex-start;
+    margin: 5px;
+  }
+  .normal {
+    letter-spacing: normal;
+  }
+  .em-wide {
+    letter-spacing: 0.4em;
+  }
+  .em-wider {
+    letter-spacing: 1em;
+  }
+  .em-tight {
+    letter-spacing: -0.05em;
+  }
+  .px-wide {
+    letter-spacing: 6px;
+  }
+</style>
+<body>
+  <p class="normal">这世间，青山灼灼，星光杳杳；秋雨渐渐，晚风慢慢</p>
+  <p class="em-wide">这世间，青山灼灼，星光杳杳；秋雨渐渐，晚风慢慢</p>
+  <p class="em-wider">这世间，青山灼灼，星光杳杳；秋雨渐渐，晚风慢慢</p>
+  <p class="em-tight">这世间，青山灼灼，星光杳杳；秋雨渐渐，晚风慢慢</p>
+  <p class="px-wide">这世间，青山灼灼，星光杳杳；秋雨渐渐，晚风慢慢</p>
+</body>
+```
+
+![image-20230405222658332](./image-css属性/image-20230405222658332.png)
