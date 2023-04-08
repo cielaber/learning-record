@@ -2172,3 +2172,111 @@ mix-blend-mode = <blend-mode> | plus-darker | plus-lighter
 ```
 
 ![image-20230407231926908](./image-css属性/image-20230407231926908.png)
+
+### object-fit
+
+`object = fill | contain | cover | none | scale-down`
+
+属性指定可替换元素(如：`<img>`或`<video>`)的内容应该如何适应到其使用高度和宽度确定的框。
+
+> 在CSS中，可替换元素的展现效果不是由CSS来控制的。这些元素是一种外部对象，它们外观的渲染，是独立于CSS的。
+>
+> 简单来说，它们的内容不受当前文档的样式的影响，CSS可以影响可替换元素的位置，但不会影响到可替换元素自身的内容。某些可替换元素，例如`<iframe>`元素，可能具有自己的样式表，但它们不会继承父文档的样式。
+>
+> CSS能对可替换元素产生的唯一影响在于：部分属性支持控制元素内容在其框中的位置或者定位方式。
+>
+> 典型的可替换元素有：`<iframe>`、`video`、`embed`、`img`。
+
+- fill：被替换的内容正好填充元素的内容框。整个对象将完全填充此框。如果对象的宽高比与内容框不相匹配，那么该对象将被拉伸以适应内容框。
+- contain：被替换的内容将被缩放，以在填充元素的内容框时保持其宽高比。整个对象在填充盒子的同时保留其长宽比，因此如果宽高比与框的宽高比不匹配，该对象将被添加黑边。
+- cover：被替换的内容在保持宽高比的同时填充元素的整个内容框。如果对象的宽高比与内容框不相匹配，该对象将被裁减以适应内容框。
+- none：被替换的内容将保持其原有的尺寸。
+- scale-down：内容高的尺寸与`none`或`contain`中的一个相同，取决于它们两个之间谁得到的对象尺寸会更小一些。
+
+```html
+<style>
+  body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  h2 {
+    font-family: Courier New, monospace;
+    font-size: 1em;
+    margin: 1em 0 0.3em;
+  }
+  img {
+    width: 150px;
+    height: 100px;
+    border: 1px solid #000;
+    margin: 10px 0;
+  }
+  .narrow {
+    width: 100px;
+    height: 150px;
+  }
+  .fill {
+    object-fit: fill;
+  }
+  .contain {
+    object-fit: contain;
+  }
+  .cover {
+    object-fit: cover;
+  }
+  .none {
+    object-fit: none;
+  }
+  .scale-down {
+    object-fit: scale-down;
+  }
+</style>
+<body>
+  <div>
+    <h2>object-fit: fill</h2>
+    <img class="fill" src="http://www.eternitywith.xyz/image/38.jpg" />
+
+    <img class="fill narrow" src="http://www.eternitywith.xyz/image/38.jpg" />
+  </div>
+  <div>
+    <h2>object-fit: contain</h2>
+    <img class="contain" src="http://www.eternitywith.xyz/image/38.jpg" />
+
+    <img
+      class="contain narrow"
+      src="http://www.eternitywith.xyz/image/38.jpg"
+    />
+  </div>
+
+  <div>
+    <h2>object-fit: cover</h2>
+    <img class="cover" src="http://www.eternitywith.xyz/image/38.jpg" />
+
+    <img
+      class="cover narrow"
+      src="http://www.eternitywith.xyz/image/38.jpg"
+    />
+  </div>
+
+  <div>
+    <h2>object-fit: none</h2>
+    <img class="none" src="http://www.eternitywith.xyz/image/38.jpg" />
+
+    <img class="none narrow" src="http://www.eternitywith.xyz/image/38.jpg" />
+  </div>
+
+  <div>
+    <h2>object-fit: scale-down</h2>
+    <img class="scale-down" src="http://www.eternitywith.xyz/image/38.jpg" />
+
+    <img
+      class="scale-down narrow"
+      src="http://www.eternitywith.xyz/image/38.jpg"
+    />
+  </div>
+</body>
+```
+
+
+
+![image-20230408220201258](./image-css属性/image-20230408220201258.png)
