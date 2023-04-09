@@ -2280,3 +2280,94 @@ mix-blend-mode = <blend-mode> | plus-darker | plus-lighter
 
 
 ![image-20230408220201258](./image-css属性/image-20230408220201258.png)
+
+### object-position
+
+```css
+object-position = <position>  
+
+<position> = [ left | center | right ] || [ top | center | bottom ]  | [ left | center | right | <length-percentage> ] [ top | center | bottom | <length-percentage> ]?  | [ [ left | right ] <length-percentage> ] && [ [ top | bottom ] <length-percentage> ]  
+
+<length-percentage> = <length> | <percentage>  
+```
+
+属性规定了可替换元素的内容在其内容框中的位置。可替换元素的内容框未被对象所覆盖的部分，则会显示该元素的背景。
+
+使用 1 到 4 个值来定义该元素在它所处的二维平面中的定位。可以使用相对或绝对偏移。这些定位方式允许被替换元素的对象被定位到内容框外部。
+
+```html
+<style>
+  body {
+    display: flex;
+  }
+  .output {
+    background-color: var(--background-primary);
+    height: 300px;
+    overflow: hidden;
+    padding: 1em;
+    position: relative;
+  }
+  .output section {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+  }
+  img {
+    height: 250px;
+    width: 250px;
+    object-fit: none;
+    border: 1px solid red;
+    flex-grow: 0;
+  }
+</style>
+<body>
+  <div>
+    <div class="output">
+      <section>
+        <img
+          src="https://interactive-examples.mdn.mozilla.net/media/examples/moon.jpg"
+          class="transition-all"
+          style="object-position: right top"
+        />
+      </section>
+    </div>
+  </div>
+  <div>
+    <div class="output">
+      <section>
+        <img
+          src="https://interactive-examples.mdn.mozilla.net/media/examples/moon.jpg"
+          class="transition-all"
+          style="object-position: 50% 50%"
+        />
+      </section>
+    </div>
+  </div>
+  <div>
+    <div class="output">
+      <section>
+        <img
+          src="https://interactive-examples.mdn.mozilla.net/media/examples/moon.jpg"
+          class="transition-all"
+          style="object-position: left bottom"
+        />
+      </section>
+    </div>
+  </div>
+  <div>
+    <div class="output">
+      <section>
+        <img
+          src="https://interactive-examples.mdn.mozilla.net/media/examples/moon.jpg"
+          class="transition-all"
+          style="object-position: 100px 100px"
+        />
+      </section>
+    </div>
+  </div>
+</body>
+```
+
+![image-20230409232442527](./image-css属性/image-20230409232442527.png)
