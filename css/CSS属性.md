@@ -2371,3 +2371,56 @@ object-position = <position>
 ```
 
 ![image-20230409232442527](./image-css属性/image-20230409232442527.png)
+
+### orphans
+
+`orphans = <integer [0,∞]>`
+
+属性设置块容器中必须显示在页、区域或者列底部的最小行数。
+
+当一个块级元素的文本被分割成多个页面时，`orphans`属性可以指定在最后一页中应该保留行。使用`orphans`属性可以确保最后一页不包含太少的文本，从而提高页面布局的美观性和可读性。
+
+需要注意的是，这个属性只在分页时起作用，如果段落不会被分页显示，那么设置orphans也没有任何效果。
+
+```html
+<style>
+  div {
+    width: 630px;
+    background-color: #8cffa0;
+    height: 150px;
+    columns: 3;
+  }
+  p {
+    background-color: #8ca0ff;
+  }
+  p:first-child {
+    margin-top: 0;
+  }
+</style>
+<body>
+  <div style="orphans: 2;">
+    <p>This is the first paragraph containing some text.</p>
+    <p>
+      This is the second paragraph containing some more text than the first
+      one. It is used to demonstrate how orphans work.
+    </p>
+    <p>
+      This is the third paragraph. It has a little bit more text than the
+      first one.
+    </p>
+  </div>
+  <div style="orphans: 3;">
+    <p>This is the first paragraph containing some text.</p>
+    <p>
+      This is the second paragraph containing some more text than the first
+      one. It is used to demonstrate how orphans work.
+    </p>
+    <p>
+      This is the third paragraph. It has a little bit more text than the
+      first one.
+    </p>
+  </div>
+</body>
+```
+
+![image-20230410230753909](./image-css属性/image-20230410230753909.png)
