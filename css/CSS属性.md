@@ -2424,3 +2424,37 @@ object-position = <position>
 ```
 
 ![image-20230410230753909](./image-css属性/image-20230410230753909.png)
+
+### paint-order
+
+`painter-order = normal | [ fill || stroke || markers ]`
+
+属性可以让你控制文本区域和图形绘制的填充和绘制的顺序。
+
+如果没有指定值，默认顺序将是`fill`、`stroke`、`markers`。
+
+当只指定一个值的时候，这个值将会被首先渲染，然后剩下的两个值将会以默认顺序渲染，当指定两个值的时候，这两个值以指定的顺序渲染，接着渲染剩下未指定的那个。
+
+> 在这个属性的值中，markers只有当在绘制SVG图形时引用了`marker-*`属性（如：`marker-start`）和`marker`元素时才能进行控制。他们不适用于HTML文本，所以大部分情况下只能决定`stroke`和`fill`的顺序。
+
+```html
+<style>
+  p {
+    font-family: sans-serif;
+    font-size: 5rem;
+    font-weight: bold;
+    margin: 0;
+    -webkit-text-stroke: 5px red;
+  }
+  .stroke-behind {
+    /* 先描边，然后填充，然后 markers */
+    paint-order: stroke fill;
+  }
+</style>
+<body>
+  <p>Stroke in front</p>
+  <p class="stroke-behind">Stroke behind</p>
+</body>
+```
+
+![image-20230411224030286](./image-css属性/image-20230411224030286.png)

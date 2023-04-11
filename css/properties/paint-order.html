@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      p {
+        font-family: sans-serif;
+        font-size: 5rem;
+        font-weight: bold;
+        margin: 0;
+        -webkit-text-stroke: 5px red;
+      }
+      .stroke-behind {
+        /* 先描边，然后填充，然后 markers */
+        paint-order: stroke fill;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Stroke in front</p>
+
+    <p class="stroke-behind">Stroke behind</p>
+  </body>
+</html>
