@@ -2458,3 +2458,453 @@ object-position = <position>
 ```
 
 ![image-20230411224030286](./image-css属性/image-20230411224030286.png)
+
+### perspective
+
+`perspective = none | <length [0, ∞]>`
+
+属性指定了观察者与z=0平面的距离，使具有三维位置变换的元素产生透视效果。z>0的三维元素比正常大，而z<0时则比正常小，大小程度由该属性的值决定。
+
+- none：没有应用该属性样式时的默认值。
+- length：指定观察者距离z=0平面的距离，为元素及内容应用透视变换。当值为0或负值时，无透视变换。
+
+> 需要注意，在css中3d坐标和数学坐标有所不同：
+>
+> ![initial_coordinate_system](./image-css属性/initial_coordinate_system.png)
+
+```html
+<style>
+  /* Shorthand classes for different perspective values */
+  .pers250 {
+    perspective: 250px;
+  }
+  .pers350 {
+    perspective: 350px;
+  }
+  .pers500 {
+    perspective: 500px;
+  }
+  .pers650 {
+    perspective: 650px;
+  }
+  /* Define the container div, the cube div, and a generic face */
+  .container {
+    width: 200px;
+    height: 200px;
+    margin: 75px 0 0 75px;
+    border: none;
+  }
+  .cube {
+    width: 100%;
+    height: 100%;
+    backface-visibility: visible;
+    perspective-origin: 150% 150%;
+    transform-style: preserve-3d;
+  }
+  .face {
+    display: block;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border: none;
+    line-height: 100px;
+    font-family: sans-serif;
+    font-size: 60px;
+    color: white;
+    text-align: center;
+  }
+  /* Define each face based on direction */
+  .front {
+    background: rgba(0, 0, 0, 0.3);
+    transform: translateZ(50px);
+  }
+  .back {
+    background: rgba(0, 255, 0, 1);
+    color: black;
+    transform: rotateY(180deg) translateZ(50px);
+  }
+  .right {
+    background: rgba(196, 0, 0, 0.7);
+    transform: rotateY(90deg) translateZ(50px);
+  }
+  .left {
+    background: rgba(0, 0, 196, 0.7);
+    transform: rotateY(-90deg) translateZ(50px);
+  }
+  .top {
+    background: rgba(196, 196, 0, 0.7);
+    transform: rotateX(90deg) translateZ(50px);
+  }
+  .bottom {
+    background: rgba(196, 0, 196, 0.7);
+    transform: rotateX(-90deg) translateZ(50px);
+  }
+  /* Make the table a little nicer */
+  th,
+  p,
+  td {
+    background-color: #eeeeee;
+    padding: 10px;
+    font-family: sans-serif;
+    text-align: left;
+  }
+</style>
+<body>
+  <table>
+    <tbody>
+      <tr>
+        <th><code>perspective: 250px;</code></th>
+        <th><code>perspective: 350px;</code></th>
+      </tr>
+      <tr>
+        <td>
+          <div class="container">
+            <div class="cube pers250">
+              <div class="face front">1</div>
+              <div class="face back">2</div>
+              <div class="face right">3</div>
+              <div class="face left">4</div>
+              <div class="face top">5</div>
+              <div class="face bottom">6</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="container">
+            <div class="cube pers350">
+              <div class="face front">1</div>
+              <div class="face back">2</div>
+              <div class="face right">3</div>
+              <div class="face left">4</div>
+              <div class="face top">5</div>
+              <div class="face bottom">6</div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th><code>perspective: 500px;</code></th>
+        <th><code>perspective: 650px;</code></th>
+      </tr>
+      <tr>
+        <td>
+          <div class="container">
+            <div class="cube pers500">
+              <div class="face front">1</div>
+              <div class="face back">2</div>
+              <div class="face right">3</div>
+              <div class="face left">4</div>
+              <div class="face top">5</div>
+              <div class="face bottom">6</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="container">
+            <div class="cube pers650">
+              <div class="face front">1</div>
+              <div class="face back">2</div>
+              <div class="face right">3</div>
+              <div class="face left">4</div>
+              <div class="face top">5</div>
+              <div class="face bottom">6</div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+```
+
+![image-20230414213615457](./image-css属性/image-20230414213615457.png)
+
+### perspective-origin
+
+```css
+perspective-origin = <position>
+
+<position> = [ left | center | right ] || [ top | center | bottom ] | [ left | center | right | <length-percentage> ] [ top | center | bottom | <length-percentage> ]? | [ [ left | right ] <length-percentage> ] && [ [ top | bottom ] <length-percentage> ]
+
+<length-percentage> = <length> | <percentage>
+```
+
+属性指定了观察者的位置，用作`perspective`属性的消失点。
+
+- x-position：指定消失点的横坐标，其值有以下形式：
+  - length-percentage：长度值或相对于元素宽度的百分比值，可以为负值。
+  - left：0值的简写。
+  - center：50%的简写。
+  - right：100%的简写。
+- y-position：指定消失点的纵坐标，其值有以下形式：
+  - length-percentage：长度值或相对于元素高度的百分比值，可以为负值。
+  - top：0值的简写。
+  - center：50%的简写。
+  - bottom：100%的简写。
+
+```html
+<style>
+  /* Shorthand classes for perspective-origin values */
+  .potl {
+    perspective-origin: top left;
+    -webkit-perspective-origin: top left;
+  }
+  .potm {
+    perspective-origin: top;
+    -webkit-perspective-origin: top;
+  }
+  .potr {
+    perspective-origin: top right;
+    -webkit-perspective-origin: top right;
+  }
+  .poml {
+    perspective-origin: left;
+    -webkit-perspective-origin: left;
+  }
+  .pomm {
+    perspective-origin: 50% 50%;
+    -webkit-perspective-origin: 50% 50%;
+  }
+  .pomr {
+    perspective-origin: right;
+    -webkit-perspective-origin: right;
+  }
+  .pobl {
+    perspective-origin: bottom left;
+    -webkit-perspective-origin: bottom left;
+  }
+  .pobm {
+    perspective-origin: bottom;
+    -webkit-perspective-origin: bottom;
+  }
+  .pobr {
+    perspective-origin: bottom right;
+    -webkit-perspective-origin: bottom right;
+  }
+  /* Define the container div, the cube div, and a generic face */
+  .container {
+    width: 100px;
+    height: 100px;
+    margin: 24px;
+    border: none;
+  }
+  .cube {
+    width: 100%;
+    height: 100%;
+    backface-visibility: visible;
+    perspective: 300px;
+    transform-style: preserve-3d;
+    -webkit-backface-visibility: visible;
+    -webkit-perspective: 300px;
+    -webkit-transform-style: preserve-3d;
+  }
+  .face {
+    display: block;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border: none;
+    line-height: 100px;
+    font-family: sans-serif;
+    font-size: 60px;
+    color: white;
+    text-align: center;
+  }
+  /* Define each face based on direction */
+  .front {
+    background: rgba(0, 0, 0, 0.3);
+    transform: translateZ(50px);
+    -webkit-transform: translateZ(50px);
+  }
+  .back {
+    background: rgba(0, 255, 0, 1);
+    color: black;
+    transform: rotateY(180deg) translateZ(50px);
+    -webkit-transform: rotateY(180deg) translateZ(50px);
+  }
+  .right {
+    background: rgba(196, 0, 0, 0.7);
+    transform: rotateY(90deg) translateZ(50px);
+    -webkit-transform: rotateY(90deg) translateZ(50px);
+  }
+  .left {
+    background: rgba(0, 0, 196, 0.7);
+    transform: rotateY(-90deg) translateZ(50px);
+    -webkit-transform: rotateY(-90deg) translateZ(50px);
+  }
+  .top {
+    background: rgba(196, 196, 0, 0.7);
+    transform: rotateX(90deg) translateZ(50px);
+    -webkit-transform: rotateX(90deg) translateZ(50px);
+  }
+  .bottom {
+    background: rgba(196, 0, 196, 0.7);
+    transform: rotateX(-90deg) translateZ(50px);
+    -webkit-transform: rotateX(-90deg) translateZ(50px);
+  }
+  /* Make the table a little nicer */
+  th,
+  p,
+  td {
+    background-color: #eeeeee;
+    padding: 10px;
+    font-family: sans-serif;
+    text-align: left;
+  }
+</style>
+<body>
+  <table>
+    <tbody>
+      <tr>
+        <th>
+          <code>perspective-origin: top left;</code>
+        </th>
+        <th>
+          <code>perspective-origin: top;</code>
+        </th>
+        <th>
+          <code>perspective-origin: top right;</code>
+        </th>
+      </tr>
+      <tr>
+        <td>
+          <div class="container">
+            <div class="cube potl">
+              <div class="face front">1</div>
+              <div class="face back">2</div>
+              <div class="face right">3</div>
+              <div class="face left">4</div>
+              <div class="face top">5</div>
+              <div class="face bottom">6</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="container">
+            <div class="cube potm">
+              <div class="face front">1</div>
+              <div class="face back">2</div>
+              <div class="face right">3</div>
+              <div class="face left">4</div>
+              <div class="face top">5</div>
+              <div class="face bottom">6</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="container">
+            <div class="cube potr">
+              <div class="face front">1</div>
+              <div class="face back">2</div>
+              <div class="face right">3</div>
+              <div class="face left">4</div>
+              <div class="face top">5</div>
+              <div class="face bottom">6</div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <code>perspective-origin: left;</code>
+        </th>
+        <th>
+          <code>perspective-origin: 50% 50%;</code>
+        </th>
+        <th>
+          <code>perspective-origin: right;</code>
+        </th>
+      </tr>
+      <tr>
+        <td>
+          <div class="container">
+            <div class="cube poml">
+              <div class="face front">1</div>
+              <div class="face back">2</div>
+              <div class="face right">3</div>
+              <div class="face left">4</div>
+              <div class="face top">5</div>
+              <div class="face bottom">6</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="container">
+            <div class="cube pomm">
+              <div class="face front">1</div>
+              <div class="face back">2</div>
+              <div class="face right">3</div>
+              <div class="face left">4</div>
+              <div class="face top">5</div>
+              <div class="face bottom">6</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="container">
+            <div class="cube pomr">
+              <div class="face front">1</div>
+              <div class="face back">2</div>
+              <div class="face right">3</div>
+              <div class="face left">4</div>
+              <div class="face top">5</div>
+              <div class="face bottom">6</div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <code>perspective-origin: bottom left;</code>
+        </th>
+        <th>
+          <code>perspective-origin: bottom;</code>
+        </th>
+        <th>
+          <code>perspective-origin: bottom right;</code>
+        </th>
+      </tr>
+      <tr>
+        <td>
+          <div class="container">
+            <div class="cube pobl">
+              <div class="face front">1</div>
+              <div class="face back">2</div>
+              <div class="face right">3</div>
+              <div class="face left">4</div>
+              <div class="face top">5</div>
+              <div class="face bottom">6</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="container">
+            <div class="cube pobm">
+              <div class="face front">1</div>
+              <div class="face back">2</div>
+              <div class="face right">3</div>
+              <div class="face left">4</div>
+              <div class="face top">5</div>
+              <div class="face bottom">6</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="container">
+            <div class="cube pobr">
+              <div class="face front">1</div>
+              <div class="face back">2</div>
+              <div class="face right">3</div>
+              <div class="face left">4</div>
+              <div class="face top">5</div>
+              <div class="face bottom">6</div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+```
+
+![image-20230414221401850](./image-css属性/image-20230414221401850.png)
