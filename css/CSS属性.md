@@ -3009,3 +3009,85 @@ perspective-origin = <position>
 ```
 
 ![image-20230415222737362](./image-css属性/image-20230415222737362.png)
+
+### quotes
+
+`quotes = auto | none | [ <string> <string> ]+`
+
+属性用于设置引号的样式。
+
+- none：`content`属性的值`open-quote`和`close-quote`将不会展示引号。
+- 用适当的引号，基于所选元素上设置的任何语言值(例如，通过`lang`属性)。
+- `[ <string> <string> ]+`：一组或者多组`<string>`的值对应`open-quote`和`close-quote`。第一对表示引号的外层，第二对表示第一个嵌套层，下一对表示第三层，以此类推。
+
+```html
+<style>
+  q {
+    quotes: auto;
+  }
+  .custom1 q {
+    quotes: "'" "'";
+  }
+  .custom2 q {
+    quotes: "„" "“" "‚" "‘";
+  }
+  .custom3 q {
+    quotes: "«" "»" "‹" "›";
+  }
+</style>
+<body>
+  <div lang="fr">
+    <q>Ceci est une citation française.</q>
+  </div>
+  <hr />
+  <div lang="ru">
+    <q>Это русская цитата</q>
+  </div>
+  <hr />
+  <div lang="de">
+    <q>Dies ist ein deutsches Zitat</q>
+  </div>
+  <hr />
+  <div lang="en">
+    <q>This is an English quote.</q>
+  </div>
+  <hr />
+  <div>
+    <q style="quotes: none"
+      >Show us the wonder-working <q>Brothers,</q> let them come out
+      publicly—and we will believe in them!</q
+    >
+  </div>
+  <hr />
+  <div>
+    <q style="quotes: initial"
+      >Show us the wonder-working <q>Brothers,</q> let them come out
+      publicly—and we will believe in them!</q
+    >
+  </div>
+  <hr />
+  <div class="custom1">
+    <q
+      >Show us the wonder-working <q>Brothers,</q> let them come out
+      publicly—and we will believe in them!</q
+    >
+  </div>
+  <hr />
+  <div class="custom2">
+    <q
+      >Show us the wonder-working <q>Brothers,</q> let them come out
+      publicly—and we will believe in them!</q
+    >
+  </div>
+  <hr />
+  <div class="custom3">
+    <q
+      >Show us the wonder-working <q>Brothers,</q> let them come out
+      publicly—and we will believe in them!</q
+    >
+  </div>
+  <hr />
+</body>
+```
+
+![image-20230416221958145](./image-css属性/image-20230416221958145.png)

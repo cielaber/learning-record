@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      q {
+        quotes: auto;
+      }
+      .custom1 q {
+        quotes: "'" "'";
+      }
+      .custom2 q {
+        quotes: "„" "“" "‚" "‘";
+      }
+      .custom3 q {
+        quotes: "«" "»" "‹" "›";
+      }
+    </style>
+  </head>
+  <body>
+    <div lang="fr">
+      <q>Ceci est une citation française.</q>
+    </div>
+    <hr />
+    <div lang="ru">
+      <q>Это русская цитата</q>
+    </div>
+    <hr />
+    <div lang="de">
+      <q>Dies ist ein deutsches Zitat</q>
+    </div>
+    <hr />
+    <div lang="en">
+      <q>This is an English quote.</q>
+    </div>
+    <hr />
+    <div>
+      <q style="quotes: none"
+        >Show us the wonder-working <q>Brothers,</q> let them come out
+        publicly—and we will believe in them!</q
+      >
+    </div>
+    <hr />
+    <div>
+      <q style="quotes: initial"
+        >Show us the wonder-working <q>Brothers,</q> let them come out
+        publicly—and we will believe in them!</q
+      >
+    </div>
+    <hr />
+    <div class="custom1">
+      <q
+        >Show us the wonder-working <q>Brothers,</q> let them come out
+        publicly—and we will believe in them!</q
+      >
+    </div>
+    <hr />
+    <div class="custom2">
+      <q
+        >Show us the wonder-working <q>Brothers,</q> let them come out
+        publicly—and we will believe in them!</q
+      >
+    </div>
+    <hr />
+    <div class="custom3">
+      <q
+        >Show us the wonder-working <q>Brothers,</q> let them come out
+        publicly—and we will believe in them!</q
+      >
+    </div>
+    <hr />
+  </body>
+</html>
