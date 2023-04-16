@@ -2908,3 +2908,104 @@ perspective-origin = <position>
 ```
 
 ![image-20230414221401850](./image-css属性/image-20230414221401850.png)
+
+### pointer-events
+
+`pointer-events = auto | none | visiblePainted | visibleFill | visibleStroke | visible | painted | fill | stroke | all`
+
+属性指定在什么情况下某个特定的图形元素可以成为鼠标事件的target。
+
+当此属性未指定时，`visiblePainted` 的值相同特征适用于SVG内容。
+
+除了指示该元素不是鼠标事件的目标外，值`none`表示鼠标事件“穿透”该元素并且指定该元素“下面”的任何东西。
+
+- auto：与`pointer-events`属性未指定时的表现效果相同，对于SVG内容，该值与`visiblePainted`效果相同。
+
+- none：元素永远不会成为鼠标事件的target。但是，当其后代元素的`pointer-events`属性指定其他值时，鼠标事件可以指向后代元素，这种情况下，鼠标事件将在捕获或者冒泡阶段触发父元素的事件侦听器。
+
+- visiblePainted：只适用于SVG，元素只有在以下情况下才会成为鼠标事件的目标：
+
+  - `visibility`属性值为`visible`，且鼠标指针在元素内部，且`fill`属性指定了`none`之外的值。
+  - `visibility`属性值为`visible`，且鼠标指针在元素内部，且`stroke`属性指定了`none`之外的值。
+
+- visibleFill：只适用于SVG。只有在元素`visibility`属性值为`visible`，且鼠标指针在元素内部，元素才会成为鼠标事件的目标，`fill`属性的值不影响事件处理。
+
+- visibleStroke：只适用于SVG。只有在元素`visibility`属性值为`visible`，且鼠标指针在元素边界时，元素才会成为鼠标事件的目标，`stroke`属性的值不影响事件处理。
+
+- visible：只适用于SVG。只有在元素`visibility`属性值为`visible`，且鼠标指针在元素内部或边界时，元素才会成为鼠标事件的目标，`fill`和`stroke`属性的值不影响事件处理。
+
+- painted：只适用于SVG。元素只有在以下情况下才会成为鼠标事件的目标：
+
+  - 鼠标指针在元素内部，且`fill`属性指定了`none`之外的值。
+  - 鼠标指针在元素边界上，且`stroke`属性指定了`none`之外的值。
+
+  `visibility`属性的值不影响事件处理。
+
+- fill：只适用于SVG。只有鼠标指针在元素内部时，元素才会成为鼠标事件的目标，`fill`和`visibility`属性的值不影响事件处理。
+
+- stoke：只适用于SVG。只有鼠标指针在元素边界上时，元素才会成为鼠标事件的目标，`stroke`和`visibility`属性的值不影响事件处理。
+
+- all：只适用于SVG。只有鼠标指针在元素外部或边界时，元素才会成为鼠标事件的目标，`fill`、`stroke`、`visibility`属性的值不影响事件处理。
+
+> 使用`pointer-events`来阻止元素成为鼠标事件目标不一定意味着元素上的事件侦听器永远不会触发。如果元素后代明确指定了`pointer-events`属性并允许其成为鼠标事件的目标，那么指向该元素的任何事件在事件传播过程中都将通过父元素，并以适当的方式触发其上的事件侦听器。当然，位于父元素但不在后代元素上的鼠标活动都不会被父元素和后代元素捕获（鼠标活动将会穿过父元素而指向其位于下面的元素。）
+>
+> 该属性也可以用来提高滚动时的帧频。的确，当滚动时，鼠标悬停在某些元素上，则触发其上的hover效果，然而这些影响通常不被用户注意，并多半导致滚动出现问题。对`body`元素应用`pointer-events: none`，禁用了包括`hover`在内的鼠标事件，从而提高滚动性能。
+
+```html
+<style>
+  a[href="http://example.com"] {
+    pointer-events: none;
+  }
+</style>
+<body>
+  <ul>
+    <li><a href="https://developer.mozilla.org/">MDN</a></li>
+    <!-- 点击example.com时不会跳转 -->
+    <li><a href="http://example.com">example.com</a></li>
+  </ul>
+</body>
+```
+
+### print-color-adjust
+
+`print-color-adjust = economy | exact`
+
+属性设置用户代理可以做什么来优化输出设备上元素的外观。默认情况下，考虑到输出设备的类型和功能，允许浏览器对元素的外观进行任何必要和谨慎的调整。
+
+- economy：允许用户代理在其认为适当且谨慎的情况下对元素进行调整，以优化要渲染的设备的输出。例如，在打印时，浏览器可能会选择忽略所有背景图像并调整文本颜色，以确保对比度针对在白纸上阅读进行了优化。这是默认的。
+- exact：元素的内容经过精心设计，以一种经过深思熟虑和/或重要的方式使用颜色、图像和样式，因此被浏览器更改实际上可能会使事情变得更糟而不是更好。除非用户要求，否则不得更改内容的外观。例如，一个页面可能包含一个信息列表，其背景色在白色和浅灰色之间交替。删除背景色会降低内容的可读性。
+
+> 浏览器可能有许多原因希望偏离指定的外观，例如：
+>
+> - 内容使用的文字和背景颜色在输出设备上会过于相似，难以辨认。
+> - 如果输出设备是打印机，为了节省墨水，可能会删除深色或密度极高的背景图像。
+> - 打印页面时，浏览器可能希望将深色背景的浅色文本替换为白色背景的深色文本。
+
+```html
+<style>
+  .my-box {
+    background-color: black;
+    background-image: linear-gradient(
+      rgba(0, 0, 180, 0.5),
+      rgba(70, 140, 220, 0.5)
+    );
+    color: #900;
+    width: 15rem;
+    height: 6rem;
+    text-align: center;
+    font: 24px "Helvetica", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    print-color-adjust: exact;
+  }
+</style>
+<body>
+  <!-- 在此示例中，显示了一个框，该框使用 background-image 和半透明的 linear-gradient() 函数在黑色背景颜色之上，以在中等红色文本后面具有深蓝色渐变。无论出于何种原因，这都是任何渲染环境（包括在纸上）中所需的外观，因此我们还使用 print-color-adjust: exact 告诉浏览器在渲染框时不要对框进行颜色或样式调整。 -->
+  <div class="my-box">
+    <p>Need more contrast!</p>
+  </div>
+</body>
+```
+
+![image-20230415222737362](./image-css属性/image-20230415222737362.png)
