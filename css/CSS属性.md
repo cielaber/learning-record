@@ -3195,3 +3195,34 @@ perspective-origin = <position>
 
 
 ![image-20230417211805933](./image-css属性/Apr-19-2023 20-58-31.gif)
+
+### ruby-position
+
+`ruby-position = [ alternate || [ over | under ] ] |  inter-character`
+
+属性定义ruby元素相对于其基本元素的位置。它可以位于元素上方(`over`)、下方(`under`)或元素右侧字符之间(`inter-character`)。
+
+- over：表示对于水平脚本，ruby必须放置于文本上方，对于垂直脚本，ruby必须放置于其右侧。
+- under：表示对于水平脚本，ruby必须放置在文本下方，对于垂直脚本，ruby则放置在其左侧。
+- inter-character：指示ruby必须放置在不同的字符之间。
+- alternate：表示当有多层注释时，ruby在over和under之间交替。
+
+```html
+<body>
+  <ruby style="ruby-position: over">
+    <rb>超電磁砲</rb>
+    <rp>（</rp><rt>レールガン</rt><rp>）</rp>
+  </ruby>
+  <ruby style="ruby-position: under">
+    <rb>超電磁砲</rb>
+    <rp>（</rp><rt>レールガン</rt><rp>）</rp>
+  </ruby>
+  <ruby style="ruby-position: alternate">
+    <rb>A</rb><rb>B</rb><rb>C</rb>
+    <rtc>Above</rtc>
+    <rtc>Below</rtc>
+  </ruby>
+</body>
+```
+
+![image-20230419211752252](./image-css属性/image-20230419211752252.png)
