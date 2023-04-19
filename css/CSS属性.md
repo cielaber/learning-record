@@ -3091,3 +3091,57 @@ perspective-origin = <position>
 ```
 
 ![image-20230416221958145](./image-css属性/image-20230416221958145.png)
+
+### resize
+
+`resize = none | both | horizontal | vertical | block | inline`
+
+属性设置元素是否可以调整尺寸，以及可调整的方向。
+
+属性适用于`overflow`不是`visible`的元素，以及可替换的表示图像或者视频的元素或者iframe。
+
+- none：元素不提供用户可控的调整其尺寸的方法。
+- both：元素显示可让用户调整其尺寸的机制，可沿水平和竖直方向调整尺寸。
+- horizontal：元素显示可让用户沿水平方向调整其尺寸的机制。
+- vertical：元素显示可让用户沿竖直方向调整其尺寸的机制。
+- block：元素显示可让用户沿块向（水平或竖直方向之一，取决于`writing-mode`和`direction`的值）调整其尺寸的机制。
+- inline：元素显示可让用户沿行向（水平或竖直方向之一，取决于`writing-mode`和`direction`的值）调整其尺寸的机制。
+
+```html
+<style>
+  .resizable {
+    resize: both;
+    overflow: scroll;
+    border: 1px solid black;
+  }
+  div {
+    height: 300px;
+    width: 300px;
+  }
+  p {
+    height: 200px;
+    width: 200px;
+  }
+  textarea {
+    width: 400px;
+    height: 50px;
+    resize: none;
+  }
+</style>
+<body>
+  <textarea>
+原本可以调整尺寸的<code>textarea</code>元素，可以用这属性禁用其调整属性。</textarea
+  >
+  <hr />
+  <div class="resizable">
+    <p class="resizable">
+      此段落可在各个方向上调整尺寸，这是因为在此元素上 CSS `resize` 属性设置为
+      `both`。
+    </p>
+  </div>
+</body>
+```
+
+
+
+![image-20230417211805933](./image-css属性/image-20230417211805933.png)
