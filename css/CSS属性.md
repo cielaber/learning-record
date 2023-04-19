@@ -3145,3 +3145,53 @@ perspective-origin = <position>
 
 
 ![image-20230417211805933](./image-css属性/image-20230417211805933.png)
+
+### rotate
+
+`rotate = none | <angle> | [ x | y | z | <number>{3} ] && <angle>`
+
+属性允许单独设置`transform`的旋转属性。这种映射方式可以让我们更方便的设置我们想要的效果，并且避免了简写形式需要记忆属性顺序的不方便之处。
+
+- none：指定不应用旋转。
+- 角度值：指定受影响元素绕Z轴旋转的角度。等效于`rotate()`（2D旋转）函数。
+- x，y，z轴名称加上角度值：要旋转受影响元素的轴的名称("x","y"或"z")，加上旋转的角度。等效于 `rotateX()`/`rotateY()`/`rotateZ()` (3D旋转)函数。
+- 向量加上角度值：三个`<number>`表示以原点为中心的矢量，该矢量定义了要绕其旋转元素的线，再加上一个`<angle>`，指定要旋转的角度。等效于`rotate3d()`(3D旋转)函数。
+
+```html
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    font-family: sans-serif;
+  }
+  div {
+    width: 150px;
+    margin: 0 auto;
+    margin-top: 100px;
+  }
+  p {
+    padding: 10px 5px;
+    border: 3px solid black;
+    border-radius: 20px;
+    width: 150px;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .rotate {
+    transition: rotate 1s;
+  }
+  div:hover .rotate {
+    rotate: 1 -0.5 1 180deg;
+  }
+</style>
+<body>
+  <div>
+    <p class="rotate">Rotation</p>
+  </div>
+</body>
+```
+
+
+
+![image-20230417211805933](./image-css属性/Apr-19-2023 20-58-31.gif)
