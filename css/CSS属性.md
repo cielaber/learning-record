@@ -3226,3 +3226,51 @@ perspective-origin = <position>
 ```
 
 ![image-20230419211752252](./image-css属性/image-20230419211752252.png)
+
+### scale
+
+`scale = none | [ <mumber> | <percentage> ]{1,3}`
+
+属性允许可以分别且独立地指定CSS属性`transform`缩放的比例。这更好的映射到典型的UI(用户界面)用法中，并免去了在指定变换值时必须记住变换函数的精确顺序的麻烦。
+
+- none：指定不进行缩放。
+- 单一数值：单一的数值即指定了一个缩放系数，同时作用于X轴和Y轴让该元素进行缩放，相对于指定了单个值的scale()(2D缩放)函数。
+- 两个长度/百分比值：两个数值分别指定了2D比例的X轴和Y轴的缩放系数，相对于指定了两个值的scale()(2D缩放)函数。
+- 三个长度/百分比值：三个数值分别指定了3D比例的X轴、Y轴和Z轴的缩放系数。相对于一个scale3d()(3D缩放)函数。
+
+```html
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    font-family: sans-serif;
+  }
+  div {
+    width: 150px;
+    margin: 0 auto;
+    margin-top: 100px;
+  }
+  p {
+    padding: 10px 5px;
+    border: 3px solid black;
+    border-radius: 20px;
+    width: 150px;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .scale {
+    transition: scale 1s;
+  }
+  div:hover .scale {
+    scale: 2 0.7;
+  }
+</style>
+<body>
+  <div>
+    <p class="scale">Scaling</p>
+  </div>
+</body>
+```
+
+![image-20230419211752252](./image-css属性/Apr-20-2023 20-31-53.gif)
