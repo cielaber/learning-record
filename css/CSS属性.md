@@ -3274,3 +3274,32 @@ perspective-origin = <position>
 ```
 
 ![image-20230419211752252](./image-css属性/Apr-20-2023 20-31-53.gif)
+
+### tab-size
+
+`tab-size = <number> | <length>`
+
+属性用于自定义制表符(`U+0009`)的宽度。
+
+- `integer`：制表符对应的空格数，必须为非负值。
+- `length`：制表符的宽度，必须为非负值。
+
+```html
+<style>
+  p {
+    white-space: pre;
+  }
+  .custom {
+    -moz-tab-size: 3;
+    tab-size: 3;
+  }
+</style>
+<body>
+  <p>no tab</p>
+  <p>&#0009;default tab size of 8 spaces</p>
+  <p class="custom">&#0009;custom tab size of 3 spaces</p>
+  <p>&nbsp;&nbsp;&nbsp;3 spaces, equivalent to the custom tab size</p>
+</body>
+```
+
+![image-20230421212637511](./image-css属性/image-20230421212637511.png)
