@@ -3304,6 +3304,83 @@ perspective-origin = <position>
 
 ![image-20230421212637511](./image-css属性/image-20230421212637511.png)
 
+### table-layout
+
+`table-layout = auto | fixed`
+
+属性定义了用于布局表格的单元格、行和列的算法。
+
+- auto：默认情况下，大多数浏览器自动表格布局算法。表格及其单元格的宽度会根据内容自动调整大小。
+
+- fixed：表格和列的宽度是由table和col元素的宽度或第一行单元格的宽度来设置的。后续行中的单元格不会影响列的宽度。
+
+  在“fixed”布局方法下，一旦下载并分析了第一行表格，整个表格就可以被渲染出来。相比于“automatic”布局方法，这可以加快渲染时间，但是后续单元格内容可能不适合提供的列宽。单元格使用`overflow`属性来确定是否要裁减任何溢出的内容，但仅当表格具有已知宽度是才会生效，否则，它们不会溢出到单元格之外。
+
+```html
+<style>
+  body {
+    display: flex;
+    gap: 30px;
+  }
+  table {
+    width: 120px;
+    border: 1px solid red;
+  }
+  td {
+    border: 1px solid blue;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .fixed {
+    table-layout: fixed;
+  }
+</style>
+<!-- 这个例子使用了固定的表格布局，结合 width 属性，限制了表格的宽度。text-overflow 属性被用来在单词太长无法容纳时应用省略号。如果表格布局是 auto，表格将会根据其内容自动扩展大小，而不考虑指定的 width。 -->
+<body>
+  <table>
+    <tr>
+      <td>Ed</td>
+      <td>Wood</td>
+    </tr>
+    <tr>
+      <td>Albert</td>
+      <td>Schweitzer</td>
+    </tr>
+    <tr>
+      <td>Jane</td>
+      <td>Fonda</td>
+    </tr>
+    <tr>
+      <td>William</td>
+      <td>Shakespeare</td>
+    </tr>
+  </table>
+  <table class="fixed">
+    <tr>
+      <td>Ed</td>
+      <td>Wood</td>
+    </tr>
+    <tr>
+      <td>Albert</td>
+      <td>Schweitzer</td>
+    </tr>
+    <tr>
+      <td>Jane</td>
+      <td>Fonda</td>
+    </tr>
+    <tr>
+      <td>William</td>
+      <td>Shakespeare</td>
+    </tr>
+  </table>
+</body>
+```
+
+![image-20230423214642524](./image-css属性/image-20230423214642524.png)
+
+
+
 ### touch-action
 
 `touch-action = auto | none | [ [ pan-x | pan-left | pan-right ] || [ pan-y | pan-up | pan-down ] || pinch-zoom ] | manipulation`

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        display: flex;
+        gap: 30px;
+      }
+      table {
+        width: 120px;
+        border: 1px solid red;
+      }
+      td {
+        border: 1px solid blue;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .fixed {
+        table-layout: fixed;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td>Ed</td>
+        <td>Wood</td>
+      </tr>
+      <tr>
+        <td>Albert</td>
+        <td>Schweitzer</td>
+      </tr>
+      <tr>
+        <td>Jane</td>
+        <td>Fonda</td>
+      </tr>
+      <tr>
+        <td>William</td>
+        <td>Shakespeare</td>
+      </tr>
+    </table>
+    <table class="fixed">
+      <tr>
+        <td>Ed</td>
+        <td>Wood</td>
+      </tr>
+      <tr>
+        <td>Albert</td>
+        <td>Schweitzer</td>
+      </tr>
+      <tr>
+        <td>Jane</td>
+        <td>Fonda</td>
+      </tr>
+      <tr>
+        <td>William</td>
+        <td>Shakespeare</td>
+      </tr>
+    </table>
+  </body>
+</html>
