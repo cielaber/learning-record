@@ -3417,3 +3417,53 @@ html {
 }
 ```
 
+### translate
+
+```css
+translate = none | <length-percentage> [ <length-percentage> <length>? ]?
+
+<length-percentage> = <length> | <percentage>
+```
+
+属性允许单独声明平移变换，并独立于`transform`属性。这在一些典型的用户界面上更好用，而且这样就无需在`transform`中声明该函数并记住转换函数的确切顺序了。
+
+- 单个长度/百分比值：以恶搞长度值或百分比，表示二维平移，与声明了X轴和Y轴的平移一样（此时省略的第二个值默认为0）。等同于在`translate()`函数（2D平移）中指定单个值。
+- 两个长度/百分比值：两个长度或者百分比表示在二维上分别按照指定X轴和Y轴的值进行的平移。等同于在`translate()`函数（2D平移）中指定两个值。
+- 三个长度/百分比值：三个长度值或百分比，表示分别指定X轴、Y轴、Z轴的值进行三维平移。等同于`translate3d()`函数（3D平移）。
+
+```html
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    font-family: sans-serif;
+  }
+  div {
+    width: 150px;
+    margin: 0 auto;
+    margin-top: 100px;
+  }
+  p {
+    padding: 10px 5px;
+    border: 3px solid black;
+    border-radius: 20px;
+    width: 150px;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .translate {
+    transition: translate 1s;
+  }
+  div:hover .translate {
+    translate: 200px 50px;
+  }
+</style>
+<body>
+  <div>
+    <p class="translate">Translation</p>
+  </div>
+</body>
+```
+
+![image-20230423214642524](./image-css属性/Apr-24-2023 21-19-43.gif)
