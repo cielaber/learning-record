@@ -3467,3 +3467,44 @@ translate = none | <length-percentage> [ <length-percentage> <length>? ]?
 ```
 
 ![image-20230423214642524](./image-css属性/Apr-24-2023 21-19-43.gif)
+
+### user-select
+
+`user-select = auto | text | none | contain | all`
+
+属性控制用户能否选中文本。
+
+> `user-select`不是继承属性，即使默认的属性值`auto`的表现基本上以继承为主，似乎是继承属性。甚至，WebKit/基于Chromium的浏览器在实现此属性时将其作为继承属性，但这和相关规范是相悖的，且会带来一些问题。目前，Chromium暂时选择修复其作为继承属性所带来的问题，使其最终表现符合规范。
+
+- auto：auto的具体取值取决于一系列条件，具体如下：
+  - 在`::befoer`和`::after`伪元素上，采用的属性值是`none`。
+  - 如果元素是可编辑元素，则采用的属性值是`contain`。
+  - 否则，如果此元素的父元素的`user-select`采用的属性值为`all`，则该元素采用的属性值也为`all`。
+  - 否则，如果此元素的父元素的`user-select`采用的属性值为`none`，则该元素采用的属性值也为`none`。
+  - 否则，采用的属性值为`text`。
+- text：用户可以选择文本。
+- all：在一个HTML编辑器中，当双击子元素或者上下文时，那么包含该子元素的最顶层元素也会被选中。
+- contain：允许在元素内选择，但是，选区将被限制在元素的边界之内。
+
+```html
+<style>
+  .unselectable {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  .all {
+    -moz-user-select: all;
+    -webkit-user-select: all;
+    -ms-user-select: all;
+    user-select: all;
+  }
+</style>
+<body>
+  <p>你应该可以选中这段文本。</p>
+  <p class="unselectable">嘿嘿，你不能选中这段文本！</p>
+  <p class="all">点击一次就会选中这段文本。</p>
+</body>
+```
+

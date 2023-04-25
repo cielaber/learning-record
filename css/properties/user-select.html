@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .unselectable {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      .all {
+        -moz-user-select: all;
+        -webkit-user-select: all;
+        -ms-user-select: all;
+        user-select: all;
+      }
+    </style>
+  </head>
+  <body>
+    <p>你应该可以选中这段文本。</p>
+    <p class="unselectable">嘿嘿，你不能选中这段文本！</p>
+    <p class="all">点击一次就会选中这段文本。</p>
+  </body>
+</html>
