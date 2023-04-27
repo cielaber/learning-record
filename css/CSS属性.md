@@ -3508,3 +3508,152 @@ translate = none | <length-percentage> [ <length-percentage> <length>? ]?
 </body>
 ```
 
+### vertival-align
+
+`vertical-align = [ first | last ] || <'alignment-baseline'> || <'baseline-shift'>`
+
+属性用来指定行内元素或者表格单元格元素的垂直对齐方式。
+
+`vertical-align`属性可被用于两种环境：
+
+- 使行内元素盒模型与其行内元素容器垂直对齐。例如，用于垂直对齐一行文本内的图片。
+- 垂直对齐表格单元内容。
+
+注意`vertical-align`只对行内元素、行内块元素和表格单元格元素生效，不能垂直对齐块级元素。
+
+`vertical-align`属性指定为下面列出的值之一。没有基线的元素，使用外边距的下边缘替代。
+
+行内元素的值
+
+- 相对父元素的值，这些值使元素相对其父元素垂直对齐：
+  - baseline：使元素的基线与父元素的基线对齐。HTML规范没有详细说明部分可替代元素的基线，如`<textarea>`，这意味着这些元素使用此值的表现因浏览器而异。
+  - sub：使元素的基线与父元素的下标基线对齐。
+  - super：使元素的基线与父元素的上标基线对齐。
+  - text-top：使元素的顶部与父元素的字体顶部对齐。
+  - text-bottom：使元素的底部与父元素的字体底部对齐。
+  - middle：使元素的中部与父元素的基线加上父元素[x-height](https://www.zhangxinxu.com/wordpress/2015/06/about-letter-x-of-css/)的一半对齐。
+  - `<length>`：使元素的基线对齐到父元素的基线之上的给定长度，可以是负数。
+  - `<percentage>`：使元素的基线对齐服饰元素的基线之上的给定百分比，该百分比是line-height属性的百分比，可以是负数。
+- 相对行的值，下列值使其元素相对整行垂直对齐：
+  - top：使元素及其后代元素的顶部与整行的顶部对齐。
+  - bottom：使元素及其后代元素的底部与整行的底部对齐。
+
+表格单元格的值（可以是负数）
+
+- baseline(以及 `sub`, `super`, `text-top`, `text-bottom`, `<length>`, `<percentage>`)：使单元格的基线，与该行中所有以基线对齐的其他单元格的基线对齐。
+- top：使单元格内边距的上边缘与该行顶部对齐。
+- middle：使单元格内边距盒模型在该行内居中对齐。
+- bottom：使单元格内边距的下边缘与该行底部对齐。
+
+```html
+<style>
+    body {
+        display: flex;
+        gap: 50px;
+        flex-wrap: wrap;
+    }
+    img.top {
+        vertical-align: text-top;
+    }
+
+    img.bottom {
+        vertical-align: text-bottom;
+    }
+
+    img.middle {
+        vertical-align: middle;
+    }
+
+    table {
+        margin-left: auto;
+        margin-right: auto;
+        width: 80%;
+    }
+    table,
+    th,
+    td {
+        border: 1px solid black;
+    }
+    td {
+        padding: 0.5em;
+        font-family: monospace;
+    }
+</style>
+<body>
+    <div>
+        <div>
+            An
+            <img src="../image-css属性/frame_image.svg" alt="link" width="32" height="32" />
+            image with a default alignment.
+        </div>
+        <div>
+            An
+            <img class="top" src="../image-css属性/frame_image.svg" alt="link" width="32" height="32" />
+            image with a text-top alignment.
+        </div>
+        <div>
+            An
+            <img class="bottom" src="../image-css属性/frame_image.svg" alt="link" width="32" height="32" />
+            image with a text-bottom alignment.
+        </div>
+        <div>
+            An
+            <img class="middle" src="../image-css属性/frame_image.svg" alt="link" width="32" height="32" />
+            image with a middle alignment.
+        </div>
+    </div>
+    <div>
+        <p>
+            top:
+            <img style="vertical-align: top" src="../image-css属性/star.png" alt="star" />
+            middle:
+            <img style="vertical-align: middle" src="../image-css属性/star.png" alt="star" />
+            bottom:
+            <img style="vertical-align: bottom" src="../image-css属性/star.png" alt="star" />
+            super:
+            <img style="vertical-align: super" src="../image-css属性/star.png" alt="star" />
+            sub:
+            <img style="vertical-align: sub" src="../image-css属性/star.png" alt="star" />
+        </p>
+        <p>
+            text-top:
+            <img style="vertical-align: text-top" src="../image-css属性/star.png" alt="star" />
+            text-bottom:
+            <img style="vertical-align: text-bottom" src="../image-css属性/star.png" alt="star" />
+            0.2em:
+            <img style="vertical-align: 0.2em" src="../image-css属性/star.png" alt="star" />
+            -1em:
+            <img style="vertical-align: -1em" src="../image-css属性/star.png" alt="star" />
+            20%:
+            <img style="vertical-align: 20%" src="../image-css属性/star.png" alt="star" />
+            -100%:
+            <img style="vertical-align: -100%" src="../image-css属性/star.png" alt="star" />
+        </p>
+    </div>
+    <div>
+        <table>
+            <tr>
+                <td style="vertical-align: baseline">baseline</td>
+                <td style="vertical-align: top">top</td>
+                <td style="vertical-align: middle">middle</td>
+                <td style="vertical-align: bottom">bottom</td>
+                <td>
+                    <p>
+                        There is a theory which states that if ever anyone discovers
+                        exactly what the Universe is for and why it is here, it will
+                        instantly disappear and be replaced by something even more bizarre
+                        and inexplicable.
+                    </p>
+                    <p>
+                        There is another theory which states that this has already
+                        happened.
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+```
+
+![image-20230426221137778](./image-css属性/image-20230426221137778.png)
+
