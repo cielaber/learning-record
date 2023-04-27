@@ -3657,3 +3657,43 @@ translate = none | <length-percentage> [ <length-percentage> <length>? ]?
 
 ![image-20230426221137778](./image-css属性/image-20230426221137778.png)
 
+### visibility
+
+`visibility = visible | hidden | collapse`
+
+属性显示或隐藏元素而不更改文档的布局。该属性还可以隐藏`<table>`中的行或列。
+
+要隐藏并从文档布局中移除元素，请将`display`属性设置为`none`来代替`visibility`属性。
+
+- visible：元素可见。
+- hidden：元素不可见(不绘制)，但仍然影响常规的布局。如果将其子元素的`visibility`设置为`visible`，则该子元素依然可见。元素无法获得焦点（例如通过`tabindex`进行键盘导航）。
+- collapse：该关键字对不同的元素有不同的效果：
+  - 用于`<table>`行、列、列组、行组，将隐藏表格的行或列，并且不占用任何空间（与将`display:none`用于表格的行、列上的效果相当）。但是计算其他行和列的大小时，仍会像显示折叠行或列中的单元格一样计算。此值允许从表中快速删除行或列，而不强制重新计算整个表的宽度和高度。
+  - 折叠的弹性元素和ruby元素会被隐藏，它们本来将要占用的空间会被移除。
+  - 对于其他元素，`collapse`被视为与`hidden`相同。
+
+将元素的`visibility`设置为`hidden`会将其从可访问树中移除。这将导致元素及所有子元素不再被屏幕阅读器所读取。
+
+在设置动画时，会对visibility在可见和不可见之间插值。因此起始值或结束值必须是`visible`，否则不会发生插值。该值会以离散的步长进行插值，计时函数的值介于0到1之间，会被映射到`visible`，对于其他计时函数的值（即过渡开始/结束时或`cubic-bezier()`函数结果的y值在[0, 1]的范围之外）则映射到较为接近的一个端点。
+
+有些现代浏览器对 `visibility: collapse` 不支持或是不完全支持。很多时候用在不是表格行与列的元素上时不会正确的将它显示成 `visibility: hidden` 的效果。
+
+`visibility:collapse` 会改变表格的布局，嵌套在其被折叠的单元格中的表格也会同样被折叠，除非专门为此嵌套表格指定 `visibility: visible`。
+
+```html
+<style>
+  .visible {
+    visibility: visible;
+  }
+  .not-visible {
+    visibility: hidden;
+  }
+</style>
+<body>
+  <p class="visible">第一段是可见的。</p>
+  <p class="not-visible">第二段是不可见的。</p>
+  <p class="visible">第三段是可见的。注意第二段仍占用空间。</p>
+ </body>
+```
+
+![image-20230427220812523](./image-css属性/image-20230427220812523.png)
