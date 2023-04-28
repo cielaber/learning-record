@@ -3697,3 +3697,96 @@ translate = none | <length-percentage> [ <length-percentage> <length>? ]?
 ```
 
 ![image-20230427220812523](./image-css属性/image-20230427220812523.png)
+
+### white-space
+
+`white-space = normal | pre | nowrap | pre-wrap | break-spaces | pre-line`
+
+属性用来设置如何处理元素中的空白。
+
+- normal：连续的空白符会被合并，换行符会被当作空白符来处理。换行在填充「行框盒子」时是必要的。
+- nowrap：和normal一样，连续的空白符会被合并。但文本内的换行无效。
+- pre：连续的空白符会被保留。在遇到换行符或者`<br>`元素时才会换行。
+- pre-wrap：连续的空白符会被保留。在遇到换行符或者`<br>`元素，或者需要为了填充「行框盒子」时才会换行。
+- pre-line：连续的空白符会被合并。在遇到换行符或者`<br>`元素，或者需要为了填充「行框盒子」时会换行。
+- break-space与pre-wrap的行为相同，除了：
+  - 任何保留的空白序列总是占用空间，包括在行尾。
+  - 每个保留的空格字符后都存在换行机会，包括空格字符之间。
+  - 这样保留的空间占用空间而不会挂起，从而影响盒子的固有尺寸（最小内容大小和最大内容大小）。
+
+这个属性表明了两件事：
+
+- 空白字符是否以及它们该如何合并。
+- 行是否采用软换行。
+
+下面表格总结了各种white- space值的行为：
+
+|              | 换行符 | 空格和制表符 | 文字换行 | 行尾空格 |
+| ------------ | ------ | ------------ | -------- | -------- |
+| normal       | 合并   | 合并         | 换行     | 删除     |
+| nowrap       | 合并   | 合并         | 不换行   | 删除     |
+| pre          | 保留   | 保留         | 不换行   | 保留     |
+| pre-wrap     | 保留   | 保留         | 换行     | 挂起     |
+| pre-line     | 保留   | 合并         | 换行     | 删除     |
+| break-spaces | 保留   | 保留         | 换行     | 换行     |
+
+```html
+<style>
+  .box {
+    width: 500px;
+    padding: 16px;
+    border-radius: 10px;
+  }
+  #css-code {
+    background-color: rgb(220, 220, 220);
+    font-size: 16px;
+    font-family: monospace;
+  }
+  #css-code select {
+    font-family: inherit;
+  }
+  #results {
+    background-color: rgb(230, 230, 230);
+    overflow-x: scroll;
+    height: 250px;
+    white-space: normal;
+    font-size: 14px;
+  }
+</style>
+<body>
+  <div id="css-code" class="box">
+    p { white-space:
+    <select>
+      <option>normal</option>
+      <option>nowrap</option>
+      <option>pre</option>
+      <option>pre-wrap</option>
+      <option>pre-line</option>
+      <option>break-spaces</option>
+    </select>
+    }
+  </div>
+  <div id="results" class="box">
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+      occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+      mollit anim id est laborum.
+    </p>
+  </div>
+  <script>
+    const select = document.querySelector("#css-code select");
+    const results = document.querySelector("#results p");
+    select.addEventListener("change", (e) => {
+      results.setAttribute("style", `white-space: ${e.target.value}`);
+    });
+  </script>
+</body>
+```
+
+
+
+![image-20230428135850819](./image-css属性/image-20230428135850819.png)
