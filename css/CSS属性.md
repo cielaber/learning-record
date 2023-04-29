@@ -3790,3 +3790,52 @@ translate = none | <length-percentage> [ <length-percentage> <length>? ]?
 
 
 ![image-20230428135850819](./image-css属性/image-20230428135850819.png)
+
+### widows
+
+`widows = <integer [0,∞]>`
+
+属性可以用来设置一个块级容器在新的分页、区域或者列的顶部需要结合在一起的最小行数。
+
+在排版中，widows指的是在新页面顶部单独出现的段落的最后一行。（这一行来自于上一个页面的段落）
+
+widows:5 意味着至少有 5 行必须在分页符下面可见。
+
+orphans 属性设置或返回一个元素必须在页面底部的可见行的最小数量。
+
+```html
+ <style>
+  div {
+    background-color: #8cffa0;
+    columns: 3;
+    widows: 2;
+  }
+  p {
+    background-color: #8ca0ff;
+  }
+  p:first-child {
+    margin-top: 0;
+  }
+</style>
+<body>
+  <div>
+    <p>This is the first paragraph containing some text.</p>
+    <p>
+      This is the second paragraph containing some more text than the first
+      one. It is used to demonstrate how widows work.
+    </p>
+    <p>
+      This is the third paragraph. It has a little bit more text than the
+      first one.
+    </p>
+  </div>
+</body>
+```
+
+设置为2时，最少留了2行。
+
+![image-20230429214715746](./image-css属性/image-20230429214715746.png)
+
+再放大一点时，一行都不留。
+
+![image-20230429214830456](./image-css属性/image-20230429214830456.png)
