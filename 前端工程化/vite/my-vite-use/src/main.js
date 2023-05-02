@@ -1,3 +1,3 @@
-const { createApp } = require('vue')
+import { createApp } from 'vue'
 
 console.log(createApp)

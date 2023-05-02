@@ -20,7 +20,9 @@ async function createServer() {
 }
 
 async function runOptimize(config, server) {
-    await createOptimizeDepsRun(config)
+    const optimizeDeps = await createOptimizeDepsRun(config)
+    server._optimizeDepsMetadata = optimizeDeps.metadata;
+    console.log(server._optimizeDepsMetadata)
 }
 
 exports.createServer = createServer;
