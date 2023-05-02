@@ -3,11 +3,15 @@ const { log } = require('console')
 const serverStaticMiddleware = require('./middlewares/static')
 const resolveConfig = require('../config')
 const { createOptimizeDepsRun } = require('../optimizer')
+const transformMiddleware = require('./middlewares/transform')
+const { createPluginContainer } = require('./pluginContainer')
 
 async function createServer() {
     const config = resolveConfig()
     const middlewares = connect()
+    const pluginContainer = await createPluginContainer(config)
     const server = {
+        pluginContainer,
         async linsten(port) {
             await runOptimize(config, server)
             require('http').createServer(middlewares).listen(port, () => {
@@ -15,6 +19,12 @@ async function createServer() {
             })
         }
     }
+    for (const plugin of config.plugins) {
+        if (plugin.configureServer) {
+            plugin.configureServer(server)
+        }
+    }
+    middlewares.use(transformMiddleware(server))
     middlewares.use(serverStaticMiddleware(config))
     return server;
 }

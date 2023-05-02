@@ -26,6 +26,29 @@ async function createPluginContainer({ root, plugins }) {
             return {
                 id: normalizePath(resolveId)
             }
+        },
+        async load(id) {
+            let ctx = new PluginContext()
+            for (const plugin of plugins) {
+                if (!plugin.load) continue
+                const result = await plugin.load.call(ctx, id)
+                if (result) {
+                    return result
+                }
+            }
+            return null
+        },
+        async transform(code, id) {
+            let ctx = new PluginContext()
+            for (const plugin of plugins) {
+                if (!plugin.transform) continue
+                const result = await plugin.transform.call(ctx, code, id)
+                if (!result) {
+                    continue
+                }
+                code  = result.code || result
+            }
+            return { code }
         }
     }
 

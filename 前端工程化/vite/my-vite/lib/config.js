@@ -1,3 +1,4 @@
+const { resolvePlugins } = require('./plugins')
 const { normalizePath } = require('./utils')
 const path = require('path')
 
@@ -9,6 +10,8 @@ function resolveConfig() {
         root,
         cacheDir,
     }
+    const plugins = resolvePlugins(config)
+    config.plugins = plugins
     return config
 }
 
