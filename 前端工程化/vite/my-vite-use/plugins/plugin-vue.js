@@ -1,14 +1,35 @@
 const fs = require('fs')
-const { parse, compileScript, compileStyle, compileTemplate, rewriteDefault } = require('vue/compiler-sfc')
+const { parse, compileScript, compileStyleAsync, compileTemplate, rewriteDefault } = require('vue/compiler-sfc')
 
 function vue() {
     return {
         name: 'vue',
+        async load(id) {
+            const { filename, query } = parseVueRequest(id)
+            if (query.has('vue')) {
+                const descriptor = await getDescriptor(filename)
+                if (query.get('type') === 'style') {
+                    let block = descriptor.styles[Number(query.get('index'))]
+                    if (block) {
+                        return {
+                            code: block.content
+                        }
+                    }
+                }
+            }
+            return null;
+        },
         // 此插件的核心功能是把App.vue的原始内容编译成js内容返回
         async transform(code, id) {
-            const { filename } = parseVueRequest(id)
+            const { filename, query } = parseVueRequest(id)
             if (filename.endsWith('.vue')) {
-                let result = await transformMain(code, filename)
+                let result
+                if (query.get('type') === 'style') {
+                    const descriptor = await getDescriptor(filename)
+                    result = await transformStyle(code, descriptor, query.get('index'))
+                } else {
+                    result = await transformMain(code, filename)
+                }
                 return result
             }
             return null
@@ -16,11 +37,34 @@ function vue() {
     }
 }
 
+async function transformStyle(code, descriptor, index) {
+    const block = descriptor.styles[index]
+    const result = await compileStyleAsync({
+        filename: descriptor.filename,
+        source: code,
+        id: `data-v-${descriptor.id}`,
+        scoped: block.scoped
+    })
+    let styleCode = result.code
+    // 将样式文件转为js代码
+    const injectCode = [
+        `let style = document.createElement('style');`,
+        `style.innerHTML = ${JSON.stringify(styleCode)}`,
+        `document.head.appendChild(style)`
+    ].join('\n')
+
+    return {
+        code: injectCode
+    }
+}
+
 async function transformMain(source, filename) {
     const descriptor = await getDescriptor(filename)
     const scriptCode = getScriptCode(descriptor, filename)
     const templateCode = genTempalteCode(descriptor, filename)
+    const styleCode = genStyleCode(descriptor, filename)
     let resolveCode = [
+        styleCode,
         templateCode,
         scriptCode,
         `_sfc_main.render=render`,
@@ -30,6 +74,18 @@ async function transformMain(source, filename) {
     return {
         code: resolveCode
     }
+}
+
+function genStyleCode(descriptor, filename) {
+    let styleCode = ''
+    if (descriptor.styles.length) {
+        descriptor.styles.forEach((style, index) => {
+            const query = `?vue&type=style&index=${index}&lang.css`
+            const styleRequest = (filename + query).replace(/\\/g, '/')
+            styleCode += `\nimport ${JSON.stringify(styleRequest)}`
+        })
+    }
+    return styleCode
 }
 
 function genTempalteCode(descriptor, filename) {

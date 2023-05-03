@@ -9,7 +9,7 @@ function transformMiddleware(server) {
         }
         let url = parse(req.url).pathname
         if (isJSRequest(url)) {
-            const result = await transformRequest(url, server)
+            const result = await transformRequest(req.url, server)
             if (result) {
                 // 把转换后得到的代码发送给客户端
                 return send(req, res, result.code, 'js')
