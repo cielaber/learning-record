@@ -20,7 +20,7 @@ function resolvePlugin(config) {
             }
             // 相对路径
             if (importee.startsWith('.')){
-                const baseDir = path.dirname(importee)
+                const baseDir = path.dirname(importer)
                 const fsPath = path.resolve(baseDir, importee)
                 return { id: fsPath }
             }

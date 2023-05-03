@@ -25,6 +25,15 @@ async function esBuildScanPlugin(config, depImports) {
         name: 'vite:dep-scan',
         setup(build) {
             // 解析路径
+            build.onResolve({ filter: /\.vue$/, }, async ({ path, importer }) => {
+                const resolved = await resolve(path, importer)
+                if (resolved) {
+                    return {
+                        path: resolved.id || resolved,
+                        external: true // 把vue文件标识为外部文件
+                    }
+                }
+            });
             build.onResolve({ filter: htmlTypesRE, }, async ({ path, importer }) => {
                 const resolved = await resolve(path, importer)
                 if (resolved) {

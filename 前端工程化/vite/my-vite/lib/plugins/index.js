@@ -2,11 +2,12 @@ const resolvePlugin = require('./resolve')
 const importAnalysisPlugin = require('./importAnalysis')
 const preAliasPlugin = require('./preAlias')
 
-function resolvePlugins(config) {
+async function resolvePlugins(config, userPlugins) {
     return [
         preAliasPlugin(config),
         resolvePlugin(config),
-        importAnalysisPlugin(config)
+        ...userPlugins,
+        importAnalysisPlugin(config),
     ]
 }
 

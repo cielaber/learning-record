@@ -7,7 +7,7 @@ const transformMiddleware = require('./middlewares/transform')
 const { createPluginContainer } = require('./pluginContainer')
 
 async function createServer() {
-    const config = resolveConfig()
+    const config = await resolveConfig()
     const middlewares = connect()
     const pluginContainer = await createPluginContainer(config)
     const server = {
