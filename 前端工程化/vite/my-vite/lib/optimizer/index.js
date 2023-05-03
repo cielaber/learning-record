@@ -7,7 +7,7 @@ const fs = require('fs-extra')
 async function createOptimizeDepsRun(config){
     // 分析依赖，找出项目中依赖了哪些第三方模块
     const deps = await scanImports(config)
-    console.log(deps);
+    // console.log(deps);
 
     // 缓存目录
     const { cacheDir } = config

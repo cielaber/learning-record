@@ -4,6 +4,14 @@ const { parse, compileScript, compileStyleAsync, compileTemplate, rewriteDefault
 function vue() {
     return {
         name: 'vue',
+        config(config) {
+            return {
+                define: {
+                    __VUE_OPTIONS_API__: true,
+                    __VUE_PROD_DEVTOOLS__: false,
+                }
+            }
+        },
         async load(id) {
             const { filename, query } = parseVueRequest(id)
             if (query.has('vue')) {
@@ -96,7 +104,7 @@ function genTempalteCode(descriptor, filename) {
 
 function getScriptCode(descriptor, filename) {
     let scriptCode = ''
-    let script = compileScript(descriptor, filename)
+    let script = compileScript(descriptor, { id: filename })
     scriptCode = rewriteDefault(script.content, '_sfc_main')
     return scriptCode
 }

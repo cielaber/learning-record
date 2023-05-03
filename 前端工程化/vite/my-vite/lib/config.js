@@ -21,6 +21,16 @@ async function resolveConfig() {
         }
     }
     const userPlugins = config.plugins
+    for (const plugin of userPlugins) {
+        if (plugin.config) {
+            const res = await plugin.config(config)
+            if (res) {
+                config = {
+                    ...config, ...res
+                }
+            }
+        } 
+    }
     const plugins = await resolvePlugins(config, userPlugins)
     config.plugins = plugins
     return config
