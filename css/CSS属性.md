@@ -2919,6 +2919,8 @@ perspective-origin = <position>
 
 除了指示该元素不是鼠标事件的目标外，值`none`表示鼠标事件“穿透”该元素并且指定该元素“下面”的任何东西。
 
+> 如果为`none`时，元素失去鼠标事件，hover事件也无法触发，`cursor`属性也无效。
+
 - auto：与`pointer-events`属性未指定时的表现效果相同，对于SVG内容，该值与`visiblePainted`效果相同。
 
 - none：元素永远不会成为鼠标事件的target。但是，当其后代元素的`pointer-events`属性指定其他值时，鼠标事件可以指向后代元素，这种情况下，鼠标事件将在捕获或者冒泡阶段触发父元素的事件侦听器。
