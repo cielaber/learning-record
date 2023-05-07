@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .example.Text1 span,
+        .example.Text1 {
+        writing-mode: horizontal-tb;
+        }
+        .example.Text2 span,
+        .example.Text2 {
+        writing-mode: vertical-lr;
+        }
+        .example.Text3 span,
+        .example.Text3 {
+        writing-mode: vertical-rl;
+        }
+        .example.Text4 span,
+        .example.Text4 {
+        writing-mode: sideways-lr;
+        }
+        .example.Text5 span,
+        .example.Text5 {
+        writing-mode: sideways-rl;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>值</th>
+            <th>竖排文本</th>
+            <th>横排文本（从左到右）</th>
+            <th>横排文本（从右到左）</th>
+            <th>混合文本</th>
+        </tr>
+        <tr>
+            <td>horizontal-tb</td>
+            <td class="example Text1"><span>我家没有电脑。</span></td>
+            <td class="example Text1"><span>Example text</span></td>
+            <td class="example Text1"><span>מלל ארוך לדוגמא</span></td>
+            <td class="example Text1"><span>1994年に至っては</span></td>
+        </tr>
+        <tr>
+            <td>vertical-lr</td>
+            <td class="example Text2"><span>我家没有电脑。</span></td>
+            <td class="example Text2"><span>Example text</span></td>
+            <td class="example Text2"><span>מלל ארוך לדוגמא</span></td>
+            <td class="example Text2"><span>1994年に至っては</span></td>
+        </tr>
+        <tr>
+            <td>vertical-rl</td>
+            <td class="example Text3"><span>我家没有电脑。</span></td>
+            <td class="example Text3"><span>Example text</span></td>
+            <td class="example Text3"><span>מלל ארוך לדוגמא</span></td>
+            <td class="example Text3"><span>1994年に至っては</span></td>
+        </tr>
+        <tr>
+            <td>sideways-lr</td>
+            <td class="example Text4"><span>我家没有电脑。</span></td>
+            <td class="example Text4"><span>Example text</span></td>
+            <td class="example Text4"><span>מלל ארוך לדוגמא</span></td>
+            <td class="example Text4"><span>1994年に至っては</span></td>
+        </tr>
+        <tr>
+            <td>sideways-rl</td>
+            <td class="example Text5"><span>我家没有电脑。</span></td>
+            <td class="example Text5"><span>Example text</span></td>
+            <td class="example Text5"><span>מלל ארוך לדוגמא</span></td>
+            <td class="example Text5"><span>1994年に至っては</span></td>
+        </tr>
+    </table>
+</body>
+</html>

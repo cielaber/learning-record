@@ -3993,3 +3993,94 @@ function removeHint() {
 ```
 
 ![image-20230507190508672](./image-css属性/image-20230507190508672.png)
+
+### writing-mode
+
+`writing-mode = horizontal-tb | vertical-rl | vertical-lr | sideways-rl | sideways-lr`
+
+属性定义了文本水平或垂直排布以及在块级元素中文本的行进方向。为整个文档设置该属性时，应在根元素上设置它。
+
+此属性指定块流动方向，即块级容器堆叠的方向，以及行内容器在块级容器中的流动方向。因此，它也确定块级内容的顺序。
+
+将`writing-mode`属性指定为下面列出的值之一。水平流动方向也受文本的方向影响，从左到右或从右到左（`rtl`，如希伯来语或阿拉伯语）。
+
+- horizontal-tb：对于左对齐（`ltr`）文本，内容从左到右水平流动。对于右对齐（`rtl`）文本，内容从右到左水平流动。下一水平行位于上一行下方。
+- vertical-rl：对于左对齐文本，内容从上到下垂直流动，下一垂直行位于上一行左侧。对于右对齐文本，内容从下到上垂直流动，下一垂直行位于上一行右侧。
+- vertical-lr：对于左对齐文本，内容从上到下垂直流动，下一垂直行位于上一行右侧。对于右对齐文本，内容从下到上垂直流动，下一垂直行位于上一行左侧。
+- sideways-rl：对于左对齐文本，内容从下到上垂直流动。对于右对齐文本，内容从上到下垂直流动。所有字形（即使是垂直文本中的字形）都朝向右侧。
+- sideways-lr：对于左对齐文本，内容从上到下垂直流动。对于右对齐文本，内容从下到上垂直流动。多有字形（即使是垂直文本中的字形）都朝向左侧。
+
+```html
+<style>
+    .example.Text1 span,
+    .example.Text1 {
+    writing-mode: horizontal-tb;
+    }
+    .example.Text2 span,
+    .example.Text2 {
+    writing-mode: vertical-lr;
+    }
+    .example.Text3 span,
+    .example.Text3 {
+    writing-mode: vertical-rl;
+    }
+    .example.Text4 span,
+    .example.Text4 {
+    writing-mode: sideways-lr;
+    }
+    .example.Text5 span,
+    .example.Text5 {
+    writing-mode: sideways-rl;
+    }
+</style>
+<body>
+    <table>
+        <tr>
+            <th>值</th>
+            <th>竖排文本</th>
+            <th>横排文本（从左到右）</th>
+            <th>横排文本（从右到左）</th>
+            <th>混合文本</th>
+        </tr>
+        <tr>
+            <td>horizontal-tb</td>
+            <td class="example Text1"><span>我家没有电脑。</span></td>
+            <td class="example Text1"><span>Example text</span></td>
+            <td class="example Text1"><span>מלל ארוך לדוגמא</span></td>
+            <td class="example Text1"><span>1994年に至っては</span></td>
+        </tr>
+        <tr>
+            <td>vertical-lr</td>
+            <td class="example Text2"><span>我家没有电脑。</span></td>
+            <td class="example Text2"><span>Example text</span></td>
+            <td class="example Text2"><span>מלל ארוך לדוגמא</span></td>
+            <td class="example Text2"><span>1994年に至っては</span></td>
+        </tr>
+        <tr>
+            <td>vertical-rl</td>
+            <td class="example Text3"><span>我家没有电脑。</span></td>
+            <td class="example Text3"><span>Example text</span></td>
+            <td class="example Text3"><span>מלל ארוך לדוגמא</span></td>
+            <td class="example Text3"><span>1994年に至っては</span></td>
+        </tr>
+        <tr>
+            <td>sideways-lr</td>
+            <td class="example Text4"><span>我家没有电脑。</span></td>
+            <td class="example Text4"><span>Example text</span></td>
+            <td class="example Text4"><span>מלל ארוך לדוגמא</span></td>
+            <td class="example Text4"><span>1994年に至っては</span></td>
+        </tr>
+        <tr>
+            <td>sideways-rl</td>
+            <td class="example Text5"><span>我家没有电脑。</span></td>
+            <td class="example Text5"><span>Example text</span></td>
+            <td class="example Text5"><span>מלל ארוך לדוגמא</span></td>
+            <td class="example Text5"><span>1994年に至っては</span></td>
+        </tr>
+    </table>
+</body>
+```
+
+
+
+![screenshot_2020-02-05_21-04-30](./image-css属性/screenshot_2020-02-05_21-04-30.png)
