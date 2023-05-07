@@ -4140,6 +4140,50 @@ function removeHint() {
 </body>
 ```
 
-
-
 ![image-20230507193643810](./image-css属性/image-20230507193643810.png)
+
+### zoom
+
+`zoom = noraml | reset | <number> | <percentage>`
+
+属性用于控制元素的放大级别。如果可能的话，应该使用`transform: scal()`代替次属性。但是，与CSS Transforms不同，`zoom`会影响元素的布局大小。
+
+> 此属性不是标准属性，不要在面向Web的生产网站上使用它：它不会对每个用户都有效。实现之间也可能存在很大的不兼容性，并且行为可能在未来发生变化。
+
+- normal：以正常大小渲染该元素。
+- reset：一般不使用此值。
+- `<percentage>`：缩放系数。100%等于normal，大于100%的值放大，小于100%的值缩小。
+- `<number>`：缩放系数。相当于相应的百分比（1.0 = 100% = normal）。大于1.0的值放大，小于1.0的值缩小。
+
+```html
+<style>
+  div.circle {
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    text-align: center;
+    vertical-align: middle;
+    display: inline-block;
+    zoom: 1.5;
+  }
+  div#a {
+    background-color: gold;
+    zoom: normal;
+  }
+  div#b {
+    background-color: green;
+    zoom: 200%;
+  }
+  div#c {
+    background-color: blue;
+    zoom: 2.9;
+  }
+</style>
+<body>
+  <div id="a" class="circle"></div>
+  <div id="b" class="circle"></div>
+  <div id="c" class="circle"></div>
+</body>
+```
+
+![image-20230507195912945](./image-css属性/image-20230507195912945.png)
