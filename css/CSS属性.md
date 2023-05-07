@@ -4084,3 +4084,62 @@ function removeHint() {
 
 
 ![screenshot_2020-02-05_21-04-30](./image-css属性/screenshot_2020-02-05_21-04-30.png)
+
+### z-index
+
+`z-index = auto | <integer> | inherit`
+
+属性设定了一个定位元素及其后代元素或flex项目的z-order。当元素之间重叠的时候，z-index较大的元素会覆盖较小的元素在上层进行显示。
+
+- auto：盒子不会创建一个新的堆叠上下文。在当前堆叠上下文中生成的盒子的堆叠层级和父级盒子相同。
+- `integer`：整型数字是生成的盒子在当前堆叠上下文中堆叠层级。此盒子也会创建一个堆叠层级为0的本地堆叠上下文。这意味着后代元素的z-indexes不与此元素的外部元素的z-indexes进行对比。
+
+对于一个已经定位的盒子（即其`position`属性值不是`static`，这里要注意的是css把元素看作盒子），`z-index`属性指定：
+
+- 盒子在当前堆叠上下文中的堆叠层级。
+- 盒子是否创建一个堆叠上下文。
+
+```html
+<style>
+  .wrapper {
+    position: relative;
+  }
+  .dashed-box {
+    position: relative;
+    z-index: 1;
+    border: dashed;
+    height: 8em;
+    margin-bottom: 1em;
+    margin-top: 2em;
+  }
+  .gold-box {
+    position: absolute;
+    z-index: 3; /* put .gold-box above .green-box and .dashed-box */
+    background: gold;
+    width: 80%;
+    left: 60px;
+    top: 3em;
+  }
+  .green-box {
+    position: absolute;
+    z-index: 2; /* put .green-box above .dashed-box */
+    background: lightgreen;
+    width: 20%;
+    left: 65%;
+    top: -25px;
+    height: 7em;
+    opacity: 0.9;
+  }
+</style>
+<body>
+  <div class="wrapper">
+    <div class="dashed-box">Dashed box</div>
+    <div class="gold-box">Gold box</div>
+    <div class="green-box">Green box</div>
+  </div>
+</body>
+```
+
+
+
+![image-20230507193643810](./image-css属性/image-20230507193643810.png)
