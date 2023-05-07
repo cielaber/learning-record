@@ -3887,6 +3887,78 @@ function removeHint() {
 }
 ```
 
+### word-break
 
+`word-break = normal | keep-all | break-all | break-word`
 
- 
+属性指定了怎样在单词内断行。
+
+- normal：使用默认的断行规则。
+- break-all：对于Non-CJK（CJK指中文/日文/韩文）文本，可在任意字符间断行。
+- keep-all：CJK文本不断行。Non-CJK文本表现同`normal`。
+- break-word：它的效果是`word-break: normal`和`overflow-wrap: anywhere`的合，不论`overflow-wrap`的值是多少。
+
+> 与`word-break: break-word`和`overflow-wrap: break-word`对比，`word-break: break-word`将在文本可能溢出其容器的确切位置创建一个断点。
+>
+>  **`overflow-wrap`** 属性是用来说明当一个不能被分开的字符串太长而不能填充其包裹盒时，为防止其溢出，浏览器是否允许这样的单词中断换行。
+
+```html
+<style>
+  .narrow {
+    padding: 10px;
+    border: 1px solid;
+    width: 500px;
+    margin: 0 auto;
+    font-size: 15px;
+    line-height: 1.5;
+    letter-spacing: 1px;
+  }
+  .normal {
+    word-break: normal;
+  }
+  .breakAll {
+    word-break: break-all;
+  }
+  .keepAll {
+    word-break: keep-all;
+  }
+  .breakWord {
+    word-break: break-word;
+  }
+</style>
+<body>
+  <p>1. <code>word-break: normal</code></p>
+  <p class="normal narrow">
+    This is a long and Honorificabilitudinitatibus
+    califragilisticexpialidocious
+    Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
+    グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉
+  </p>
+
+  <p>2. <code>word-break: break-all</code></p>
+  <p class="breakAll narrow">
+    This is a long and Honorificabilitudinitatibus
+    califragilisticexpialidocious
+    Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
+    グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉
+  </p>
+
+  <p>3. <code>word-break: keep-all</code></p>
+  <p class="keepAll narrow">
+    This is a long and Honorificabilitudinitatibus
+    califragilisticexpialidocious
+    Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
+    グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉
+  </p>
+
+  <p>4. <code>word-break: break-word</code></p>
+  <p class="breakWord narrow">
+    This is a long and Honorificabilitudinitatibus
+    califragilisticexpialidocious
+    Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
+    グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉
+  </p>
+</body>
+```
+
+![image-20230507185303895](./image-css属性/image-20230507185303895.png) 
