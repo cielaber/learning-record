@@ -3962,3 +3962,34 @@ function removeHint() {
 ```
 
 ![image-20230507185303895](./image-css属性/image-20230507185303895.png) 
+
+### word-spacing
+
+`word-spacing = normal | <length>`
+
+属性用于设置标签、单词之间的空格长度。
+
+- normal：正常的单词间距，由当前字体或浏览器定义。
+- `<length>`：通过指定具体的额外间距来增加字体的单词间距。
+- `<percentage>`：通过指定受影响字符的宽度的百分比的方式来增加间距。
+
+过大的正或负的`word-spacing`将使应用样式的句子不可读。对于应用了非常大正值样式的文本，单词将相距非常远，甚至不再显示为句子。对于使用非常大负值样式的文本，单词将相互重叠，甚至每个单词的开头和结尾都无法识别。
+
+必须根据具体情况确定合适的`word-spacing`值，因为不同的字体具有不同的字符宽度。没有一个值可以确保所有字体系列都自动保持其易读性。
+
+```html
+<style>
+  #mozdiv1 {
+    word-spacing: 15px;
+  }
+  #mozdiv2 {
+    word-spacing: 5em;
+  }
+</style>  
+<body>
+  <div id="mozdiv1">Lorem ipsum dolor sit amet.</div>
+  <div id="mozdiv2">Lorem ipsum dolor sit amet.</div>
+</body>
+```
+
+![image-20230507190508672](./image-css属性/image-20230507190508672.png)
