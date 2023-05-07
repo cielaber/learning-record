@@ -55,7 +55,7 @@ align-content = normal | <baseline-position> | <content-distribution> | <overflo
 - flex-start：所有行从垂直轴起点开始填充。第一行的垂直轴起点边和容器的垂直轴起点边对齐。接下来的每一行紧跟前一行。
 - flex-end：所有行从垂直轴末尾开始填充。最后一行的垂直轴终点和容器的垂直轴终点对齐。同时所有后续行与前一个对齐。
 - center：所有行朝向容器的中心填充。每行互相紧挨，相对于容器居中对齐。容器的垂直轴起点边和第一行的距离相等于容器的垂直轴终点边和最后一行的距离。
-- baseline： `first baseline` `last baseline`：指定参与第一个或最后一个基线对齐：将长方体的第一个或上一个基线集的对齐基线与其基线共享组中所有长方体的共享第一个或下一个基线集中的相应基线对齐。第一个基线的回退对齐是开始，最后一个基线的回滚对齐是结束。
+- `baseline` 、`first baseline` 、`last baseline`：指定参与第一个或最后一个基线对齐：将长方体的第一个或上一个基线集的对齐基线与其基线共享组中所有长方体的共享第一个或下一个基线集中的相应基线对齐。第一个基线的回退对齐是开始，最后一个基线的回滚对齐是结束。
 - space-between：所有行在容器中平均分布。相邻两行间距相等。容器的垂直轴起点边和终点边分别与第一行和最后一行的边对齐。
 - space-around：所有行在容器中平均分布，相邻两行间距相等。容器的垂直轴起点边和终点边分别与第一行和最后一行的距离是相邻两行间距的一半。
 - space-evenly：所有行沿垂直轴均匀分布在对齐容器内。每对相邻的项之间的间距，主开始边和第一项，以及主结束边和最后一项，都是完全相同的。
@@ -185,6 +185,181 @@ align-content = normal | <baseline-position> | <content-distribution> | <overflo
 ```
 
 ![image-20230507203606862](./image-css属性/image-20230507203606862.png)
+
+### align-items
+
+```css
+align-items = normal | stretch | <baseline-position> | [ <overflow-position>? <self-position> ]  
+
+<baseline-position> = [ first | last ]? && baseline           
+
+<overflow-position> = unsafe | safe    
+
+<self-position> = center | start | end | self-start | self-end | flex-start | flex-end
+```
+
+属性将所有直接子节点上的align-self值设置为一个组。align-self属性设置项目在其包含块中在交叉轴方向上的对对齐方式。
+
+目前，Flexbox和CSS网格布局支持此属性。在Flexbox中，它控制十字轴上项目的对齐方式，在网格布局中，它控制块轴上项目的对齐方式。
+
+- normal：这个关键字的效果取决于我们处在什么布局模式中：
+  - 在绝对定位的布局中，对于被替代的绝对定位盒子，这个效果和`start?`的效果的一样；对于其他所有绝对定位的盒子，这个效果和`stretch`的效果一样。
+  - 在绝对定位布局的静态位置上，效果和`stretch`一样。
+  - 对于那些弹性项目而言，效果和`stretch`一样。
+  - 对于那些网格项目而言，效果和`stretch`一样，除了有部分比例或者一个固定大小的盒子的效果像`start`。
+  - 这个属性不适用于块级盒子和表格。
+- flex-start：元素向侧轴起点对齐。
+- flex-end：元素向侧轴终点对齐。
+- start：元素在适当的轴线上向着对齐容器的起始边缘平齐包装。
+- end：元素在适当的轴线上向对准容器的端缘平齐包装。
+- center：元素在侧轴居中。如果元素在侧轴上的高度高于其容器，那么在两个方向上溢出距离相同。
+- left：元素沿对齐容器的左边缘彼此齐平地打包。如果属性的轴与内联轴不平行，则此值的行为类似于start。
+- right：元素在适当的轴上朝向对齐容器的右边缘相互齐平地包装。如果属性的轴与内联轴不平行，则该值的行为类似于start。
+- self-start：元素在适当的轴上与项目开始侧的对齐容器的边缘齐平。
+- self-end：元素在适当的轴上与项目末端侧的对齐容器边缘齐平。
+- `baseline`、`first baseline`、`last baseline`：所有元素向基线对齐。侧轴起点到元素基线距离最大的元素将会于侧轴起点对齐以确定基线。
+- stretch：弹性项包含外边距的交叉轴尺寸被拉升至行高。
+- safe：与对齐关键字一起使用。如果选择的关键字意味着该项溢出对齐容器，导致数据丢失，则会将该项进行对齐，就像启动对齐模式一样。
+- unsafe：与对齐关键字一起使用。无论项目和对齐容器的相对大小，以及是否会发生导致数据丢失的溢出，都会遵守给定的对齐值。
+
+> `align-content`与`align-items`的区别：
+>
+> 1. align-items 的上下文是行内，align-content 的上下文是弹性盒子容器。
+> 2. align-items 控制成员的对齐行为，align-content 控制所有行的对齐行为。
+>
+> align-items
+>
+> ![v2-2a7b5b51bd1ba1d2131e29bb5aa3146c_1440w](./image-css属性/v2-2a7b5b51bd1ba1d2131e29bb5aa3146c_1440w.jpeg)
+>
+> align-content
+>
+> ![v2-f053c213dab64b67a2166fb46e23047c_1440w](./image-css属性/v2-f053c213dab64b67a2166fb46e23047c_1440w.jpeg)
+>
+> 参考：https://zhuanlan.zhihu.com/p/87146411
+
+```html
+<style>
+  #container {
+    height: 200px;
+    width: 240px;
+    align-items: center; /* Can be changed in the live sample */
+    background-color: #8c8c8c;
+  }
+  .flex {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 50px);
+  }
+  div > div {
+    box-sizing: border-box;
+    border: 2px solid #8c8c8c;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #item1 {
+    background-color: #8cffa0;
+    min-height: 30px;
+  }
+  #item2 {
+    background-color: #a0c8ff;
+    min-height: 50px;
+  }
+  #item3 {
+    background-color: #ffa08c;
+    min-height: 40px;
+  }
+  #item4 {
+    background-color: #ffff8c;
+    min-height: 60px;
+  }
+  #item5 {
+    background-color: #ff8cff;
+    min-height: 70px;
+  }
+  #item6 {
+    background-color: #8cffff;
+    min-height: 50px;
+    font-size: 30px;
+  }
+  select {
+    font-size: 16px;
+  }
+  .row {
+    margin-top: 10px;
+  }
+</style>
+<body>
+  <div id="container" class="flex">
+    <div id="item1">1</div>
+    <div id="item2">2</div>
+    <div id="item3">3</div>
+    <div id="item4">4</div>
+    <div id="item5">5</div>
+    <div id="item6">6</div>
+  </div>
+
+  <div class="row">
+    <label for="display">display: </label>
+    <select id="display">
+      <option value="flex">flex</option>
+      <option value="grid">grid</option>
+    </select>
+  </div>
+
+  <div class="row">
+    <label for="values">align-items: </label>
+    <select id="values">
+      <option value="normal">normal</option>
+      <option value="flex-start">flex-start</option>
+      <option value="flex-end">flex-end</option>
+      <option value="center" selected>center</option>
+      <option value="baseline">baseline</option>
+      <option value="stretch">stretch</option>
+
+      <option value="start">start</option>
+      <option value="end">end</option>
+      <option value="self-start">self-start</option>
+      <option value="self-end">self-end</option>
+      <option value="left">left</option>
+      <option value="right">right</option>
+
+      <option value="first baseline">first baseline</option>
+      <option value="last baseline">last baseline</option>
+
+      <option value="safe center">safe center</option>
+      <option value="unsafe center">unsafe center</option>
+      <option value="safe right">safe right</option>
+      <option value="unsafe right">unsafe right</option>
+      <option value="safe end">safe end</option>
+      <option value="unsafe end">unsafe end</option>
+      <option value="safe self-end">safe self-end</option>
+      <option value="unsafe self-end">unsafe self-end</option>
+      <option value="safe flex-end">safe flex-end</option>
+      <option value="unsafe flex-end">unsafe flex-end</option>
+    </select>
+  </div>
+  <script>
+    var values = document.getElementById("values");
+    var display = document.getElementById("display");
+    var container = document.getElementById("container");
+
+    values.addEventListener("change", function (evt) {
+      container.style.alignItems = evt.target.value;
+    });
+
+    display.addEventListener("change", function (evt) {
+      container.className = evt.target.value;
+    });
+  </script>
+</body>
+```
+
+![image-20230507210733463](./image-css属性/image-20230507210733463.png)
 
 ### all
 
