@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button>按钮</button>
+    <script>
+      /**
+       * 宏任务：script脚本、UI渲染、定时器、请求、用户事件
+       * 微任务：Promise.then()、process.nextTick、queueMircotask、MutationObserver(html5新特性，异步监控dom变化)
+       *
+       * 宏任务队列只有一个，每次宏任务都会产生一个微任务队列，只有当前宏任务中的微任务队列被清空，才会执行到下一个宏任务中。
+       * 
+       * 直接new Promsie中的内容会被直接执行，只有
+       *
+       */
+
+      /**
+       * UI渲染在每次循环的微任务之后
+       */
+      // document.body.style.background = 'red'
+      // console.log(1);
+      // Promise.resolve().then(()=> {
+      //     console.log(2);
+      //     document.body.style.background = 'yellow'
+      // })
+      // console.log(3);
+      /**
+       * 结果是：1 3 2
+       * 页面没有渲染红色的过程直接变黄
+       */
+
+      /**
+       * UI刷新在微任务之后，在宏任务之前，UI刷新频率为16.6ms
+       */
+      // document.body.style.background = 'red'
+      // console.log(1);
+      // setTimeout(() => {
+      //     console.log(2);
+      //     document.body.style.background = 'yellow'
+      // })
+      // console.log(3);
+      /**
+       * 结果是：1 3 2
+       * 页面偶尔会有由红色变黄的过程，因为当达到间隔的16.6ms时ui渲染才会调用，这时会渲染第一次赋值的red再执行下一次宏任务中的变黄。
+       * 如果没有达到渲染频率间隔的16.6ms，则被赋值的red不会被渲染出来。
+       */
+
+      /**
+       * 用户触发的事件属于宏任务，但代码执行绑定的事件则会把绑定的事件函数直接执行，不会创建宏任务。
+       *
+       */
+      // let button = document.getElementsByTagName("button")[0];
+      // button.addEventListener("click", () => {
+      //     console.log("listener1");
+      //     Promise.resolve().then(() => console.log("micro task1"));
+      // });
+      // button.addEventListener("click", () => {
+      //     console.log("listener2");
+      //     Promise.resolve().then(() => console.log("micro task2"));
+      // });
+      // button.click();
+      /**
+       *
+       * 直接调用的button.click()结果：
+       * listener1、lintener2、micro task1、micro task2
+       * 直接调用会直接执行绑定的函数，不会产生宏任务。
+       *
+       * 用户点击按钮的结果：
+       * listener1、micro task1、lintener2、micro task2
+       * 用户点击的事件才会触发宏任务。
+       */
+
+// console.log("script start");
+
+// async function async1() {
+//   await async2();
+//   console.log("async1 end");
+// }
+// async function async2() {
+//   console.log("async2 end");
+//   return Promise.resolve().then(() => {
+//     console.log("async2 end1");
+//   });
+// }
+// async1();
+
+// setTimeout(function () {
+//   console.log("setTimeout");
+// }, 0);
+
+// new Promise((resolve) => {
+//   console.log("Promise");
+//   resolve();
+// })
+//   .then(function () {
+//     console.log("promise1");
+//   })
+//   .then(function () {
+//     console.log("promise2");
+//   });
+
+// console.log("script end");
+Promise.resolve()
+  .then(() => {
+    console.log(0)
+    return Promise.resolve(4)
+  })
+  .then(res => {
+    console.log(res)
+  })
+
+Promise.resolve()
+  .then(() => {
+    console.log(1)
+  })
+  .then(() => {
+    console.log(2)
+  })
+  .then(() => {
+    console.log(3)
+  })
+  .then(() => {
+    console.log(5)
+  })
+  .then(() => {
+    console.log(6)
+  })
+
+    </script>
+  </body>
+</html>
