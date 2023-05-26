@@ -263,4 +263,109 @@
    
    ```
 
+6. 接口实现多态
+
+   ```go
+   type Personer interface {
+     SayHello()
+   }
    
+   type Stundent struct {}
+   
+   func (s *Student) SayHello() {
+     fmt.Println("老师好")
+   }
+   
+   type Teacher struct {}
+   
+   func (t *Teacher) SayHello() {
+     fmt.Println("学生好")
+   }
+   
+   func WhoSayHello(p Personer) {
+     p.SayHello()
+   }
+   
+   func main() {
+   	var stu Student
+     var teacher Teacher
+     WhoSayHello(&stu) // 老师好
+     WhoSayHello(&teacher) // 学生好
+   }
+   ```
+
+7. 接口继承与转换
+
+   ``` go
+   type Humaner interface {
+     SayHello()
+   }
+   type Personer interface {
+     Humaner,
+     Say()
+   }
+   
+   type Student Struct {}
+   
+   func (s *Student) SayHello() {
+     fmt.Println("大家好")
+   }
+   func (s *Student) Say() {
+     fmt.Println("你好")
+   }
+   
+   func main() {
+     var stu Student
+     var per Personer
+     per = &stu
+     per.Say()
+     // 可以调用所继承的接口中的方法
+     per.SayHello()
+     
+     var h Humaner
+     h = per // Personer可以转换成Humaner
+     h.SayHello()
+   }
+   ```
+
+8. 空接口
+
+   ```go
+   var i interface {}
+   // 空接口类型可以赋值任何类型的数据
+   i = 123
+   i = "abc"
+   
+   var s []interface{}
+   // 空接口类型的切片可以往里面存储任何类型的数据
+   s = append(s, 123, "abc", 0.99)
+   for j := 0, j < len(s); j++ {
+     fmt.Println(s[j])
+   }
+   ```
+
+9. 类型断言
+
+   通过类型断言，可以判断空接口中存储的数据类型。
+
+   语法：value, ok := m.(T)
+
+   - m：空接口类型变量
+   - T：断言的类型
+   - 变量m的值
+   - ok：如果断言成功为true，否则为false 
+
+   ```go
+   var i interface{}
+   i = 123
+   
+   value, ok := i.(int)
+   if ok {
+     fmt.Println(value) // 123
+   } else {
+     fmt.Println("类型推断错误")
+   }
+   ```
+
+   
+
