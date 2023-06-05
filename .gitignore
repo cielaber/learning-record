@@ -11,3 +11,5 @@ vue3-ts-ui/packages/*/lib
 vue3-ts-ui/lib
 
 ts-study/dist
+
+前端监控/monitor-demo/dist
