@@ -8,23 +8,83 @@ export function injectJsError() {
         console.log(event);
         let lastEvent = getLastEvent(); // 获取最后一个交互事件
         console.log(lastEvent)
-        let log = {
+        if (event.target && (event.target.src || event.target.href)) {
+            tracker.send({
+                kind: 'stability', // 监控指标的大类
+                type: 'error', // 小类，这是一个错误
+                errorType: 'resourceError', // js、css文件资源加载出错
+                filename: event.target.src || event.target.href, // 报错文件
+                tagName: event.target.tagName,
+                selector: getSelector(event.target)
+            })
+        } else {
+            tracker.send({
+                kind: 'stability', // 监控指标的大类
+                type: 'error', // 小类，这是一个错误
+                errorType: 'jsError', // JS错误
+                message: event.message, // 报错信息
+                filename: event.filename, // 报错文件
+                position: `${event.lineno}:${event.colno}`,
+                stack: getLines(event.error.stack),
+                selector: lastEvent ? getSelector(getEventPath(lastEvent)) : '', // 代表最后一个操作的元素
+            })
+        }
+    }, true);
+
+    window.addEventListener('unhandledrejection', function (event) {
+        console.log(event)
+        let lastEvent = getLastEvent();
+        console.log(lastEvent)
+        let message;
+        let filename;
+        let line = 0;
+        let column = 0;
+        let stack = '';
+        const reason = event.reason
+        if (typeof reason === 'string') {
+            message = reason;
+        } else if (typeof reason === 'object') {
+            if (reason.stack) {
+                let matchResult = reason.stack.match(/at\s+(.+):(\d+):(\d+)/);
+                filename = matchResult[1]
+                line = matchResult[2]
+                column = matchResult[3]
+            }
+            message = reason.stack.message
+            stack = getLines(reason.stack)
+        }
+        tracker.send({
             kind: 'stability', // 监控指标的大类
             type: 'error', // 小类，这是一个错误
-            errorType: 'jsError', // JS错误
-            message: event.message, // 报错信息
-            filename: event.filename, // 报错文件
-            position: `${event.lineno}:${event.colno}`,
-            stack: getLines(event.error.stack),
-            selector:  lastEvent ? getSelector(getEventPath(lastEvent)) : '', // 代表最后一个操作的元素
-        }
-        console.log(log)
-
-        tracker.send(log)
-    });
+            errorType: 'promiseError', // JS错误
+            message: message, // 报错信息
+            filename: filename, // 报错文件
+            position: `${line}:${column}`,
+            stack: stack,
+            selector: lastEvent ? getSelector(getEventPath(lastEvent)) : '', // 代表最后一个操作的元素
+        })
+    }, true)
 
     function getEventPath(event) {
-        return event.path || event.composedPath(); // path为非标准属性，chrome在新版本中将其删除了
+        // return event.path || (event.composedPath && event.composedPath()) // path为非标准属性，chrome在新版本中将其删除了
+        // promiseError中的event连composedPath()也获取不到，下面是兼容写法
+        if (event.path) {
+            return event.path;
+        } else if (event.composedPath) {
+            const p = event.composedPath()
+            if (p.length > 0) return p
+        }
+        let target = event.target;
+
+        event.path = [];
+        // target.parentNode 获取父元素的 dom 节点
+        while (target.parentNode !== null) {
+            event.path.push(target);
+            target = target.parentNode;
+        }
+        event.path.push(document, window);
+        // console.log(event.path)
+        return event.path;
     }
 
     function getLines(stack) {
