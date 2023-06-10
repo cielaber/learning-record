@@ -48,6 +48,21 @@
             }
             xhr.send()
         }
+
+        // DOM解析完成，即使依赖的资源没有加载完成，也会触发这个事件
+        document.addEventListener('DOMContentLoaded', () => {
+            let start = Date.now();
+            while ((Date.now() - start) < 1000) {}
+        })
+
+        // 创建最有意义的元素
+        setTimeout(() => {
+            const h1 = document.createElement('h1');
+            const content = document.getElementsByClassName('content')[0]
+            h1.innerHTML = "最有意义的元素"
+            h1.setAttribute('elementtiming', 'meaningful') // 创建页面最有意义的元素
+            content.appendChild(h1)
+        }, 1000)
     </script>
     <!-- 资源加载报错，不存在someError.js -->
     <!-- webpack打包后的脚本是defer，这里这个脚本也必须加上defer，否则不能保证该资源请求错误被打包后的脚本捕获到 -->
