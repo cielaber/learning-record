@@ -1,0 +1,31 @@
+lockfileVersion: 5.4
+
+specifiers:
+  moment: ^2.26.0
+  ua-parser: ^0.3.5
+  ua-parser-js: ^0.7.21
+
+dependencies:
+  moment: 2.29.4
+  ua-parser: 0.3.5
+  ua-parser-js: 0.7.35
+
+packages:
+
+  /moment/2.29.4:
+    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
+    dev: false
+
+  /ua-parser-js/0.7.35:
+    resolution: {integrity: sha512-veRf7dawaj9xaWEu9HoTVn5Pggtc/qj+kqTOFvNiN1l0YdxwC1kvel57UCjThjGa3BHBihE8/UJAHI+uQHmd/g==}
+    dev: false
+
+  /ua-parser/0.3.5:
+    resolution: {integrity: sha512-M7V4rRbrM7qyKgUzdJze9Rm4YJJPzQPfhTsJAtrTUSPU1ELgmxt6a6Dc4pOH20BTWLhbZqoTiAaeH4u18Bm+7Q==}
+    dependencies:
+      yamlparser: 0.0.2
+    dev: false
+
+  /yamlparser/0.0.2:
+    resolution: {integrity: sha512-Cou9FCGblEENtn1/8La5wkDM/ISMh2bzu5Wh7dYzCzA0o9jD4YGyLkUJxe84oPBGoB92f+Oy4ZjVhA8S0C2wlQ==}
+    dev: false
