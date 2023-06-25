@@ -105,4 +105,4 @@ export default {
   width: 100%;
   margin-top: 10px;
 }
-</style>
+</style>../../utils/request
