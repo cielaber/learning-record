@@ -12,12 +12,13 @@
     "build": "babel src --copy-files -d dist --verbose",
     "production": "NODE_ENV=production node dist/app.js",
     "start": "npm run dev",
-    "dev": "SET NODE_ENV=development nodemon dist/app.js",
+    "dev": "set NODE_ENV=development nodemon dist/app.js",
     "fee": "NODE_ENV=development node dist/fee.js",
     "test_fee": "NODE_ENV=testing node dist/fee.js",
     "test_start": "NODE_ENV=testing node dist/app.js",
     "prod_fee": "NODE_ENV=production node dist/fee.js",
-    "prod_start": "NODE_ENV=production node dist/app.js"
+    "prod_start": "NODE_ENV=production node dist/app.js",
+    "auto_task": "sh ./bin/run.sh run development"
   },
   "author": "ke-fe",
   "license": "ISC",
