@@ -259,8 +259,6 @@ alter table t_student change score score1 double(5,1); -- change修改列名和�
 drop table t_student;
 ```
 
-
-
 #### 注意事项
 
 - 关键字，表名，字段名不区分大小写 
@@ -272,3 +270,86 @@ drop table t_student;
 - 删除操作from关键字不可缺少 
 
 - 修改，删除数据别忘记加限制条件 
+
+### 完整性约束
+
+| 约束条件       | 约束描述                                     |
+| -------------- | -------------------------------------------- |
+| PRIMARY KEY    | 主键约束，约束字段的值可唯一地标识对应的记录 |
+| NOT NULL       | 非空约束                                     |
+| UNIQUE         | 唯一约束，约束字段的值是唯一的               |
+| CHECK          | 检查约束，限制某个字段的取值范围             |
+| DEFULT         | 默认值约束，约束字段的默认值                 |
+| AUTO_INCREMENT | 自增约束，约束字段的值自动递增               |
+| FOREIGN KEY    | 外键约束，约束表与表之间的关系               |
+
+```mysql
+/*
+建立一张用来存储学生信息的表
+字段包含学号、姓名、性别，年龄、入学日期、班级，email等信息
+
+约束：
+建立一张用来存储学生信息的表
+字段包含学号、姓名、性别，年龄、入学日期、班级，email等信息
+【1】学号是主键 = 不能为空 +  唯一 ，主键的作用：可以通过主键查到唯一的一条记录【2】如果主键是整数类型，那么需要自增
+【3】姓名不能为空
+【4】Email唯一
+【5】性别默认值是男
+【6】性别只能是男女
+【7】年龄只能在18-50之间
+*/
+-- 使用列级约束创建数据库表：
+create table t_student(
+        sno int(6) primary key auto_increment, 
+        sname varchar(5) not null, 
+        sex char(1) default '男' check(sex='男' || sex='女'),
+        age int(3) check(age>=18 and age<=50),
+        enterdate date,
+        classname varchar(10),
+        email varchar(15) unique
+);
+
+-- 使用表级约束创建数据库表：
+create table t_student(
+        sno int(6) auto_increment, 
+        sname varchar(5) not null, 
+        sex char(1) default '男',
+        age int(3),
+        enterdate date,
+        classname varchar(10),
+        email varchar(15),
+        constraint pk_stu primary key (sno),  -- pk_stu 主键约束的名字
+        constraint ck_stu_sex check (sex = '男' || sex = '女'),
+        constraint ck_stu_age check (age >= 18 and age <= 50),
+        constraint uq_stu_email unique (email)
+);
+
+-- 在创建表以后添加约束：
+alter table t_student add constraint pk_stu primary key (sno) ; -- 主键约束
+alter table t_student modify sno int(6) auto_increment; -- 修改自增条件
+alter table t_student add constraint ck_stu_sex check (sex = '男' || sex = '女');
+alter table t_student add constraint ck_stu_age check (age >= 18 and age <= 50);
+alter table t_student add constraint uq_stu_email unique (email);
+```
+
+```mysql
+-- 外键约束
+create table t_class(
+        cno int(4) primary key auto_increment,
+        cname varchar(10) not null,
+        room char(4)
+)
+
+create table t_student(
+        sno int(6) primary key auto_increment, 
+        sname varchar(5) not null, 
+        classno int(4)
+        constraint fk_stu_classno foreign key (classno) references t_class (cno) -- 为classno字段添加外键约束，主表为t_class
+);
+
+-- 在创建表以后添加外键约束：
+alter table t_student add constraint fk_stu_classno foreign key (classno) references t_class (cno)
+
+-- 注意：外键约束只有表级约束，没有列级约束。
+```
+
