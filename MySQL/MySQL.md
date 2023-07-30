@@ -1,3 +1,41 @@
+### SQL语言的五个部分
+
+#### DQL
+
+数据查询语言（Data Query Language，DQL），DQL主要用于数据的查询，其基本结构是使用SELECT子句，FROM子句和WHERE子句的组合来查询一条或多条数据。 
+
+#### DML
+
+数据操作语言（Data Manipulation Language，DML），DML主要用于对数据库中的数据进行增加、修改和删除的操作，其主要包括： 
+
+- INSERT：增加数据
+- UPDATE：修改数据 
+- DELETE：删除数据 
+
+#### DDL
+
+数据定义语言（Data Definition Language，DDL），DDL主要用针对是数据库对象（数据库、表、索引、视图、触发器、存储过程、函数）进行创建、修改和删除操作。其主要包括： 
+
+- CREATE：创建数据库对象
+- ALTER：修改数据库对象
+- DROP：删除数据库对象
+
+#### DCL
+
+数据控制语言（Data Control Language，DCL），DCL用来授予或回收访问 数据库的权限，其主要包括：
+
+- GRANT：授予用户某种权限
+- REVOKE：回收授予的某种权限 
+
+#### TCL
+
+事务控制语言（Transaction Control Language，TCL），TCL用于数据库的事务管理。其主要包括： 
+
+- START TRANSACTION：开启事务 
+- COMMIT：提交事务 
+- ROLLBACK：回滚事务 
+- SET TRANSACTION：设置事务的属性 
+
 ### 配置MySQL
 
 设置密码永不过期
@@ -167,7 +205,7 @@ TIMESTAMP 与 DATETIME 除了存储字节和支持的范围不同外，还有一
 - DATETIME 在存储日期数据时，按实际输入的格式存储，即输入什么就存储什么，与时区无关；
 - 而 TIMESTAMP 值的存储是以 UTC（世界标准时间）格式保存的，存储时对当前时区进行转换，检索时再转换回当前时区。即查询时，根据当前时区的不同，显示的时间值是不同的。
 
-### 操作数据
+### DDL、DML
 
 #### 创建数据表
 
@@ -205,6 +243,22 @@ CREATE TABLE `t_student` (
   `email` varchar(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 */
+
+
+-- 快速添加一张表：结构和数据跟t_student 都是一致的
+create table t_student2
+as
+select * from t_student;
+
+-- 快速添加一张表，结构跟t_student一致，数据没有：
+create table t_student3
+as
+select * from t_student where 1=2; -- 这里相当于给了一个永远为false的条件导致没有数据命中
+
+-- 快速添加一张表，结构跟t_student一致，只要部分列，部分数据：
+create table t_student4
+as
+select sno,sname,age from t_student where sno = 2;
 ```
 
 #### 插入数据
@@ -232,7 +286,20 @@ update t_student set age = 29 where classname = 'java01';
 
 -- 删除操作：
 delete from t_student where sno = 2;
+
+-- 清空表数据
+delete from t_student;
+truncate table t_student;
 ```
+
+> delete和truncate的区别： 
+>
+> 从最终的结果来看，虽然使用TRUNCATE操作和使用DELETE操作都可以删除表中的全部记录，但是两者还是有很多区别的，其区别主要体现在以下几个方面： 
+>
+> - DELETE为数据操作语言DML；TRUNCATE为数据定义语言DDL。 
+> - DELETE操作是将表中所有记录一条一条删除直到删除完；TRUNCATE操作则是保留了表的结构，重新创建了这个表，所有的状态都相当于新表。因此，TRUNCATE操作的效率更高。 
+> - DELETE操作可以回滚；TRUNCATE操作会导致隐式提交，因此不能回滚（在第十章中会讲解事务的提交和回滚）。 
+> - DELETE操作执行成功后会返回已删除的行数（如删除4行记录，则会显示“Affected rows：4”）；截断操作不会返回已删除的行量，结果通常是“Affected rows：0”。DELETE操作删除表中记录后，再次向表中添加新记录时，对于设置有自增约束字段的值会从删除前表中该字段的最大值加1开始自增；TRUNCATE操作则会重新从1开始自增。
 
 #### 修改、删除数据库表
 
@@ -283,6 +350,8 @@ drop table t_student;
 | AUTO_INCREMENT | 自增约束，约束字段的值自动递增               |
 | FOREIGN KEY    | 外键约束，约束表与表之间的关系               |
 
+#### 非外键约束
+
 ```mysql
 /*
 建立一张用来存储学生信息的表
@@ -332,6 +401,8 @@ alter table t_student add constraint ck_stu_age check (age >= 18 and age <= 50);
 alter table t_student add constraint uq_stu_email unique (email);
 ```
 
+#### 外键约束
+
 ```mysql
 -- 外键约束
 create table t_class(
@@ -351,5 +422,255 @@ create table t_student(
 alter table t_student add constraint fk_stu_classno foreign key (classno) references t_class (cno)
 
 -- 注意：外键约束只有表级约束，没有列级约束。
+```
+
+##### 外键策略
+
+主表被依赖的情况下，对主表进行更改删除操作会受外键约束。
+
+```mysql
+/* 
+	现在需要在t_class中删除cno = 2的数据，但t_class中还存在classno = 2的数据。
+*/
+
+-- 策略1：no action ，默认情况下是不允许操作的
+-- 通过操作sql来完成，先把班级2的学生对应的班级 改为null 
+update t_student set classno = null where classno = 2;
+-- 然后再删除班级2：
+delete from t_class where cno = 2;
+
+-- 策略2：cascade 级联操作：操作主表的时候影响从表的外键信息：
+-- 先删除之前的外键约束：
+alter table t_student drop foreign key fk_stu_classno;
+-- 重新添加外键约束并添加级联操作：在主表更新和删除的同时，对从表中关联的数据进行更新或删除
+alter table t_student add constraint fk_stu_classno foreign key (classno) references t_class (cno) on update cascade on delete cascade;
+
+-- 策略3：set null  置空操作：
+-- 先删除之前的外键约束：
+alter table t_student drop foreign key fk_stu_classno;
+-- 重新添加外键约束，并在主表更新和删除的同时，对从表的关联数据进行置空
+alter table t_student add constraint fk_stu_classno foreign key (classno) references t_class (cno) on update set null on delete set null;
+
+-- 级联操作和置空可以混合使用
+alter table t_student add constraint fk_stu_classno foreign key (classno) references t_class (cno) on update cascade on delete set null ;
+```
+
+### DQL
+
+```mysql
+-- 对emp表查询：
+select * from emp; -- *代表所有数据
+-- 显示部分列：
+select empno,ename,sal from emp;
+-- 显示部分行：where子句
+select * from emp where sal > 2000;
+-- 显示部分列，部分行：
+select empno,ename,job,mgr from emp where sal > 2000;
+
+-- 起别名：
+select empno 员工编号,ename 姓名,sal 工资 from emp; -- as 省略，''或者""省略了
+-- as alias 别名
+select empno as 员工编号,ename as 姓名,sal as 工资 from emp;
+select empno as '员工编号',ename as "姓名",sal as 工资 from emp;
+
+-- 算术运算符：
+select empno,ename,sal,sal+1000 as '涨薪后',deptno from emp where sal < 2500;
+
+-- 去重操作：
+select distinct job from emp;
+select distinct job,deptno from emp; -- 对后面的所有列组合 去重 ，而不是单独的某一列去重
+
+-- 排序：
+select * from emp order by sal; -- 默认情况下是按照升序排列的
+select * from emp order by sal asc; -- asc 升序，可以默认不写
+select * from emp order by sal desc; -- desc 降序
+select * from emp order by sal asc ,deptno desc; -- 在工资升序的情况下，deptno按照降序排列
+```
+
+```mysql
+-- where子句：将过滤条件放在where子句的后面，可以筛选/过滤出我们想要的符合条件的数据：
+-- where 子句 + 关系运算符
+select * from emp where deptno = 10;
+select * from emp where deptno > 10;
+select * from emp where deptno >= 10;
+select * from emp where deptno < 10;
+select * from emp where deptno <= 10;
+select * from emp where deptno <> 10;
+select * from emp where deptno != 10;
+select * from emp where job = 'CLERK'; 
+select * from emp where job = 'clerk'; -- 默认情况下字符串不区分大小写 
+select * from emp where binary job = 'clerk'; -- 如果需要区分大小写使用binary关键字
+select * from emp where hiredate < '1981-12-25';
+
+-- where 子句 + 逻辑运算符：and 
+select * from emp where sal > 1500 and sal < 3000;  -- (1500,3000)
+select * from emp where sal > 1500 && sal < 3000; 
+select * from emp where sal > 1500 and sal < 3000 order by sal;
+select * from emp where sal between 1500 and 3000; -- [1500,3000]
+
+-- where 子句 + 逻辑运算符：or
+select * from emp where deptno = 10 or deptno = 20;
+select * from emp where deptno = 10 || deptno = 20;
+select * from emp where deptno in (10,20);
+select * from emp where job in ('MANAGER','CLERK','ANALYST');
+
+-- where子句 + 模糊查询：
+-- 查询名字中带A的员工  
+-- %代表任意多个字符 0,1,2，.....
+select * from emp where ename like '%A%' ;
+-- -代表任意一个字符
+select * from emp where ename like '__A%' ;
+
+-- 关于null的判断：
+select * from emp where comm is null;
+select * from emp where comm is not null;
+
+-- 小括号的使用  ：因为不同的运算符的优先级别不同，加括号为了可读性
+select * from emp where job = 'SALESMAN' or job = 'CLERK' and sal >=1500; -- 先and再or  and > or
+select * from emp where job = 'SALESMAN' or (job = 'CLERK' and sal >=1500); 
+select * from emp where (job = 'SALESMAN' or job = 'CLERK') and sal >=1500;
+```
+
+#### 分组
+
+```mysql
+-- 统计各个部门的平均工资 
+# select deptno,avg(sal) from emp; -- 字段和多行函数不可以同时使用
+select deptno,avg(sal) from emp group by deptno; -- 字段和多行函数不可以同时使用,除非这个字段属于分组
+
+-- 统计各个部门的平均工资 ,只显示平均工资2000以上的：分组以后进行二次筛选 having
+select deptno,avg(sal) from emp group by deptno having avg(sal) > 2000;
+
+-- 统计各个岗位的平均工资,除了MANAGER
+-- 方法1：
+select job,avg(sal) from emp where job != 'MANAGER' group by job;
+-- 方法2：
+select job,avg(sal) from emp group by job having job != 'MANAGER' ;
+-- where在分组前进行过滤的，having在分组后进行后滤。
+```
+
+#### 单表查询总结
+
+```mysql
+/**
+select语句总结:
+select column, group_function(column)  
+from table 
+[where condition] 
+[group by group_by_expression] 
+[having group_condition] 
+[order by column];
+
+select语句的执行顺序:
+from -- where -- group by – select - having - order by 
+**/
+```
+
+### 函数
+
+封装了特定的一些功能，不会改变数据自身的值，而是在真实数据的上面进行加工处理，展示新的结果。
+
+常用函数参考：http://c.biancheng.net/mysql/function/
+
+#### 单行函数
+
+单行函数是指对每一条记录输入值进行计算，并得到相应的计算结果，然后返回给用户，也就是说，每条记录作为一个输入参数，经过函数计算得到每条记录的计算结果。 
+
+常用的单行函数主要包括字符串函数、数值函数、日期与时间函数、流程函数以及其他函数。
+
+> 注意：多行函数会自动忽略null值。
+
+#### 多行函数
+
+多行函数是指对一组数据进行运算，针对这一组数据（多行记录）只返回一个结果，也称为分组函数。
+
+多行函数有：max、min、count、sum、avg
+
+除了多行函数（max,min,count,sum,avg），都是单行函数。 
+
+### 多表查询
+
+#### 交叉连接
+
+```mysql
+select * from emp cross join dept; -- 两个表查询结果的笛卡尔乘积,没有实际意义
+select * from emp join dept; -- cross 可以省略不写，mysql中可以，oracle中不可以
+```
+
+#### 自然连接
+
+```mysql
+-- 优点：自动匹配所有的同名列,同名列只展示一次,简单
+select * from emp natural join dept; -- 缺点：查询字段的时候，没有指定字段所属的数据库表，效率低
+
+-- 解决方法：指定表名：
+select emp.empno,emp.ename,emp.sal,dept.dname,dept.loc,dept.deptno from emp natural join dept;
+
+-- 缺点：表名太长
+-- 解决方法：表起别名
+select e.empno,e.ename,e.sal,d.dname,d.loc,d.deptno from emp e natural join dept d;
+
+-- natural join 缺点：自动匹配表中所有的同名列，但是有时候我们希望只匹配部分同名列
+-- 解决方法：内连接
+```
+
+#### 内连接
+
+```mysql
+select * from emp e inner join dept d using(deptno);
+select * from emp e join dept d using(deptno); -- inner 可省略
+
+-- using缺点：关联的字段，必须是同名的 
+-- 解决方法：内连接 - on子句：
+select * from emp e inner join dept d on (e.deptno = d.deptno);
+```
+
+#### 外连接
+
+内连接中，只显示两表中的交集数据。而外连接除了显示匹配的数据外，还可以显示不匹配的数据。
+
+```mysql
+-- 左外连接： left outer join   -- 左面的那个表的信息，即使不匹配也可以查看出效果
+select * from emp e left outer join dept d on e.deptno = d.deptno;
+
+-- 右外连接： right outer join   -- 右面的那个表的信息，即使不匹配也可以查看出效果
+select * from emp e right outer join dept d on e.deptno = d.deptno;
+
+-- 全外连接  full outer join
+-- 这个语法在mysql中不支持，在oracle中支持 -- 可以展示左，右表都不匹配的数据 
+select * from emp e full outer join dept d on e.deptno = d.deptno;
+
+-- 解决mysql中不支持全外连接的问题：
+select * from emp e left outer join dept d on e.deptno = d.deptno
+union -- 并集 去重 效率低
+select * from emp e right outer join dept d on e.deptno = d.deptno;
+
+select * from emp e left outer join dept d on e.deptno = d.deptno
+union all-- 并集 不去重 效率高
+select * from emp e right outer join dept d on e.deptno = d.deptno;
+```
+
+#### 两张表以上的联合查询
+
+```mysql
+select e.ename,e.sal,e.empno,e.deptno,d.dname,s.* from emp e right outer join dept d on e.deptno = d.deptno -- 把前面两张表的查询结果当作一张表
+inner join salgrade s 
+on e.sal between s.losal and s.hisal -- 写好第三张表的查询条件
+```
+
+#### 自连接查询
+
+```mysql
+1.-- 查询员工的编号、姓名、上级编号,上级的姓名 -- 员工的领导也是员工，也在员工表
+select e1.empno 员工编号,e1.ename 员工姓名,e1.mgr 领导编号,e2.ename 领导姓名
+from emp e1
+inner join emp e2
+on e1.mgr = e2.empno;
+
+-- 左外连接 boss没有上级领导，也在员工表，也需要显示：
+select e1.empno 员工编号,e1.ename 员工姓名,e1.mgr 领导编号,e2.ename 领导姓名
+from emp e1
+left outer join emp e2
+on e1.mgr = e2.empno;
 ```
 
