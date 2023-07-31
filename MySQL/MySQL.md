@@ -597,6 +597,11 @@ select * from emp cross join dept; -- 两个表查询结果的笛卡尔乘积,�
 select * from emp join dept; -- cross 可以省略不写，mysql中可以，oracle中不可以
 ```
 
+```mysql
+-- 92语法
+select e.empno,e.ename,e.sal,e.deptno,d.dname from emp e,dept d
+```
+
 #### 自然连接
 
 ```mysql
@@ -620,9 +625,19 @@ select e.empno,e.ename,e.sal,d.dname,d.loc,d.deptno from emp e natural join dept
 select * from emp e inner join dept d using(deptno);
 select * from emp e join dept d using(deptno); -- inner 可省略
 
--- using缺点：关联的字段，必须是同名的 
+-- using缺点：关联的字段，必须是同名的
 -- 解决方法：内连接 - on子句：
 select * from emp e inner join dept d on (e.deptno = d.deptno);
+```
+
+```mysql
+-- 92语法
+select e.empno,e.ename,e.sal,e.deptno,d.dname from emp e,dept d where e.deptno = d.deptno;
+
+-- 92语法总结：
+-- 92语法中表的连接条件和筛选条件是放在一起的，没有分开
+-- 99语法中提供了更多的表连接类型：cross,natural,inner,outer
+-- 92语法只支持内连接，不支持外连接
 ```
 
 #### 外连接
@@ -658,10 +673,15 @@ inner join salgrade s
 on e.sal between s.losal and s.hisal -- 写好第三张表的查询条件
 ```
 
+```mysql
+-- 92语法
+select e.empno,e.ename,e.sal,e.deptno,d.dname,s.grade from emp e,dept d,salgrade s where e.deptno = d.deptno and e.sal >= s.losal and e.sal <= s.hisal;
+```
+
 #### 自连接查询
 
 ```mysql
-1.-- 查询员工的编号、姓名、上级编号,上级的姓名 -- 员工的领导也是员工，也在员工表
+-- 查询员工的编号、姓名、上级编号,上级的姓名 -- 员工的领导也是员工，也在员工表
 select e1.empno 员工编号,e1.ename 员工姓名,e1.mgr 领导编号,e2.ename 领导姓名
 from emp e1
 inner join emp e2
@@ -672,5 +692,80 @@ select e1.empno 员工编号,e1.ename 员工姓名,e1.mgr 领导编号,e2.ename 
 from emp e1
 left outer join emp e2
 on e1.mgr = e2.empno;
+```
+
+```mysql
+-- 92语法
+select e1.ename,e1.job,e1.mgr ,e2.ename from emp e1,emp e2 where e1.mgr = e2.empno;
+```
+
+### 子查询
+
+#### 不相关子查询
+
+##### 单行子查询
+
+```mysql
+-- 查询语句中使用了另一个查询语句的结果，被嵌入的查询语句为子查询语句
+-- 子查询语句与父语句都可以独立运行，称为不相关子查询
+-- 子查询语句的结果只有一条数据，称为单行子查询
+select ename,sal from emp where sal > (select avg(sal) from emp); -- 查询工资高于平均工资的雇员名字和工资
+
+select ename,sal from emp where deptno = (select deptno from emp where ename = 'CLARK') and sal < (select sal from emp where ename = 'CLARK') -- 查询和CLARK同一部门且比他工资低的雇员名字和工资
+```
+
+##### 多行子查询
+
+```mysql
+-- 多行子查询指子查询语句的结果是多条
+-- 查询部门20中职务同部门10的雇员一样的雇员信息
+/**
+-- 先拆分各个条件
+-- 查询部门20中的雇员信息
+select * from emp where deptno = 20;-- CLERK,MANAGER,ANALYST
+-- 部门10的雇员的职务：
+select job from emp where deptno = 10; -- MANAGER,PRESIDENT,CLERK
+-- 再组合条件得到如下
+**/
+select * from emp where deptno = 20 and job in (select job from emp where deptno = 10)
+-- 或者
+select * from emp where deptno = 20 and job = any(select job from emp where deptno = 10)
+
+-- 查询工资比所有的“SALESMAN”都高的雇员的编号、名字和工资。
+-- 多行子查询：
+select empno,ename,sal from emp where sal > all(select sal from emp where job = 'SALESMAN');
+-- 单行子查询：
+select empno,ename,sal from emp where sal > (select max(sal) from emp where job = 'SALESMAN');
+
+-- 查询工资低于任意一个“CLERK”的工资的雇员信息
+select * from emp where sal < any(select sal from emp where job = 'CLERK') and job != 'CLERK'
+-- 单行子查询：
+select * from emp where sal < (select max(sal) from emp where job = 'CLERK') and job != 'CLERK' -- 低于任意一个，低于最大的就满足条件
+```
+
+#### 相关子查询
+
+不相关的子查询：子查询可以独立运行，先运行子查询，再运行外查询。 
+
+相关子查询：子查询不可以独立运行，并且先运行外查询，再运行子查询 
+
+```mysql
+-- 查询本部门最高工资的员工
+-- 方法1：通过不相关子查询实现：
+select * from emp where deptno = 10 and sal = (select max(sal) from emp where deptno = 10)
+union
+select * from emp where deptno = 20 and sal = (select max(sal) from emp where deptno = 20)
+union
+select * from emp where deptno = 30 and sal = (select max(sal) from emp where deptno = 30)
+-- 缺点：语句比较多，具体到底有多少个部分未知
+-- 方法2： 相关子查询
+select * from emp e where sal = (select max(sal) from emp where deptno = e.deptno) order by deptno
+
+-- 【3】查询工资高于其所在岗位的平均工资的那些员工
+-- 不相关子查询：
+select * from emp where job = 'CLERK' and sal > (select avg(sal) from emp where job = 'CLERK')
+union ......
+-- 相关子查询：
+select * from emp e where sal > (select avg(sal) from emp e2 where e2.job = e.job)
 ```
 
