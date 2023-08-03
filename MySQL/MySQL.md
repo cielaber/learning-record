@@ -769,3 +769,209 @@ union ......
 select * from emp e where sal > (select avg(sal) from emp e2 where e2.job = e.job)
 ```
 
+### 事务
+
+事务（Transaction）指的是一个操作序列，该操作序列中的多个操作要么都做，要么都不做，是一个不可分割的工作单位，是数据库环境中的逻辑工作单位，由DBMS（数据库管理系统）中的事务管理子系统负责事务的处理。 
+
+事务（Transaction）是用来维护数据库完整性的，它能够保证一系列的MySQL操作要么全部执行，要么全不执行。
+
+目前常用的存储引擎有InnoDB（MySQL5.5以后默认的存储引擎）和MyISAM（MySQL5.5之前默认的存储引擎），其中InnoDB支持事务处理机制，而MyISAM不支持。
+
+默认一个DML语句是一个事务。
+
+#### 事务的特性
+
+事务处理可以确保除非事务性序列内的所有操作都成功完成，否则不会永久更新面向数据的资源。通过将一组相关操作组合为一个要么全部成功要么全部失败的序列，可以简化错误恢复并使应用程序更加可靠。 
+
+但并不是所有的操作序列都可以称为事务，这是因为一个操作序列要成为事务，必须满足事务的原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）和持久性（Durability）。这四个特性简称为ACID特性。 
+
+**原子性**
+
+事务中的所有操作可以看做一个原子，事务是应用中不可再分的最小的逻辑执行体。 
+
+使用事务对数据进行修改的操作序列，要么全部执行，要么全不执行。通常，某个事务中的操作都具有共同的目标，并且是相互依赖的。如果数据库系统只执行这些操作中的一部分，则可能会破坏事务的总体目标，而原子性消除了系统只处理部分操作的可能性。 
+
+**一致性**
+
+一致性是指事务执行的结果必须使数据库从一个一致性状态，变到另一个一致性状态。当数据库中只包含事务成功提交的结果时，数据库处于一致性状态。一致性是通过原子性来保证的。 
+
+**隔离性**
+
+隔离性是指各个事务的执行互不干扰，任意一个事务的内部操作对其他并发的事务，都是隔离的。也就是说：并发执行的事务之间既不能看到对方的中间状态，也不能相互影响。
+
+**持久性**
+
+持久性指事务一旦提交，对数据所做的任何改变，都要记录到永久存储器中，通常是保存进物理数据库，即使数据库出现故障，提交的数据也应该能够恢复。但如果是由于外部原因导致的数据库故障，如硬盘被损坏，那么之前提交的数据则有可能会丢失。 
+
+```mysql
+-- 手动开启事务：
+start transaction;
+
+update account set balance = balance - 200 where id = 1;
+update account set balance = balance + 200 where id = 2;
+
+-- 手动回滚：刚才执行的操作全部取消：
+rollback;
+
+-- 手动提交：
+commit;
+
+-- 在回滚和提交之前，数据库中的数据都是操作的缓存中的数据，而不是数据库的真实数据
+```
+
+#### 事务并发问题
+
+**脏读（Dirty read）**
+
+当一个事务正在访问数据并且对数据进行了修改，而这种修改还没有提交到数据库中，这时另外一个事务也访问了这个数据，然后使用了这个数据。因为这个数据是还没有提交的数据，那么另外一个事务读到的这个数据是“脏数据”，依据“脏数据”所做的操作可能是不正确的。 
+
+![img](./image-mysql/wps1.png) 
+
+ **不可重复读（Unrepeatableread）** 
+
+指在一个事务内多次读同一数据。在这个事务还没有结束时，另一个事务也访问该数据。那么，在第一个事务中的两次读数据之间，由于第二个事务的修改导致第一个事务两次读取的数据可能不太一样。这就发生了在一个事务内两次读到的数据是不一样的情况，因此称为不可重复读。 
+
+![img](./image-mysql/wps2.png) 
+
+**幻读（Phantom read）**
+
+幻读与不可重复读类似。它发生在一个事务（T1）读取了几行数据，接着另一个并发事务（T2）插入了一些数据时。在随后的查询中，第一个事务（T1）就会发现多了一些原本不存在的记录，就好像发生了幻觉一样，所以称为幻读。 
+
+![img](./image-mysql/wps3.png) 
+**不可重复度和幻读区别：**
+
+不可重复读的重点是修改，幻读的重点在于新增或者删除。 
+
+**解决不可重复读的问题只需锁住满足条件的行，解决幻读需要锁表** 
+
+#### 事务隔离级别
+
+事务的隔离级别用于决定如何控制并发用户读写数据的操作。数据库是允许多用户并发访问的，如果多个用户同时开启事务并对同一数据进行读写操作的话，有可能会出现脏读、不可重复读和幻读问题，所以MySQL中提供了四种隔离级别来解决上述问题。 
+
+事务的隔离级别从低到高依次为READ UNCOMMITTED、READ COMMITTED、REPEATABLE READ以及SERIALIZABLE，隔离级别越低，越能支持高并发的数据库操作。                     
+
+| 隔离级别         | 脏读 | 不可重复读 | 幻读 |
+| ---------------- | ---- | ---------- | ---- |
+| READ UNCOMMITTED | √    | √          | √    |
+| READ COMMITTED   | ×    | √          | √    |
+| REPEATABLE READ  | ×    | ×          | √    |
+| SERIALIZABLE     | ×    | ×          | ×    |
+
+ PS：√  代表会出现问题 ， ×代表不会出现问题 = 解决问题 
+
+```mysql
+-- 查看默认的事务隔离级别  MySQL默认的是repeatable read  
+select @@transaction_isolation; 
+-- 设置事务的隔离级别（设置当前会话的隔离级别）
+set session transaction isolation level read uncommitted;
+set session transaction isolation level read committed;
+set session transaction isolation level repeatable read;
+set session transaction isolation level serializable;
+```
+
+### 视图
+
+视图（view）是一个从单张或多张基础数据表或其他视图中构建出来的虚拟表。
+
+同基础表一样，视图中也包含了一系列带有名称的列和行数据，但是数据库中只是存放视图的定义，也就是动态检索数据的查询语句，而并不存放视图中的数据，这些数据依旧存放于构建视图的基础表中，只有当用户使用视图时才去数据库请求相对应的数据，即视图中的数据是在引用视图时动态生成的。因此视图中的数据依赖于构建视图的基础表，如果基本表中的数据发生了变化，视图中相应的数据也会跟着改变。 
+
+视图本质上就是：一个查询语句，是一个虚拟的表，不存在的表，你查看视图，其实就是查看视图对应的sql语句。
+
+视图的作用
+
+- 简化用户操作：视图可以使用户将注意力集中在所关心地数据上，而不需要关心数据表的结构、与其他表的关联条件以及查询条件等。 
+
+- 对机密数据提供安全保护：有了视图，就可以在设计数据库应用系统时，对不同的用户定义不同的视图，避免机密数据（如，敏感字段“salary”）出现在不应该看到这些数据的用户视图上。这样视图就自动提供了对机密数据的安全保护功能 。
+
+```mysql
+-- 创建/替换单表视图：
+create or replace view myview01
+as
+select empno,ename,job,deptno 
+from emp
+where deptno = 20
+with check option;
+
+-- 查看视图：
+select * from myview01;
+
+-- 在视图中插入数据：
+insert into myview01 (empno,ename,job,deptno) values (9999,'lili','CLERK',20);
+insert into myview01 (empno,ename,job,deptno) values (8888,'nana','CLERK',30); -- 由于创建视图的时候带了with check option条件，因此插入语句的时候如果不满足视图的查询条件，则会报错 -> 1369 - CHECK OPTION failed 'mytestdb.myview01'
+
+-- 创建/替换多表视图：
+create or replace view myview02
+as 
+select e.empno,e.ename,e.sal,d.deptno,d.dname
+from emp e
+join dept d
+on e.deptno = d.deptno
+where sal > 2000 ;
+
+-- 创建统计视图：
+create or replace view myview03
+as
+select e.deptno,d.dname,avg(sal),min(sal),count(1)
+from emp e
+join dept d
+using(deptno)
+group by e.deptno ;
+
+-- 创建基于视图的视图：
+create or replace view myview04
+as
+select * from myview03 where deptno = 20;
+```
+
+### 存储过程
+
+SQL基本是一个命令实现一个处理，是所谓的非程序语言。 在不能编写流程的情况下，所有的处理只能通过一个个命令来实现。当然，通过使用连接及子查询，即使使用SQL的单一命令也能实现一些高级的处理，但是，其局限性是显而易见的。例如，在SQL中就很难实现针对不同条件进行不同的处理以及循环等功能。 
+
+这个时候就出现了存储过程这个概念，简单地说，存储过程就是数据库中保存(Stored)的一系列SQL命令（Procedure）的集合。也可以将其看作相互之间有关系的SQL命令组织在一起形成的一个小程序。 
+
+存储过程的优点：
+
+- 提高执行性能。存储过程执行效率之所高，在于普通的SQL语句，每次都会对语法分析，编译，执行，而存储过程只是在第一次执行语法分析，编译，执行，以后都是对结果进行调用。 
+- 可减轻网络负担。使用存储过程，复杂的数据库操作也可以在数据库服务器中完成。只需要从客户端(或应用程序)传递给数据库必要的参数就行，比起需要多次传递SQL命令本身，这大大减轻了网络负担。
+- 可将数据库的处理黑匣子化。应用程序中完全不用考虑存储过程的内部详细处理，只需要知道调用哪个存储过程就可以了。
+
+```mysql
+-- 定义一个没有返回值的存储过程，实现：模糊查询操作：
+select * from emp where ename like '%A%';
+
+create procedure mypro01(name varchar(10))
+begin
+	if name is null or name = "" then
+		select * from emp;
+	else
+		select * from emp where ename like concat('%',name,'%');
+  end if;	
+end;
+
+-- 删除存储过程：
+drop procedure mypro01;
+
+-- 调用存储过程：
+call mypro01(null);
+call mypro01('R');
+
+
+-- 定义一个有返回值的存储过程，实现：模糊查询操作：
+create procedure mypro02(in name varchar(10),out num int(3)) -- in标识，可以省略不写
+begin
+	if name is null or name = "" then
+		select * from emp;
+	else
+    select * from emp where ename like concat('%',name,'%');
+	end if;	
+	select found_rows() into num; -- found_rows()mysql中定义的一个函数，作用返回查询结果的条数
+end;
+
+-- 调用存储过程：
+call mypro02(null,@num);
+select @num;
+
+call mypro02('R',@aaa);
+select @aaa;
+```
+
