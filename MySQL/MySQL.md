@@ -862,12 +862,132 @@ commit;
 ```mysql
 -- 查看默认的事务隔离级别  MySQL默认的是repeatable read  
 select @@transaction_isolation; 
--- 设置事务的隔离级别（设置当前会话的隔离级别）
+SHOW VARIABLES LIKE 'transaction_isolation';
+-- 设置事务的隔离级别（session代表设置当前会话的隔离级别）
 set session transaction isolation level read uncommitted;
 set session transaction isolation level read committed;
 set session transaction isolation level repeatable read;
 set session transaction isolation level serializable;
+-- global代表设置全局的隔离级别
+SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+-- 不设置隔离级别，只对执行语句后的下一个事务产生影响
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 ```
+
+#### 保存点
+
+如果你开启了一个事务，执行了很多语句，忽然发现某条语句有点问题，你只好使用ROLLBACK语句来让数据库状态恢复到事务执行之前的样子，然后一切从头再来，但是可能根据业务和数据的变化，不需要全部回滚。所以MySQL里提出了一个保存点（英文：savepoint）的概念，就是在事务对应的数据库语句中打几个点，我们在调用ROLLBACK语句时可以指定会滚到哪个点，而不是回到最初的原点。
+
+```mysql
+-- 设置保存点
+savepoint s1;
+
+-- 回滚到某个保存点
+rollback to savepoint s1; -- savepoint关键字可省略
+
+-- 删除保存点
+release savepoint s1;
+```
+
+#### 隐式提交
+
+MySQL 的提交方式分为三种：自动提交、显示提交、隐式提交。
+
+自动提交是 MySQL 默认的提交方式，不需要特定的语句，执行完mysql语句会自动更新到数据库中。
+
+当使用 begin 或 start transaction语句开启事务后，mysql将自动设置`set autocommit=0;`关闭自动提交，需要我们使用commit语句进行主动提交。
+
+隐式提交是在进行事务时执行特定的语句，导致像是使用 commit 提交命令一样使事务提交，这些会导致事务隐式提交的语句包括：
+
+- **执行DDL**：当我们使用CREATE、ALTER、DROP等语句去修改这些所谓的数据库对象时。
+- **隐式使用或修改mysql数据库中的表**：当我们使用ALTER USER、CREATE USER、DROP USER、GRANT、RENAME USER、REVOKE、SET PASSWORD等语句时。
+- **事务控制的语句**：当我们在一个会话里，一个事务还没提交或者回滚时就又使用START TRANSACTION或者BEGIN语句开启了另一个事务时。
+- **关于锁定的语句**：使用LOCK TABLES、UNLOCK TABLES等关于锁定的语句时。
+- **手动调节autocommit**：当前的autocommit系统变量的值为OFF，我们手动把它调为ON时。
+- **加载数据的语句**：使用LOAD DATA语句来批量往数据库中导入数据时。
+- **mysql复制的一些语句**：使用START SLAVE、STOP SLAVE、RESET SLAVE、CHANGE MASTER TO等语句时。
+- **其它的一些语句**：使用ANALYZE TABLE、CACHE INDEX、CHECK TABLE、FLUSH、 LOAD INDEX INTO CACHE、OPTIMIZE TABLE、REPAIR TABLE、RESET等语句时。
+
+#### MVCC
+
+Multi-Version Concurrency Control，即多版本并发控制，主要是为了提高数据库的并发性能。
+正常情况下要解决同一行数据发生读写冲突时，需要加锁。但MVCC用更好的方式去处理读—写请求，做到在发生读—写请求冲突时不用加锁。
+
+##### 版本链
+
+对于使用InnoDB存储引擎的表来说，它的聚簇索引记录中都包含两个必要的隐藏列：
+
+- trx_id：每次一个事务对某条聚簇索引记录进行改动时，都会把该事务的事务id赋值给trx_id隐藏列。
+- roll_pointer：每次对某条聚簇索引记录进行改动时，都会把旧的版本写入到undo日志中，然后这个隐藏列就相当于一个指针，可以通过它来找到该记录修改前的信息。
+
+undo日志：为了实现事务的原子性，InnoDB存储引擎在实际进行增、删、改一条记录时，都需要先把对应的undo日志记下来。**一般每对一条记录做一次改动，就对应着一条undo日志**，但在某些更新记录的操作中，也可能会对应着2条undo日志。一个事务在执行过程中可能新增、删除、更新若干条记录，也就是说需要记录很多条对应的undo日志，这些undo日志会被从0开始编号，也就是说根据生成的顺序分别被称为第0号undo日志、第1号undo日志、...、第n号undo日志等。
+
+例如；往一个空表里面插入一条数据`INSERT INTO teacher VALUES(1, '李瑾', 'JVM系列');`，得到的undo日志示例如下：
+
+![c7b3d5e8c3bd4d91942b0891b0db0956](./image-mysql/c7b3d5e8c3bd4d91942b0891b0db0956.png)
+
+
+
+假设之后两个事务id分别为80、120的事务对这条记录进行UPDATE操作，操作流程如下：
+
+![85471f9eaddf4d42a51259b6878056ed](./image-mysql/85471f9eaddf4d42a51259b6878056ed.png)
+
+每次对记录进行改动，都会记录一条undo日志，每条undo日志也都有一个roll_pointer属性（INSERT操作对应的undo日志没有该属性，因为该记录并没有更早的版本），可以将这些undo日志都连起来，串成一个链表，所以现在的情况就像下图一样：
+
+![c7dc3b48519b4961b04e03594ee80538](./image-mysql/c7dc3b48519b4961b04e03594ee80538.png)
+
+对该记录每次更新后，都会将旧值放到一条undo日志中，就算是该记录的一个旧版本，随着更新次数的增多，所有的版本都会被roll_pointer属性连接成一个链表，我们把这个链表称之为版本链，版本链的头节点就是当前记录最新的值。另外，每个版本中还包含生成该版本时对应的事务id。**于是可以利用这个记录的版本链来控制并发事务访问相同记录的行为，那么这种机制就被称之为多版本并发控制(Mulit-Version Concurrency Control MVCC)。**
+
+##### ReadView
+
+对于使用READ UNCOMMITTED隔离级别的事务来说，由于可以读到未提交事务修改过的记录，所以直接读取记录的最新版本就好了（**所以就会出现脏读、不可重复读、幻读**）。
+
+对于使用SERIALIZABLE隔离级别的事务来说，InnoDB使用加锁的方式来访问记录（**也就是所有的事务都是串行的，当然不会出现脏读、不可重复读、幻读**）。
+
+因此，在保障性能不锁数据的情况下为了解决事务并发问题，InnoDB提出了一个ReadView的概念，其本质上是一种数据结构，保存事务ID的list列表，记录的是本事务执行时，MySQL还有哪些事务在执行，且还没有提交，当前系统中还有哪些活跃的读写事务等，结构如下：
+
+- m_ids：表示在生成ReadView时当前系统中活跃的读写事务的事务id列表。
+- min_trx_id：表示在生成ReadView时当前系统中活跃的读写事务中最小的事务id，也就是m_ids中的最小值。
+- max_trx_id：表示生成ReadView时系统中应该分配给下一个事务的id值。注意max_trx_id并不是m_ids中的最大值，事务id是递增分配的。比如现在有id为1，2，3这三个事务，之后id为3的事务提交了。那么一个新的读事务在生成ReadView时，m_ids就包括1和2，min_trx_id的值就是1，max_trx_id的值就是4。
+- creator_trx_id：表示生成该ReadView的事务的事务id。
+
+**ReadView中的比较规则**
+
+1、如果被访问版本的trx_id属性值与ReadView中的creator_trx_id值相同，意味着当前事务在访问它自己修改过的记录，所以该版本可以被当前事务访问。
+
+2、如果被访问版本的trx_id属性值小于ReadView中的min_trx_id值，表明生成该版本的事务在当前事务生成ReadView前已经提交，所以该版本可以被当前事务访问。
+
+3、如果被访问版本的trx_id属性值大于或等于ReadView中的max_trx_id值，表明生成该版本的事务在当前事务生成ReadView后才开启，所以该版本不可以被当前事务访问。
+
+4、如果被访问版本的trx_id属性值在ReadView的min_trx_id和max_trx_id之间(min_trx_id &#x3c; trx_id &#x3c; max_trx_id)，那就需要判断一下trx_id属性值是不是在m_ids列表中，如果在，说明创建ReadView时生成该版本的事务还是活跃的，该版本不可以被访问；如果不在，说明创建ReadView时生成该版本的事务已经被提交，该版本可以被访问。
+
+##### READ COMMITTED解决脏读问题
+
+READ COMMITTED隔离级别的事务在每次查询开始时都会生成一个独立的ReadView，然后从版本链中挑选可见的记录，由于活跃版本都被记录且不可访问，不可访问的版本会在版本链中根据roll_pointer依次往前找，因此找到的总是已经完成提交的事务，近就能避免脏读问题。
+
+但该机制解决不了不可重复读问题，如图：
+
+![b1232c1150a646eda0637a914716e0fc](./image-mysql/b1232c1150a646eda0637a914716e0fc.png)
+
+在事务A修改完数据提交之后，事务B中再次读取数据就能读取到事务A修改之后的数据，与修改之前读取的数据不一致。
+
+##### REPEATABLE READ解决不可重复读问题
+
+对于使用REPEATABLE READ隔离级别的事务来说，只会在第一次执行查询语句时生成一个ReadView，之后的查询就不会重复生成了。因此无论两次查询之间，无论其他事务怎么修改数据该事务中由于ReadView一样，在版本链中拿到的数据节点都是一样的。
+
+因此，REPEATABLE READ机制还能解决大部分幻读问题。但是，有一种情况无法解决，如图：
+
+![92d29ec669db40b1a07fb0b3cc8cb730](./image-mysql/92d29ec669db40b1a07fb0b3cc8cb730.png)
+
+当事务T1中第一次查询某个不存在的数据，由于该数据不存在，该数据的版本链也不存在。之后事务T2新增了该数据并提交，该数据有了版本链。之后T1数据又对该数据进行了更新/删除，此时该数据的trx_id就成了事务T1的事务id，之后T1再进行数据查询就能看到这条数据了。
+
+因此，在**第一次读如果是空的情况，且在自己事务中进行了该条数据的修改**的情况下，MVCC并没有完全解决幻读问题。
+
+##### MVCC小结
+
+所谓的MVCC（Multi-Version Concurrency Control ，多版本并发控制）指的就是在使用READ COMMITTD、REPEATABLE READ这两种隔离级别的事务在执行普通的SELECT操作时访问记录的版本链的过程，这样子可以使不同事务的读-写、写-读操作并发执行，从而提升系统性能。
+
+READ COMMITTD、REPEATABLE READ这两个隔离级别的一个很大不同就是：生成ReadView的时机不同，READ COMMITTD在每一次进行普通SELECT操作前都会生成一个ReadView，而REPEATABLE READ只在第一次进行普通SELECT操作前生成一个ReadView，之后的查询操作都重复使用这个ReadView就好了，从而基本上可以避免幻读现象（就是第一次读如果ReadView是空的情况中的某些情况则避免不了）。
 
 ### 视图
 
