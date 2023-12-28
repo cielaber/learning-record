@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	dblayer "file-store-server/db"
 	"file-store-server/meta"
 	"file-store-server/util"
 	"fmt"
@@ -9,6 +10,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -51,7 +53,14 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		fileMeta.FileSha1 = util.FileSha1(newFile)
 		meta.UpdateFileMetaDB(fileMeta)
 
-		http.Redirect(w, r, "/file/upload/suc", http.StatusFound)
+		r.ParseForm()
+		username := r.Form.Get("username")
+		suc := dblayer.OnUserFileUploadFinished(username, fileMeta.FileSha1, fileMeta.FileName, fileMeta.FileSize)
+		if suc {
+			http.Redirect(w, r, "/static/view/home.html", http.StatusFound)
+		} else {
+			w.Write([]byte("Upload Failed"))
+		}
 	}
 }
 
@@ -64,7 +73,7 @@ func GetFileMetaHandler(w http.ResponseWriter, r *http.Request) {
 
 	filehash := r.Form["filehash"][0]
 	// fMeta := meta.GetFileMeta(filehash)
-	fMeta, err:= meta.GetFileMetaDB(filehash)
+	fMeta, err := meta.GetFileMetaDB(filehash)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -72,6 +81,38 @@ func GetFileMetaHandler(w http.ResponseWriter, r *http.Request) {
 	data, err := json.Marshal(fMeta)
 	if err != nil {
 		fmt.Printf("json.Marshal ,err:%s", err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Write(data)
+}
+
+func FileQueryHandler(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+
+	limitCnt, err := strconv.Atoi(r.Form.Get("limit"))
+	if err != nil {
+		fmt.Println(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	username := r.Form.Get("username")
+
+	userFiles, err := dblayer.QueryUserFileMetas(username, limitCnt)
+	if err != nil {
+		fmt.Println(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	if err != nil {
+		fmt.Println(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	data, err := json.Marshal(userFiles)
+	if err != nil {
+		fmt.Println(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -141,4 +182,48 @@ func FileDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	meta.RemoveFileMeta(fileSha1)
 
 	w.WriteHeader(http.StatusOK)
+}
+
+func TryFastUploadHandler(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	username := r.Form.Get("username")
+	filehash := r.Form.Get("filehash")
+	filename := r.Form.Get("filename")
+	filesize, err := strconv.Atoi(r.Form.Get("filesize"))
+	if err != nil {
+		fmt.Println(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	fileMeta, err := meta.GetFileMetaDB(filehash)
+	if err != nil {
+		fmt.Println(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+
+	if fileMeta == nil {
+		resp := util.RespMsg{
+			Code: -1,
+			Msg: "秒传失败，请访问普通上传接口",
+		}
+		w.Write(resp.JSONBytes())
+		return
+	}
+
+	suc := dblayer.OnUserFileUploadFinished(username, filehash, filename, int64(filesize))
+	if suc {
+		resp := util.RespMsg{
+			Code: 0,
+			Msg: "秒传成功",
+		}
+		w.Write(resp.JSONBytes())
+		return
+	}
+	resp := util.RespMsg{
+		Code: -2,
+		Msg: "秒传失败，请稍后重试",
+	}
+	w.Write(resp.JSONBytes())
+	return
 }

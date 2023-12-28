@@ -26,10 +26,10 @@ func UpdateFileMetaDB(fmeta FileMeta) bool {
 	return mydb.OnFileUploadFinished(fmeta.FileSha1, fmeta.FileName, fmeta.FileSize, fmeta.Location)
 }
 
-func GetFileMetaDB(fileSha1 string) (FileMeta, error) {
+func GetFileMetaDB(fileSha1 string) (*FileMeta, error) {
 	tfile,err := mydb.GetFileMeta(fileSha1)
 	if err != nil {
-		return FileMeta{}, err;
+		return nil, err;
 	}
 	fmeta := FileMeta{
 		FileSha1: tfile.FileHash,
@@ -37,7 +37,7 @@ func GetFileMetaDB(fileSha1 string) (FileMeta, error) {
 		FileSize: tfile.FileSize.Int64,
 		Location: tfile.FileAddr.String,
 	}
-	return fmeta, nil
+	return &fmeta, nil
 }
 
 func GetFileMeta(fileSha1 string) FileMeta {
