@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	dblayer "file-store-server/db"
 	"file-store-server/meta"
+	"file-store-server/store/oss"
 	"file-store-server/util"
 	"fmt"
 	"io"
@@ -11,6 +12,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -51,6 +53,18 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 
 		newFile.Seek(0, 0)
 		fileMeta.FileSha1 = util.FileSha1(newFile)
+
+		newFile.Seek(0, 0)
+		// 文件上传到oss
+		ossPath := "oss/" + fileMeta.FileSha1
+		err = oss.Bucket().PutObject(ossPath, newFile)
+		if err != nil {
+			fmt.Println(err.Error())
+			w.Write([]byte("Upload Failed"))
+			return
+		}
+		fileMeta.Location = ossPath
+
 		meta.UpdateFileMetaDB(fileMeta)
 
 		r.ParseForm()
@@ -205,7 +219,7 @@ func TryFastUploadHandler(w http.ResponseWriter, r *http.Request) {
 	if fileMeta == nil {
 		resp := util.RespMsg{
 			Code: -1,
-			Msg: "秒传失败，请访问普通上传接口",
+			Msg:  "秒传失败，请访问普通上传接口",
 		}
 		w.Write(resp.JSONBytes())
 		return
@@ -215,15 +229,35 @@ func TryFastUploadHandler(w http.ResponseWriter, r *http.Request) {
 	if suc {
 		resp := util.RespMsg{
 			Code: 0,
-			Msg: "秒传成功",
+			Msg:  "秒传成功",
 		}
 		w.Write(resp.JSONBytes())
 		return
 	}
 	resp := util.RespMsg{
 		Code: -2,
-		Msg: "秒传失败，请稍后重试",
+		Msg:  "秒传失败，请稍后重试",
 	}
 	w.Write(resp.JSONBytes())
 	return
+}
+
+func DownloadURLHandler(w http.ResponseWriter, r *http.Request) {
+	filehash := r.Form.Get("filehash")
+	row, err := dblayer.GetFileMeta(filehash)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	if strings.HasPrefix(row.FileAddr.String, "/tmp") {
+		username := r.Form.Get("username")
+		token := r.Form.Get("token")
+		tmpUrl := fmt.Sprintf("http://%s/file/download?filehash=%s&username=%s&token=%s", r.Host, filehash, username, token)
+		w.Write([]byte(tmpUrl))
+	} else if strings.HasPrefix(row.FileAddr.String, "/ceph") {
+
+	} else if strings.HasPrefix(row.FileAddr.String, "oss/") {
+		signedURL := oss.DownloadURL(row.FileAddr.String)
+		w.Write([]byte(signedURL))
+	}
 }
