@@ -2,8 +2,11 @@ package handler
 
 import (
 	"encoding/json"
+	cmn "file-store-server/common"
+	cfg "file-store-server/config"
 	dblayer "file-store-server/db"
 	"file-store-server/meta"
+	"file-store-server/mq"
 	"file-store-server/store/oss"
 	"file-store-server/util"
 	"fmt"
@@ -55,15 +58,31 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		fileMeta.FileSha1 = util.FileSha1(newFile)
 
 		newFile.Seek(0, 0)
+
 		// 文件上传到oss
 		ossPath := "oss/" + fileMeta.FileSha1
-		err = oss.Bucket().PutObject(ossPath, newFile)
-		if err != nil {
-			fmt.Println(err.Error())
-			w.Write([]byte("Upload Failed"))
-			return
+		// 判断写入OSS为同步还是异步
+		if !cfg.AsyncTransferEnable {
+			err = oss.Bucket().PutObject(ossPath, newFile)
+			if err != nil {
+				fmt.Println(err.Error())
+				w.Write([]byte("Upload Failed"))
+				return
+			}
+			fileMeta.Location = ossPath
+		} else {
+			data := mq.TransferData{
+				FileHash:      fileMeta.FileSha1,
+				CurLocation:   fileMeta.Location,
+				DestLocation:  ossPath,
+				DestStoreType: cmn.StoreOSS,
+			}
+			pubData, _ := json.Marshal(data)
+			suc := mq.Publish(cfg.TransExchangeName, cfg.TransOSSRoutingKey, pubData)
+			if !suc {
+				// TODO: 加入重新发送消息逻辑
+			}
 		}
-		fileMeta.Location = ossPath
 
 		meta.UpdateFileMetaDB(fileMeta)
 

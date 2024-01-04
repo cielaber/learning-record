@@ -7,6 +7,7 @@ require (
 	github.com/garyburd/redigo v1.6.4
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/json-iterator/go v1.1.12
+	github.com/streadway/amqp v1.1.0
 )
 
 require (
