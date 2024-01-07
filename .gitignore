@@ -13,3 +13,6 @@ vue3-ts-ui/lib
 ts-study/dist
 
 前端监控/monitor-demo/dist
+
+go/file-store-server/tmp
+go/file-store-server-gin/tmp
