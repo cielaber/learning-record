@@ -478,6 +478,177 @@ Word Embedding 为自然语言处理任务提供了更好的单词表示方法�
 
 ![屏幕截图 2025-02-11 172349](.\image-ai\屏幕截图 2025-02-11 172349.png)
 
-# OpenAI大模型开发与应用实践
+# 大模型应用开发
 
-## OpenAI 大模型开发指南
+## GPT API
+
+### Chat Completions
+
+https://platform.openai.com/docs/api-reference/chat
+
+### Models
+
+https://platform.openai.com/docs/api-reference/models
+
+## Assistants API
+
+助手（Assistants） API 支持你在自己的应用程序中构建人工智能助手。一个助手有其专用的指令，并可以利用模型、工具和知识来回应用户查询。助手 API 目前支持三种类型的工具：代码解释器、检索和函数调用。
+
+### Assistants 设计模式
+
+![图片-1](.\image-ai\图片-1.png)
+
+### Assistants 关键对象说明
+
+![屏幕截图 2025-02-19 102929](.\image-ai\屏幕截图 2025-02-19 102929.png)
+
+### Assistants Run
+
+**生命周期**
+
+![图片](.\image-ai\图片.png)
+
+**状态说明**
+
+![image-20250219103328150](.\image-ai\image-20250219103328150.png)
+
+### Assistants 工具
+
+#### 代码解释器：Code Interpreter
+
+代码解释器允许助手 API 在一个沙箱执行环境中编写和运行代码。这个工具可以处理具有多样数据和格式的文件，并生成包含数据和图形图像的文件。代码解释器使您的助手能够迭代运行代码，解决复杂的编码和数学问题。当您的助手编写的代码无法运行时，它可以通过尝试运行不同的代码来迭代这些代码，直到代码执行成功。
+
+https://platform.openai.com/docs/assistants/tools/code-interpreter
+
+#### 文件检索：File Search
+
+检索功能通过从模型外部引入知识来增强助手的能力，例如来自您的专有产品信息或用户提供的文件。一旦文件被上传并传递给助手，OpenAI将自动对您的文件进行分块处理，索引并存储嵌入，并实施向量搜索以检索相关内容以回答用户查询。
+
+https://platform.openai.com/docs/assistants/tools/file-search
+
+#### 函数调用：Function Calling
+
+类似Chat CompletionsAPI，助手API 也支持函数调用功能。函数调用允许用户向助手描述函数，并让其智能地返回需要调用的函数及其参数。当助手API 在运行中调用函数时，会暂停执行，您可以提供函数调用的结果以继续运行执行。
+
+https://platform.openai.com/docs/assistants/tools/function-calling
+
+### Assistants API vs GPT API vs LangChain
+
+![image-20250219104229840](.\image-ai\image-20250219104229840.png)
+
+## ChatGPT Plugin
+
+早期ChatGPT中实现了对插件的支持。Plugin 功能主要是为 GPT 模型提供外部数据访问的能力。它允许模型通过外部插件连接到其他 API 或服务，提供更多功能。这些插件可以用于实时获取信息、进行特定的任务（如查询数据库、调用外部计算服务等）。
+
+Plugin功能现已被废弃。
+
+## GPT Actions
+
+GPT Actions存储在 [Custom GPTs](https://openai.com/blog/introducing-gpts)中，通过提供说明，将文档作为知识附加并连接到第三方服务，从而使用户可以为特定用例定制ChatGPT。
+GPT Actions使ChatGPT用户可以通过使用自然语言在ChatGPT之外通过Restful API调用与外部应用程序进行交互。他们将自然语言文本转换为API调用所需的JSON模式。GPT Actions通常用于进行数据检索到ChatGPT（例如查询数据仓库），或在另一个应用程序中采取措施。
+
+OpenAI 对 Plugin 的定位是让模型可以接入外部世界，通过获取实时数据和动态信息来增强智能。但随着功能的增加和复杂性提升，它的管理和使用变得繁琐，所以逐渐向 Actions 功能过渡。Actions 被视为更直接、简化的解决方案，专注于提高模型的实际操作能力，适用于大多数日常任务，减少了外部依赖的复杂性。
+
+# 多模态
+
+![image-20250225152730918](.\image-ai\image-20250225152730918.png)
+
+## 图生文 GPT-4V
+
+几种OpenAI模型具有视觉功能，这意味着模型可以将图像作为输入并回答有关它们的问题。从历史上看，语言模型仅限于单个输入方式：文本。
+当前，可以将图像作为输入的模型包括o1、gpt-4o、gpt-4o-mini 和 gpt-4-turbo。
+
+https://platform.openai.com/docs/guides/vision
+
+## 文生图 DALL·E 3
+
+图像 API 有三个具有不同功能的端点：
+
+- **生成**：根据文本提示从头生成图片
+- **编辑**：根据新的文本提示，模型会替换原有图片的某些区域
+- **变体**：可以生成给定图像的变体
+
+https://platform.openai.com/docs/guides/images
+
+## 文生音 TTS
+
+音频API根据 TTS (text-to-speech)模型提供了语音端点。它们可以被用来：
+
+- 叙述书面博客文章
+- 用多种语言制作语音
+- 使用流提供实时音频输出
+
+https://platform.openai.com/docs/guides/text-to-speech
+
+## 音生文 Whisper
+
+音频API基于最先进的开源模型Whisper，为文本端点，转录和翻译提供了两种语音。它们可以被用来：
+
+- 将音频转录到音频中的任何语言中。
+- 将音频翻译成英文。
+
+文件上传目前限制为25 MB，并且支持以下输入文件类型：MP3，MP4，MPEG，MPGA，M4A，M4A，WAV和WebM。
+
+https://platform.openai.com/docs/guides/speech-to-text
+
+# GPTs
+
+GPTs 是一种可高度定制的 ChatGPT 版本，旨在针对特定用途提供定制功能。通过创建 GPT，用户可以实现以下几点：
+
+- **定制交互指令：**设定 GPT 与用户互动的方式。
+- **集成工具：**可以包括浏览功能、DALL·E 图像生成工具和代码解释器等。
+- **预设启动提示：**为新用户和回访用户提供预设的启动提示，帮助他们更好地利用 GPT。 
+- **定制动作：**允许用户将 GPT 连接到外部API，扩展其功能。
+- 用户可以通过给出指令和额外知识，选择 GPTs 具备的能力（搜索网络、生成图像或分析数据等）。GPTs 可以帮助用户完成各种任务，例如学习游戏规则、教育孩子数学、设计贴纸等。
+
+## GPTs VS Assistants API
+
+![image-20250225183932912](.\image-ai\image-20250225183932912.png)
+
+## GPT Builder 
+
+GPT Builder 是一个工具，允许用户通过对话界面轻松创建 GPTs。有趣的是， GPT Builder 工具本身就是一个定制的 GPTs，内含特定指令（Instructions）和一个允许其编辑正在构建的 GPTs 的动作（Action）。
+
+对于首次开发 GPTs 的初学者来说，GPT Builder 旨在为他们提供一个起点，更高级的构建者可以使用手动配置用户界面来编辑他们的 GPT 字段。同时，GPT Builder 也正在不断发展，目标是成为一个对新手和高级构建者都更加有效的工具。
+
+现阶段只有GPT订阅用户才能使用GPT Builder创建GPTs。
+
+# LangChain
+
+LangChain是一个专为开发基于大型语言模型（LLM）的应用程序而设计的框架。
+
+![65cd1db3881d5c33613395b6_Build Your App-p-800](.\image-ai\65cd1db3881d5c33613395b6_Build Your App-p-800.webp)
+
+LangChain 全面简化了 LLM 应用生命周期的每个阶段：
+
+- **开发阶段**：通过 LangChain 的开源组件和第三方集成构建应用，并利用 LangGraph 创建支持一流流式处理与人工介入功能的有状态智能代理。
+- **生产化阶段**：使用 LangSmith 对应用进行检查、监控和评估，助您持续优化并自信部署。
+- **部署阶段**：借助 LangGraph 平台，将 LangGraph 应用程序转化为生产级 API 和智能助手。
+
+![langchain_stack_112024](.\image-ai\langchain_stack_112024.svg)
+
+LangChain实现了大型语言模型和相关技术（例如嵌入模型和向量存储）的标准接口，并与数百个提供商集成在一起。
+
+## 为什么需要LangChain？
+
+![1740565011232](.\image-ai\1740565011232.png)
+
+OpenAI能提供底座模型和API，但是在产品中集成和使用他们仍然需要大量的工作。例如：
+
+![image-20250226181958822](.\image-ai\image-20250226181958822.png)
+
+## LangChain模块化设计
+
+
+
+![图片-2](.\image-ai\图片-2.png)
+
+### 标准化的大模型抽象：Model I/O
+
+![图片-3](.\image-ai\图片-3.png)
+
+**LangChain设计：结合联网与向量数据库**
+
+![image-20250226182806331](.\image-ai\image-20250226182806331.png)
+
+## 大模型应用的最佳实践 Chains
